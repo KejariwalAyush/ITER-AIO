@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             RaisedButton(onPressed: (){
               print('loading...');
-//              getData();
+              getData();
             },
               child: Text('Data'),
             ),
