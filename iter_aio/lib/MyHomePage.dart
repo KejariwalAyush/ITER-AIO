@@ -306,9 +306,9 @@ class _MyHomePageState extends State<MyHomePage> {
       Fluttertoast.showToast(
         msg: "Data Fetched",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blueGrey,
         textColor: Colors.white,
         fontSize: 16.0,
       );
@@ -318,18 +318,18 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     } else {
       Fluttertoast.showToast(
-        msg: "Server Error: ${attendResp.statusCode}",
+        msg: "Server Error: ${attendResp.statusCode}\nOr Invalid Credentials",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0,
       );
-//        Scaffold.of(context).showSnackBar(SnackBar(
-//          content: Text("Server Error: ${attendResp.statusCode} "),
-//      ));
       print('server error');
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()));
     }
   }
 
@@ -446,7 +446,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.assignment),
+              leading: Icon(Icons.power_settings_new),
               title: Text('Logout'),
               onTap: () =>
               {
@@ -455,11 +455,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 name = null,
                 sem = null,
                 infoData = null,
+                Fluttertoast.showToast(
+                  msg: "Logged out!",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 2,
+                  backgroundColor: Colors.blueGrey,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                ),
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPage()))},
             ),
-
           ],
         ),
       ),
