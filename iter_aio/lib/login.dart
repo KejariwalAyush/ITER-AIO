@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'MyHomePage.dart';
+import './MyHomePage.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,6 +76,12 @@ class LoginPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       print('$regdNo : $password');
+                      attendData = null;
+                      resultData = null;
+                      name = null;
+                      sem = null;
+                      infoData = null;
+
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => MyHomePage()));
                     },

@@ -2,27 +2,31 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:iteraio/login.dart';
+import 'package:iteraio/result.dart';
 
 var attendData, infoData;
 List resultData;
-var name,
-    regdNo = '1941012408',
-    password = '29Sept00';
+var name, avgAttend, avgAbsent,
+    regdNo, //= '1941012408',
+    password; //= '29Sept00';
 int sem;
 var isLoading = false;
-
-//var c1 = '0x0e0f3b';
-//var c2 = '0x07407b';
-//var c3 = '0x7fcdee';
-//var c4 = '0xf7931e';
-//var c5 = '0xffffff';
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  var c1 = Color(0x0e0f3b);
+  var c2 = Color(0x07407b);
+  var c3 = Color(0x7fcdee);
+  var c4 = Color(0xf7931e);
+  var c5 = Color(0xffffff);
+
   @override
   void initState() {
     setState(() {
@@ -35,17 +39,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: widgetDrawer(context),
       appBar: AppBar(
         title: Text('ITER AIO'),
         elevation: 15,
+        leading: Builder(
+          builder: (context) =>
+              IconButton(
+                icon: new Icon(Icons.apps),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+        ),
         actions: <Widget>[
-          Icon(Icons.share),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.share,),
+          ),
         ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
-        automaticallyImplyLeading: false,
       ),
       body: isLoading || attendData == null
           ? Center(
@@ -96,6 +110,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Avg Attendence: $avgAttend %', style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87),),
+                    Text('Avg Absent: $avgAbsent', style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87),),
+                  ],),
+              ),
               Column(
                 children: <Widget>[
                   for (var i in attendData['griddata'])
@@ -136,7 +165,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         subtitle: Text('Code: ${i['subjectcode']}'),
                         children: <Widget>[
-                          Text('Last Updated On: ${i['lastupdatedon']}'),
+                          Text('Last Updated On: ${getTime(
+                              i['lastupdatedon'])}'),
                           if (i['Latt'] != '0 / 0')
                             Text(
                               'Theory: \t\t\t${i['Latt']} (${getPercentage(
@@ -200,19 +230,33 @@ class _MyHomePageState extends State<MyHomePage> {
         100);
   }
 
-  String getColor(double totalPersentage) {
-//    int totalPersentage = int.parse(x.split('.')[0]);
-    String indicate;
-    if (totalPersentage >= 85)
-      indicate = 'o';
-    else if (totalPersentage >= 75 && totalPersentage < 85)
-      indicate = 'a';
-    else if (totalPersentage < 75 && totalPersentage >= 65)
-      indicate = 'b';
+  String getTime(String x) {
+    var dat = x.split(' ')[0].trim();
+    var tim = x.split(' ')[1].trim();
+    var ampm = x.split(' ')[2].trim();
+    DateTime dt = DateTime(
+        int.parse(dat.split('/')[2]), int.parse(dat.split('/')[1]),
+        int.parse(dat.split('/')[0]),
+        int.parse(tim.split(':')[0]) + (ampm == 'PM' ? 12 : 0),
+        int.parse(tim.split(':')[1]));
+    var diff = (DateTime
+        .now()
+        .difference(dt)
+        .inMinutes).abs();
+    if (diff == 0)
+      return 'Just Now';
+    else if (diff > 0 && diff < 61)
+      return '$diff min ago';
+    else if (diff < 1440 && diff > 60)
+      return '${dt
+          .difference(DateTime.now())
+          .inHours} hours ago';
     else
-      indicate = 'f';
-    return indicate;
+      return '${dt
+          .difference(DateTime.now())
+          .inDays} days ago';
   }
+
 
   Future<void> getData() async {
     setState(() {
@@ -236,13 +280,55 @@ class _MyHomePageState extends State<MyHomePage> {
 //      print(attendData);
       name = infoData["detail"][0]['name'];
       sem = attendData['griddata'][0]['stynumber'];
-
+      double totatt = 0.0;
+      int cnt = 0,
+          totAbs = 0;
+      for (var i in attendData['griddata']) {
+        totatt += i['TotalAttandence'];
+        totAbs += (int.parse(
+            i['Latt'].toString().split('/')[1].trim()) +
+            int.parse(
+                i['Patt'].toString().split('/')[1].trim()) +
+            int.parse(
+                i['Tatt'].toString().split('/')[1].trim()))
+            - (int.parse(
+                i['Latt'].toString().split('/')[0].trim()) +
+                int.parse(i['Patt'].toString().split('/')[0]
+                    .trim()) + int.parse(
+                i['Tatt'].toString().split('/')[0]
+                    .trim()));
+        cnt++;
+      }
+      avgAttend = (totatt / cnt).round();
+      avgAbsent = totAbs ~/ cnt;
       print('$name - $sem');
       getResult();
+      Fluttertoast.showToast(
+        msg: "Data Fetched",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      //showToast(context,'Status: ${attendResp.statusCode}');
       setState(() {
         isLoading = false;
       });
     } else {
+      Fluttertoast.showToast(
+        msg: "Server Error: ${attendResp.statusCode}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+//        Scaffold.of(context).showSnackBar(SnackBar(
+//          content: Text("Server Error: ${attendResp.statusCode} "),
+//      ));
       print('server error');
     }
   }
@@ -257,8 +343,8 @@ class _MyHomePageState extends State<MyHomePage> {
     const result_url = 'https://iterapi-web.herokuapp.com/result/';
     for (int i = sem - 1; i >= 1; i--) {
       var resultPayload = {
-        "user_id": "1941012408",
-        "password": "29Sept00",
+        "user_id": "$regdNo",
+        "password": "$password",
         "sem": i
       };
       const headers = {'Content-Type': 'application/json'};
@@ -266,10 +352,11 @@ class _MyHomePageState extends State<MyHomePage> {
           headers: headers, body: jsonEncode(resultPayload));
       print(resultResp.statusCode);
       if (resultResp.statusCode == 200) {
-        results.add({'i': '${jsonDecode(resultResp.body)}'});
+        results.add('${jsonDecode(resultResp.body)}');
       }
     }
     resultData = results;
+    print(resultData);
     print('Result Fetching Complete');
 //    setState(() {
 //      isLoading = false;
@@ -314,11 +401,69 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     else {
       bunk = (((classes * 0.75) - present) / 0.25).floor();
-      bunkText = 'Attend ' + bunk.toString() + ' more classes for 75 %';
-      bunk = (((classes * 0.80) - present) / 0.2).floor();
-      bunkText =
-          bunkText + '\nAttend ' + bunk.toString() + ' more classes for 80 %';
+      if (bunk != 0) {
+        bunkText = 'Attend ' + bunk.toString() + ' more classes for 75 %';
+        bunk = (((classes * 0.80) - present) / 0.2).floor();
+        bunkText =
+            bunkText + '\nAttend ' + bunk.toString() + ' more classes for 80 %';
+      }
+      else {
+        bunk = (((classes * 0.80) - present) / 0.2).floor();
+        bunkText =
+            'Attend ' + bunk.toString() + ' more classes for 80 %';
+      }
     }
     return bunkText;
   }
+
+
+  Widget widgetDrawer(context) {
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            AppBar(
+              title: Text(
+                'ITER-AIO',
+                softWrap: true,
+              ),
+              elevation: 15,
+              centerTitle: true,
+              //            backgroundColor: Colors.lightBlueAccent,
+              automaticallyImplyLeading: true,
+              leading: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () => Navigator.pop(context, false)),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text('Result'),
+              onTap: isLoading ? null : () =>
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Result())),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text('Logout'),
+              onTap: () =>
+              {
+                attendData = null,
+                resultData = null,
+                name = null,
+                sem = null,
+                infoData = null,
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()))},
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+
 }
