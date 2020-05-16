@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'MyHomePage.dart';
@@ -49,26 +51,29 @@ class Result extends StatelessWidget {
                               )),
                           Expanded(
                             flex: 3,
-                            child: RichText(
-                              textAlign: TextAlign.end,
-                              text: TextSpan(
-                                  text: '$name',
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87),
-                                  children: [
-                                    TextSpan(
-                                        text: '\nRegd. No.:$regdNo',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black54)),
-                                    TextSpan(
-                                        text: '\nSemester: $sem',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black54)),
-                                  ]),
+                            child: InkWell(
+                              onTap: () => Navigator.pop(context, false),
+                              child: RichText(
+                                textAlign: TextAlign.end,
+                                text: TextSpan(
+                                    text: '$name',
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87),
+                                    children: [
+                                      TextSpan(
+                                          text: '\nRegd. No.:$regdNo',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black54)),
+                                      TextSpan(
+                                          text: '\nSemester: $sem',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black54)),
+                                    ]),
+                              ),
                             ),
                           )
                         ],
@@ -76,24 +81,52 @@ class Result extends StatelessWidget {
                     ),
                     Column(
                       children: <Widget>[
-//                  for (int i=0;i<resultData.length;i++)
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.purple[100],
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: ExpansionTile(
-                            initiallyExpanded: false,
-                            title: Text(
-                              'Comming Soon!!',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                        for (var j in resultData)
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.purple[100],
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            children: <Widget>[],
+                            child: ExpansionTile(
+                              initiallyExpanded: false,
+                              title: Text(
+                                'Semester : ${jsonDecode(j)['Semdata'][0]['stynumber']}',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              trailing: Text(
+                                '${getTotalresult(j)}',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              children: <Widget>[
+                                for (var i in jsonDecode(j)['Semdata'])
+                                  ListTile(
+                                    title: Text(
+                                      '${i['subjectdesc']}',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    trailing: Text(
+                                      '${i['grade']}',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      '${i['subjectcode']}\nEarned Credit : ${i['earnedcredit']}',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    isThreeLine: true,
+                                  ),
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ],
@@ -101,5 +134,29 @@ class Result extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  double getTotalresult(String x) {
+    double res = 0.0, sum = 0.0;
+    int cnt = 0;
+    for (var i in jsonDecode(x)['Semdata']) {
+      if (i['grade'] == 'O')
+        sum += 10;
+      else if (i['grade'] == 'A')
+        sum += 9.5;
+      else if (i['grade'] == 'B')
+        sum += 8.5;
+      else if (i['grade'] == 'C')
+        sum += 7.5;
+      else if (i['grade'] == 'D')
+        sum += 6.5;
+      else if (i['grade'] == 'E')
+        sum += 5.5;
+      else
+        sum += 0;
+      cnt++;
+    }
+    res = sum / cnt;
+    return res;
   }
 }
