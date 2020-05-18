@@ -7,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:iteraio/login.dart';
 import 'package:iteraio/result.dart';
 
+import 'package:html/parser.dart';
+// import 'package:http/http.dart';
+
 var attendData, infoData;
 var resultData;
 var name, avgAttend, avgAbsent, regdNo = '1941012408', password = '29Sept00';
@@ -52,7 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: new Icon(Icons.share),
-              onPressed: () {},
+              onPressed: () {
+                getResult();
+              },
             ),
           ),
         ],
@@ -342,11 +347,72 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     // resultData = jsonDecode(results);
-    print(resultData);
+    // print(resultData);
     print('Result Fetching Complete');
+
+    List<Map<String, dynamic>> linkMap = [];
+    final response = await http.get("https://www.soa.ac.in/2nd-semester");
+    if (response.statusCode == 200) {
+      var document = parse(response.body);
+      var links = document.getElementsByClassName('Index-page-content');
+      for (var link in links) {
+        linkMap.add({
+          'course': link
+              .getElementsByClassName('sqs-block html-block sqs-block-html')[0]
+              .text,
+          'subjects': [
+            for (int i = 0; i < link.querySelectorAll('p').length - 2; i += 3)
+              {
+                'subject': link.querySelectorAll('p')[i].text,
+                'subjectCode': link.querySelectorAll('p')[i + 1].text,
+                'link': link
+                    .querySelectorAll('p')[i + 2]
+                    .querySelector('a')
+                    .attributes['href'],
+              }
+          ],
+        });
+      }
+    }
+    print(linkMap[0]['subjects']);
+
 //    setState(() {
 //      isLoading = false;
 //    });
+  }
+
+  Future<List> getLectures(String url) async {
+    List<Map<String, dynamic>> linkMap2 = [];
+    // var url = linkMap[0]['subjects'][0]['link'];
+    var pageno = 0;
+    var pagecount = 1;
+    while (pagecount > pageno) {
+      pageno++;
+      final resp2 = await http.get('$url?page=$pageno');
+      if (resp2.statusCode == 200) {
+        var doc = parse(resp2.body);
+        // print(doc.querySelector('html > body > script').text);
+        var links2 = doc.querySelectorAll('html > body > script');
+        var data1 = links2[links2.length - 1].text.substring(
+            links2[links2.length - 1].text.indexOf('{'),
+            links2[links2.length - 1].text.length - 1);
+        var data2 = jsonDecode(data1).values.toList()[1];
+        pageno = data2['pageNumber'];
+        pagecount = data2['pageCount'];
+        for (var i in data2['items']) {
+          linkMap2.add({
+            'title': i['name'],
+            'link': '$url/${i['type']}/${i['id']}',
+            'size': i['itemSize'],
+            'date': i['date'],
+            'imageurl': i['thumbnailURLs']['large'],
+            'preview': i['thumbnailURLs']['preview'],
+          });
+        }
+      }
+    }
+    return linkMap2;
+    // print(linkMap2.length);
   }
 
   String bunklogic(var i) {
