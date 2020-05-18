@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:iteraio/courses.dart';
 import 'package:iteraio/login.dart';
 import 'package:iteraio/result.dart';
 
@@ -11,8 +12,13 @@ import 'package:html/parser.dart';
 // import 'package:http/http.dart';
 
 var attendData, infoData;
-var resultData;
-var name, avgAttend, avgAbsent, regdNo = '1941012408', password = '29Sept00';
+var resultData, courseData;
+var name,
+    branch,
+    avgAttend,
+    avgAbsent,
+    regdNo = '1941012408',
+    password = '29Sept00';
 int sem;
 var isLoading = false;
 
@@ -56,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: IconButton(
               icon: new Icon(Icons.share),
               onPressed: () {
-                getResult();
+                //getVideoLink();
               },
             ),
           ),
@@ -278,6 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
       attendData = jsonDecode(attendResp.body);
 //      print(attendData);
       name = infoData["detail"][0]['name'];
+      branch = infoData['detail'][0]['branchdesc'];
       sem = attendData['griddata'][0]['stynumber'];
       double totatt = 0.0;
       int cnt = 0, totAbs = 0;
@@ -295,6 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
       avgAbsent = totAbs ~/ cnt;
       print('$name - $sem');
       getResult();
+      getCourses();
       Fluttertoast.showToast(
         msg: "Data Fetched",
         toastLength: Toast.LENGTH_SHORT,
@@ -329,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //      isLoading = true;
 //    });
     resultData = List();
-    String results = '';
+    // String results = '';
     print('loading results...');
     const result_url = 'https://iterapi-web.herokuapp.com/result/';
     for (int i = sem - 1; i >= 1; i--) {
@@ -349,7 +357,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // resultData = jsonDecode(results);
     // print(resultData);
     print('Result Fetching Complete');
+//    setState(() {
+//      isLoading = false;
+//    });
+  }
 
+  Future<void> getCourses() async {
     List<Map<String, dynamic>> linkMap = [];
     final response = await http.get("https://www.soa.ac.in/2nd-semester");
     if (response.statusCode == 200) {
@@ -369,51 +382,31 @@ class _MyHomePageState extends State<MyHomePage> {
                     .querySelectorAll('p')[i + 2]
                     .querySelector('a')
                     .attributes['href'],
+                // 'lectures': await getLectures(link
+                //     .querySelectorAll('p')[i + 2]
+                //     .querySelector('a')
+                //     .attributes['href']),
               }
           ],
         });
       }
     }
-    print(linkMap[0]['subjects']);
-
-//    setState(() {
-//      isLoading = false;
-//    });
+    // print(linkMap[0]['subjects']);
+    courseData = linkMap;
   }
 
-  Future<List> getLectures(String url) async {
-    List<Map<String, dynamic>> linkMap2 = [];
-    // var url = linkMap[0]['subjects'][0]['link'];
-    var pageno = 0;
-    var pagecount = 1;
-    while (pagecount > pageno) {
-      pageno++;
-      final resp2 = await http.get('$url?page=$pageno');
-      if (resp2.statusCode == 200) {
-        var doc = parse(resp2.body);
-        // print(doc.querySelector('html > body > script').text);
-        var links2 = doc.querySelectorAll('html > body > script');
-        var data1 = links2[links2.length - 1].text.substring(
-            links2[links2.length - 1].text.indexOf('{'),
-            links2[links2.length - 1].text.length - 1);
-        var data2 = jsonDecode(data1).values.toList()[1];
-        pageno = data2['pageNumber'];
-        pagecount = data2['pageCount'];
-        for (var i in data2['items']) {
-          linkMap2.add({
-            'title': i['name'],
-            'link': '$url/${i['type']}/${i['id']}',
-            'size': i['itemSize'],
-            'date': i['date'],
-            'imageurl': i['thumbnailURLs']['large'],
-            'preview': i['thumbnailURLs']['preview'],
-          });
-        }
-      }
-    }
-    return linkMap2;
-    // print(linkMap2.length);
-  }
+  // getVideoLink() async {
+  //   final resp = await http.get(
+  //       'https://soadu.app.box.com/s/h1z8vqy4j08qtaygcf76bbg7bpdivn99/file/655679762302');
+  //   // await http.get(url);
+  //   var res;
+  //   if (resp.statusCode == 200) {
+  //     res = parse(resp.body)
+  //         .querySelector('.bp-media-container > video:nth-child(1)');
+  //     print(resp.);
+  //   }
+  //   // return null;
+  // }
 
   String bunklogic(var i) {
     var bunkText;
@@ -486,6 +479,15 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () => Navigator.pop(context, false)),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.video_library),
+              title: Text('Lectures'),
+              onTap: isLoading
+                  ? null
+                  : () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Courses())),
             ),
             Divider(),
             ListTile(
