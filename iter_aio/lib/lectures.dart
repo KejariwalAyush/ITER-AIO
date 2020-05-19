@@ -59,11 +59,14 @@ class _LecturesState extends State<Lectures> {
                             fontSize: 14,
                           ),
                         ),
-                        onTap: null,
-                        // () => Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Player(i['link']))),
+                        onTap: //null,
+                            () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        VideoApp(i['title'], i['link2'])
+                                    //WebPageView(i['link2'])
+                                    )),
                         // subtitle: Text(DateTime.(i['date'])),
                       ),
                   ],
@@ -98,7 +101,11 @@ class _LecturesState extends State<Lectures> {
         for (var i in data2['items']) {
           linkMap2.add({
             'title': i['name'],
-            'link': '$url/${i['type']}/${i['id']}',
+            'id': i['id'],
+            'link':
+                'https://m.box.com/shared_item/${url.replaceAll('/', '%2F').replaceFirst(':', '%3A')}/view/${i['id']}',
+            'link2':
+                'https://m.box.com/${i['type']}/${i['id']}/${url.replaceAll('/', '%2F').replaceFirst(':', '%3A')}/preview/preview.mp4',
             'size': (i['itemSize'] / (1024 * 1024)).round(),
             'date': i['date'],
             'imageurl': i['thumbnailURLs']['large'],
@@ -111,6 +118,6 @@ class _LecturesState extends State<Lectures> {
       isLoading = false;
     });
     lect = linkMap2;
-    print(linkMap2[0]);
+    // print(linkMap2[0]);
   }
 }

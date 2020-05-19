@@ -17,8 +17,8 @@ var name,
     branch,
     avgAttend,
     avgAbsent,
-    regdNo = '1941012408',
-    password = '29Sept00';
+    regdNo, //= '1941012408',
+    password; //= '29Sept00';
 int sem;
 var isLoading = false;
 
@@ -61,9 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: new Icon(Icons.share),
-              onPressed: () {
-                //getVideoLink();
-              },
+              onPressed: () {},
             ),
           ),
         ],
@@ -394,19 +392,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // print(linkMap[0]['subjects']);
     courseData = linkMap;
   }
-
-  // getVideoLink() async {
-  //   final resp = await http.get(
-  //       'https://soadu.app.box.com/s/h1z8vqy4j08qtaygcf76bbg7bpdivn99/file/655679762302');
-  //   // await http.get(url);
-  //   var res;
-  //   if (resp.statusCode == 200) {
-  //     res = parse(resp.body)
-  //         .querySelector('.bp-media-container > video:nth-child(1)');
-  //     print(resp.);
-  //   }
-  //   // return null;
-  // }
 
   String bunklogic(var i) {
     var bunkText;
