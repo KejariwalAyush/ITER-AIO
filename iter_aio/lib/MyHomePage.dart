@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:iteraio/components/login.dart';
+// import 'package:iteraio/components/login.dart';
 import 'package:iteraio/components/courses.dart';
 import 'package:iteraio/components/planBunk.dart';
 import 'package:iteraio/components/result.dart';
@@ -28,225 +28,332 @@ class _MyHomePageState extends State<MyHomePage> {
   // var c3 = Color(0x7fcdee);
   // var c4 = Color(0xf7931e);
   // var c5 = Color(0xffffff);
-
-  @override
-  void initState() {
-    setState(() {
-//      isLoading = true;
-      getData();
-      getResult();
-    });
-    super.initState();
-  }
+  var isLoggedIn = false, dataLoading = false;
+//   @override
+//   void initState() {
+//     setState(() {
+// //      isLoading = true;
+//       getData();
+//       getResult();
+//     });
+//     super.initState();
+//   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: widgetDrawer(context),
-      appBar: AppBar(
-        title: Text('ITER AIO'),
-        elevation: 15,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: new Icon(Icons.apps),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: new Icon(Icons.share),
-              onPressed: () {},
+    return !isLoggedIn
+        ? Scaffold(
+            body: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(10),
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(left: 24.0, right: 24.0),
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      'Login',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 80,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    autofocus: false,
+                    initialValue: regdNo,
+                    onChanged: (String str) {
+                      regdNo = str;
+                    },
+                    decoration: InputDecoration(
+                      alignLabelWithHint: true,
+                      hintText: 'Regd No.',
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    autofocus: false,
+                    initialValue: password,
+                    onChanged: (String str) {
+                      password = str;
+                    },
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      alignLabelWithHint: true,
+                      hintText: 'Password',
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      onPressed: () {
+                        print('$regdNo : $password');
+                        attendData = null;
+                        resultData = null;
+                        name = null;
+                        sem = null;
+                        infoData = null;
+                        Fluttertoast.showToast(
+                          msg: "Loading...",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1500,
+                          backgroundColor: Colors.blueGrey,
+                          textColor: Colors.white,
+                          fontSize: 20.0,
+                        );
+                        setState(() {
+                          isLoading = true;
+                          getData();
+                          getResult();
+                          // isLoggedIn = true;
+                        });
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => MyHomePage()));
+                      },
+                      padding: EdgeInsets.all(12),
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.purple[300]
+                          : Colors.teal[400],
+                      child:
+                          Text('Log In', style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
-      ),
-      body: isLoading || attendData == null
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.all(5),
-                      child: Row(
+          )
+        : Scaffold(
+            drawer: widgetDrawer(context),
+            appBar: AppBar(
+              title: Text('ITER AIO'),
+              elevation: 15,
+              leading: Builder(
+                builder: (context) => IconButton(
+                  icon: new Icon(Icons.apps),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                ),
+              ),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
+                    icon: new Icon(Icons.share),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25))),
+            ),
+            body: isLoading || attendData == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
-                              flex: 1,
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 60,
-                                ),
-//                                child: Image.asset('male.webp',fit: BoxFit.cover,),
-                                radius: 40,
-//                                backgroundColor: Colors.purple[100],
-                              )),
-                          Expanded(
-                            flex: 3,
-                            child: InkWell(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Result())),
-                              child: RichText(
-                                textAlign: TextAlign.end,
-                                text: TextSpan(
-                                    text: '$name',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.light
-                                          ? Colors.black87
-                                          : Colors.white,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                          text: '\nRegd. No.:$regdNo',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.light
-                                                    ? Colors.black54
-                                                    : Colors.white60,
-                                          )),
-                                      TextSpan(
-                                          text: '\nSemester: $sem',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.light
-                                                    ? Colors.black54
-                                                    : Colors.white60,
-                                          )),
-                                    ]),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Avg Attendence: $avgAttend %',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              // color: Colors.black87
-                            ),
-                          ),
-                          Text(
-                            'Avg Absent: $avgAbsent',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              // color: Colors.black87
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      children: <Widget>[
-                        for (var i in attendData['griddata'])
                           Container(
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? Colors.purple[100]
-                                  : Colors.teal[400],
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: ExpansionTile(
-                              initiallyExpanded: false,
-                              title: Text(
-                                '${i['subject']}',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              trailing: Container(
-                                padding: EdgeInsets.all(5),
-                                margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: i['TotalAttandence'] > 90
-                                      ? Colors.green
-                                      : i['TotalAttandence'] > 80
-                                          ? Colors.lightGreen
-                                          : i['TotalAttandence'] > 75
-                                              ? Colors.orangeAccent
-                                              : Colors.redAccent,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  '${i['TotalAttandence']} %',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                            padding: EdgeInsets.all(15),
+                            margin: EdgeInsets.all(5),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    flex: 1,
+                                    child: CircleAvatar(
+                                      child: Icon(
+                                        Icons.person,
+                                        size: 60,
+                                      ),
+//                                child: Image.asset('male.webp',fit: BoxFit.cover,),
+                                      radius: 40,
+//                                backgroundColor: Colors.purple[100],
+                                    )),
+                                Expanded(
+                                  flex: 3,
+                                  child: InkWell(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Result())),
+                                    child: RichText(
+                                      textAlign: TextAlign.end,
+                                      text: TextSpan(
+                                          text: '$name',
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black87
+                                                    : Colors.white,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                                text: '\nRegd. No.:$regdNo',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.light
+                                                      ? Colors.black54
+                                                      : Colors.white60,
+                                                )),
+                                            TextSpan(
+                                                text: '\nSemester: $sem',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.light
+                                                      ? Colors.black54
+                                                      : Colors.white60,
+                                                )),
+                                          ]),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              subtitle: Text('Code: ${i['subjectcode']}'),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                    'Last Updated On: ${getTime(i['lastupdatedon'])}'),
-                                if (i['Latt'] != '0 / 0')
-                                  Text(
-                                    'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                if (i['Patt'] != '0 / 0')
-                                  Text(
-                                    'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                if (i['Tatt'] != '0 / 0')
-                                  Text(
-                                    'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                Text(
-                                  'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
-                                  textAlign: TextAlign.justify,
-                                ),
-                                Text(
-                                  'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
-                                  textAlign: TextAlign.justify,
-                                ),
-                                Text(
-                                  bunklogic(i),
-                                  textAlign: TextAlign.center,
+                                  'Avg Attendence: $avgAttend %',
                                   style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    // color: Colors.black87
+                                  ),
+                                ),
+                                Text(
+                                  'Avg Absent: $avgAbsent',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    // color: Colors.black87
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                      ],
+                          Column(
+                            children: <Widget>[
+                              for (var i in attendData['griddata'])
+                                Container(
+                                  padding: EdgeInsets.all(5),
+                                  margin: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.purple[100]
+                                        : Colors.teal[400],
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: ExpansionTile(
+                                    initiallyExpanded: false,
+                                    title: Text(
+                                      '${i['subject']}',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    trailing: Container(
+                                      padding: EdgeInsets.all(5),
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: i['TotalAttandence'] > 90
+                                            ? Colors.green
+                                            : i['TotalAttandence'] > 80
+                                                ? Colors.lightGreen
+                                                : i['TotalAttandence'] > 75
+                                                    ? Colors.orangeAccent
+                                                    : Colors.redAccent,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        '${i['TotalAttandence']} %',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    subtitle: Text('Code: ${i['subjectcode']}'),
+                                    children: <Widget>[
+                                      Text(
+                                          'Last Updated On: ${getTime(i['lastupdatedon'])}'),
+                                      if (i['Latt'] != '0 / 0')
+                                        Text(
+                                          'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                      if (i['Patt'] != '0 / 0')
+                                        Text(
+                                          'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                      if (i['Tatt'] != '0 / 0')
+                                        Text(
+                                          'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                      Text(
+                                        'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                      Text(
+                                        'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                      Text(
+                                        bunklogic(i),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-    );
+                  ),
+          );
   }
 
   double getPercentage(String x) {
@@ -328,6 +435,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //showToast(context,'Status: ${attendResp.statusCode}');
       setState(() {
         isLoading = false;
+        isLoggedIn = true;
       });
     } else {
       Fluttertoast.showToast(
@@ -340,8 +448,9 @@ class _MyHomePageState extends State<MyHomePage> {
         fontSize: 16.0,
       );
       print('server error');
+      isLoggedIn = false;
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
     }
   }
 
@@ -378,7 +487,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> getCourses(var semester) async {
     List<Map<String, dynamic>> linkMap = [];
     var response;
-    if (semester == 8)
+    if (semester == 2)
       response = await http.get("https://www.soa.ac.in/2nd-semester");
     else if (semester == 4)
       response = await http.get(
@@ -529,6 +638,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 name = null,
                 sem = null,
                 infoData = null,
+                isLoggedIn = false,
                 Fluttertoast.showToast(
                   msg: "Logged out!",
                   toastLength: Toast.LENGTH_SHORT,
@@ -539,7 +649,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: 16.0,
                 ),
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()))
+                    MaterialPageRoute(builder: (context) => MyHomePage()))
               },
             ),
           ],

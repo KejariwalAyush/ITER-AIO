@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iteraio/components/login.dart';
+import 'package:iteraio/MyHomePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: MyHomePage(),
     );
   }
 }

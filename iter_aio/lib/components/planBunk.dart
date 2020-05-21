@@ -34,6 +34,7 @@ class _PlanBunkState extends State<PlanBunk> {
                 hint: Text('Select Subject'),
                 onChanged: (String newValue) {
                   setState(() {
+                    resText = null;
                     dropdownValue = newValue;
                     for (var i in attendData['griddata'])
                       if (i['subject'].toString().split(' ')[0] ==
