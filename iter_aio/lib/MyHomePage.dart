@@ -223,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     textAlign: TextAlign.justify,
                                   ),
                                 Text(
-                                  'Classes: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
+                                  'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
                                   textAlign: TextAlign.justify,
                                 ),
                                 Text(

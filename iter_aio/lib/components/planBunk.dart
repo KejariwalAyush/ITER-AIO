@@ -13,7 +13,7 @@ class _PlanBunkState extends State<PlanBunk> {
       subatt = 0.0,
       classes = 0,
       absent = 0,
-      no = 0;
+      resText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +41,11 @@ class _PlanBunkState extends State<PlanBunk> {
                         subject = i['subject'];
                         subatt = i['TotalAttandence'];
                         classes = int.parse(
-                                i['Latt'].toString().split('/')[0].trim()) +
+                                i['Latt'].toString().split('/')[1].trim()) +
                             int.parse(
-                                i['Patt'].toString().split('/')[0].trim()) +
+                                i['Patt'].toString().split('/')[1].trim()) +
                             int.parse(
-                                i['Tatt'].toString().split('/')[0].trim());
+                                i['Tatt'].toString().split('/')[1].trim());
                         absent = (int.parse(
                                     i['Latt'].toString().split('/')[1].trim()) +
                                 int.parse(
@@ -127,13 +127,148 @@ class _PlanBunkState extends State<PlanBunk> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
+            SizedBox(
+              height: 10,
+            ),
+            subject == null
+                ? SizedBox()
+                : Container(
+                    margin: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(3.0),
+                    decoration: new BoxDecoration(
+                        border: new Border.all(
+                      width: 4,
+                      style: BorderStyle.solid,
+                    )),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                  'Enter no. of Classes\nYou want to attend more. '),
+                              Expanded(
+                                child: TextField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    alignLabelWithHint: true,
+                                    hintText: 'Enter Classes',
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        20.0, 10.0, 20.0, 10.0),
+                                    // border: OutlineInputBorder(
+                                    //     borderRadius: BorderRadius.circular(32.0)),
+                                  ),
+                                  onSubmitted: (value) {
+                                    print(value);
+                                    setState(() {
+                                      resText = planBunkLogic(subdata,
+                                          eclasses: int.parse(value));
+                                      // resText =
+                                      //     planBunkLogic(subdata, ebunk: int.parse(value));
+                                    });
+                                    print(resText);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Center(
+                          child: Text('OR'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                  'Enter no. of Classes\nYou want to BUNK more. '),
+                              Expanded(
+                                child: TextField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    alignLabelWithHint: true,
+                                    hintText: 'Enter Bunks',
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        20.0, 10.0, 20.0, 10.0),
+                                    // border: OutlineInputBorder(
+                                    //     borderRadius: BorderRadius.circular(32.0)),
+                                  ),
+                                  onSubmitted: (value) {
+                                    print(value);
+                                    setState(() {
+                                      resText = planBunkLogic(subdata,
+                                          ebunk: int.parse(value));
+                                    });
+                                    print(resText);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Center(
+                          child: Text('OR'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text('Enter Percentage\nYou want to get. '),
+                              Expanded(
+                                child: TextField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    alignLabelWithHint: true,
+                                    hintText: 'Enter %',
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        20.0, 10.0, 20.0, 10.0),
+                                    // border: OutlineInputBorder(
+                                    //     borderRadius: BorderRadius.circular(32.0)),
+                                  ),
+                                  onSubmitted: (value) {
+                                    print(value);
+                                    setState(() {
+                                      // print(planBunkLogic(subdata,
+                                      //     epercent: double.parse(value)));
+                                      resText = planBunkLogic(subdata,
+                                          epercent: double.parse(value));
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            SizedBox(
+              height: 10,
+            ),
+            resText == null
+                ? SizedBox()
+                : Text(
+                    '$resText',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                  ),
           ],
         ),
       ),
     );
   }
 
-  String planBunkLogic(var i) {
+  String planBunkLogic(var i, {var eclasses, var ebunk, var epercent}) {
     var bunkText;
     var absent = (int.parse(i['Latt'].toString().split('/')[1].trim()) +
             int.parse(i['Patt'].toString().split('/')[1].trim()) +
@@ -144,9 +279,36 @@ class _PlanBunkState extends State<PlanBunk> {
     var classes = int.parse(i['Latt'].toString().split('/')[1].trim()) +
         int.parse(i['Patt'].toString().split('/')[1].trim()) +
         int.parse(i['Tatt'].toString().split('/')[1].trim());
+
+    if (eclasses != null) {
+      classes = classes + eclasses;
+    }
+    if (ebunk != null) {
+      classes = classes + ebunk;
+      absent = absent + ebunk;
+    }
+
     var present = classes - absent;
     var totalPercentage = present / classes * 100;
-    var bunk = classes - (classes * 0.75).floor() - absent;
+    var bunk = present - (classes * 0.75).floor();
+
+    if (epercent != null) {
+      // bunk = present - (classes * (0.75)).floor();
+      // bunk = classes * (epercent - totalPercentage) ~/ 100;
+      // print(classes);
+      // print(present);
+      if (epercent >= totalPercentage) {
+        var x =
+            (((classes * epercent / 100) - present) / (1 - (epercent / 100)))
+                .ceil();
+        bunkText = 'Attend ${x.abs()} more classes to get $epercent\n'
+            'and then Bunk ${((present + x) - ((classes + x) * 0.75).floor()).abs()} to get 75 %';
+      } else {
+        var x = (present * 100 / epercent).floor() - classes;
+        bunkText = 'Bunk ${x.abs()} more classes to get $epercent';
+      }
+      return bunkText;
+    }
 
     if (bunk > 0) {
       bunkText = 'Bunk ' +
@@ -184,6 +346,13 @@ class _PlanBunkState extends State<PlanBunk> {
         bunkText = 'Attend ' + bunk.toString() + ' more classes for 80 %';
       }
     }
+
+    if (eclasses != null || ebunk != null) {
+      bunkText =
+          'Your Total Percentage = ${totalPercentage.toString().split('.')[0]}.${totalPercentage.toString().split('.')[1].substring(0, 1)} %\n'
+          'After that: \n$bunkText';
+    }
+
     return bunkText;
   }
 }
