@@ -107,20 +107,23 @@ class _MyHomePageState extends State<MyHomePage> {
                                 text: TextSpan(
                                     text: '$name',
                                     style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      // color: Colors.black87
+                                    ),
                                     children: [
                                       TextSpan(
                                           text: '\nRegd. No.:$regdNo',
                                           style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black54)),
+                                            fontSize: 14,
+                                            // color: Colors.black54
+                                          )),
                                       TextSpan(
                                           text: '\nSemester: $sem',
                                           style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black54)),
+                                            fontSize: 14,
+                                            // color: Colors.black54
+                                          )),
                                     ]),
                               ),
                             ),
@@ -136,16 +139,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           Text(
                             'Avg Attendence: $avgAttend %',
                             style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              // color: Colors.black87
+                            ),
                           ),
                           Text(
                             'Avg Absent: $avgAbsent',
                             style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              // color: Colors.black87
+                            ),
                           ),
                         ],
                       ),

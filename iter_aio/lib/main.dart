@@ -18,8 +18,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ITER-AIO',
       theme: ThemeData(
+          primarySwatch: Colors.purple,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          brightness: Brightness.light),
+      darkTheme: ThemeData(
         primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        brightness: Brightness.dark,
       ),
       debugShowCheckedModeBanner: false,
       home: LoginPage(),

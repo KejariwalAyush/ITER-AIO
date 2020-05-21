@@ -64,9 +64,8 @@ class _LecturesState extends State<Lectures> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        VideoApp(i['title'], i['link2'])
-                                    //WebPageView(i['link2'])
-                                    )),
+                                        // VideoApp(i['title'], i['link2'])
+                                        WebPageView(i['title'], i['link2']))),
                         // subtitle: Text(DateTime.(i['date'])),
                       ),
                   ],
