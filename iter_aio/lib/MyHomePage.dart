@@ -4,20 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:iteraio/courses.dart';
-import 'package:iteraio/login.dart';
-import 'package:iteraio/result.dart';
+import 'package:iteraio/components/login.dart';
+import 'package:iteraio/components/courses.dart';
+import 'package:iteraio/components/planBunk.dart';
+import 'package:iteraio/components/result.dart';
 
 import 'package:html/parser.dart';
 
 var attendData, infoData;
 var resultData, courseData;
-var name,
-    branch,
-    avgAttend,
-    avgAbsent,
-    regdNo, //= '1941012408',
-    password; //= '29Sept00';
+var name, branch, avgAttend, avgAbsent, regdNo, password;
 int sem;
 var isLoading = false;
 
@@ -38,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
 //      isLoading = true;
       getData();
+      getResult();
     });
     super.initState();
   }
@@ -175,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Theme.of(context).brightness ==
                                       Brightness.light
                                   ? Colors.purple[100]
-                                  : Colors.blueGrey[500],
+                                  : Colors.teal[400],
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: ExpansionTile(
@@ -512,6 +509,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ? null
                   : () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Result())),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.airline_seat_individual_suite),
+              title: Text('Plan a Bunk'),
+              onTap: isLoading
+                  ? null
+                  : () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PlanBunk())),
             ),
             Divider(),
             ListTile(

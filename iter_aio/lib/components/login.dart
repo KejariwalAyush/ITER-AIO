@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import './MyHomePage.dart';
+import 'package:iteraio/MyHomePage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -88,9 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context) => MyHomePage()));
                     },
                     padding: EdgeInsets.all(12),
-                    // color: Theme.of(context).brightness == Brightness.light
-                    //     ? Colors.purple[300]
-                    //     : Colors.blueGrey[500],
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.purple[300]
+                        : Colors.teal[400],
                     child:
                         Text('Log In', style: TextStyle(color: Colors.white)),
                   ),

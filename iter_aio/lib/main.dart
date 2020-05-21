@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iteraio/login.dart';
+import 'package:iteraio/components/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.dark,
+        appBarTheme: AppBarTheme(color: Colors.teal
+            // Color.fromRGBO(127, 205, 238, 70),
+            ),
       ),
       debugShowCheckedModeBanner: false,
       home: LoginPage(),

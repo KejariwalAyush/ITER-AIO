@@ -98,7 +98,7 @@ class _VideoAppState extends State<VideoApp> {
   // }
 
   @override
-  Future<void> initState() {
+  initState() {
     print(widget.url);
     // getDetailsVideo();
     super.initState();
@@ -127,7 +127,7 @@ class _VideoAppState extends State<VideoApp> {
       // ),
       autoInitialize: true,
       errorBuilder: (context, errorMessage) {
-        Center(
+        return Center(
           child: Text(errorMessage),
         );
       },

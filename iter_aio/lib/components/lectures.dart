@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
-import 'package:iteraio/videoPlayer.dart';
+import 'package:iteraio/components/videoPlayer.dart';
 // import 'MyHomePage.dart';
 
 class Lectures extends StatefulWidget {

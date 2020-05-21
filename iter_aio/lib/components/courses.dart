@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iteraio/lectures.dart';
-import 'MyHomePage.dart';
+import 'package:iteraio/components/lectures.dart';
+import 'package:iteraio/MyHomePage.dart';
 
 class Courses extends StatelessWidget {
   @override
@@ -28,7 +28,7 @@ class Courses extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
                             ? Colors.purple[100]
-                            : Colors.blueGrey[500],
+                            : Colors.teal[400],
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ExpansionTile(

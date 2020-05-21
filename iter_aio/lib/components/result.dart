@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'MyHomePage.dart';
+import 'package:iteraio/MyHomePage.dart';
 
 class Result extends StatelessWidget {
   @override
@@ -103,7 +103,7 @@ class Result extends StatelessWidget {
                               color: Theme.of(context).brightness ==
                                       Brightness.light
                                   ? Colors.purple[100]
-                                  : Colors.blueGrey[500],
+                                  : Colors.teal[400],
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: ExpansionTile(
