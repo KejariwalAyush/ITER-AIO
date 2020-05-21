@@ -58,20 +58,34 @@ class Result extends StatelessWidget {
                                 text: TextSpan(
                                     text: '$name',
                                     style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.black87
+                                          : Colors.white,
+                                    ),
                                     children: [
                                       TextSpan(
                                           text: '\nRegd. No.:$regdNo',
                                           style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black54)),
+                                            fontSize: 14,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black54
+                                                    : Colors.white60,
+                                          )),
                                       TextSpan(
                                           text: '\nSemester: $sem',
                                           style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black54)),
+                                            fontSize: 14,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black54
+                                                    : Colors.white60,
+                                          )),
                                     ]),
                               ),
                             ),
@@ -86,7 +100,10 @@ class Result extends StatelessWidget {
                             padding: EdgeInsets.all(5),
                             margin: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.purple[100],
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.purple[100]
+                                  : Colors.blueGrey[500],
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: ExpansionTile(

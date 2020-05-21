@@ -9,7 +9,6 @@ import 'package:iteraio/login.dart';
 import 'package:iteraio/result.dart';
 
 import 'package:html/parser.dart';
-// import 'package:http/http.dart';
 
 var attendData, infoData;
 var resultData, courseData;
@@ -28,11 +27,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var c1 = Color(0x0e0f3b);
-  var c2 = Color(0x07407b);
-  var c3 = Color(0x7fcdee);
-  var c4 = Color(0xf7931e);
-  var c5 = Color(0xffffff);
+  // var c1 = Color(0x0e0f3b);
+  // var c2 = Color(0x07407b);
+  // var c3 = Color(0x7fcdee);
+  // var c4 = Color(0xf7931e);
+  // var c5 = Color(0xffffff);
 
   @override
   void initState() {
@@ -109,20 +108,31 @@ class _MyHomePageState extends State<MyHomePage> {
                                     style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
-                                      // color: Colors.black87
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.black87
+                                          : Colors.white,
                                     ),
                                     children: [
                                       TextSpan(
                                           text: '\nRegd. No.:$regdNo',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            // color: Colors.black54
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black54
+                                                    : Colors.white60,
                                           )),
                                       TextSpan(
                                           text: '\nSemester: $sem',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            // color: Colors.black54
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black54
+                                                    : Colors.white60,
                                           )),
                                     ]),
                               ),
@@ -162,7 +172,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.all(5),
                             margin: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.purple[100],
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.purple[100]
+                                  : Colors.blueGrey[500],
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: ExpansionTile(
@@ -305,7 +318,7 @@ class _MyHomePageState extends State<MyHomePage> {
       avgAbsent = totAbs ~/ cnt;
       print('$name - $sem');
       getResult();
-      getCourses();
+      getCourses(sem);
       Fluttertoast.showToast(
         msg: "Data Fetched",
         toastLength: Toast.LENGTH_SHORT,
@@ -365,9 +378,21 @@ class _MyHomePageState extends State<MyHomePage> {
 //    });
   }
 
-  Future<void> getCourses() async {
+  Future<void> getCourses(var semester) async {
     List<Map<String, dynamic>> linkMap = [];
-    final response = await http.get("https://www.soa.ac.in/2nd-semester");
+    var response;
+    if (semester == 8)
+      response = await http.get("https://www.soa.ac.in/2nd-semester");
+    else if (semester == 4)
+      response = await http.get(
+          "https://www.soa.ac.in/btech-4th-semester-online-video-lectures");
+    else if (semester == 6)
+      response = await http.get(
+          "https://www.soa.ac.in/btech-6th-semester-online-video-lectures");
+    else
+      response = await http.get(
+          "https://www.soa.ac.in/btech-8th-semester-online-video-lectures");
+
     if (response.statusCode == 200) {
       var document = parse(response.body);
       var links = document.getElementsByClassName('Index-page-content');

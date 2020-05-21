@@ -25,7 +25,9 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     'Login',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, color: Colors.black),
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -86,7 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context) => MyHomePage()));
                     },
                     padding: EdgeInsets.all(12),
-                    color: Colors.purple[300],
+                    // color: Theme.of(context).brightness == Brightness.light
+                    //     ? Colors.purple[300]
+                    //     : Colors.blueGrey[500],
                     child:
                         Text('Log In', style: TextStyle(color: Colors.white)),
                   ),

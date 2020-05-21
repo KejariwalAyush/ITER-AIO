@@ -26,7 +26,9 @@ class Courses extends StatelessWidget {
                       padding: EdgeInsets.all(5),
                       margin: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.purple[100],
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.purple[100]
+                            : Colors.blueGrey[500],
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ExpansionTile(
