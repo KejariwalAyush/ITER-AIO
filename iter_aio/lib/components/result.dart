@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:iteraio/MyHomePage.dart';
+import 'package:iteraio/Themes/Theme.dart';
 
 class Result extends StatelessWidget {
   @override
@@ -47,7 +48,7 @@ class Result extends StatelessWidget {
                                 ),
 //                                child: Image.asset('male.webp',fit: BoxFit.cover,),
                                 radius: 40,
-//                                backgroundColor: Colors.purple[100],
+//                                backgroundColor: colorLight,
                               )),
                           Expanded(
                             flex: 3,
@@ -102,8 +103,8 @@ class Result extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Theme.of(context).brightness ==
                                       Brightness.light
-                                  ? Colors.purple[100]
-                                  : Colors.teal[400],
+                                  ? colorLight
+                                  : colorDark,
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: ExpansionTile(

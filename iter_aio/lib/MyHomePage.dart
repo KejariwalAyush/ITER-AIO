@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:iteraio/Themes/Theme.dart';
 // import 'package:iteraio/components/login.dart';
 import 'package:iteraio/components/courses.dart';
 import 'package:iteraio/components/planBunk.dart';
 import 'package:iteraio/components/result.dart';
 
 import 'package:html/parser.dart';
+import 'package:iteraio/components/settings.dart';
 
 var attendData, infoData;
 var resultData, courseData;
@@ -22,22 +24,25 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+var isLoggedIn = false, dataLoading = false;
+
 class _MyHomePageState extends State<MyHomePage> {
   // var c1 = Color(0x0e0f3b);
   // var c2 = Color(0x07407b);
   // var c3 = Color(0x7fcdee);
   // var c4 = Color(0xf7931e);
   // var c5 = Color(0xffffff);
-  var isLoggedIn = false, dataLoading = false;
-//   @override
-//   void initState() {
-//     setState(() {
-// //      isLoading = true;
-//       getData();
-//       getResult();
-//     });
-//     super.initState();
-//   }
+  // @override
+  // void initState() {
+  //   setState(() {
+  //     colorDark = colorDark1;
+  //     themeDark = themeDark1;
+
+  //     colorLight = colorLight1;
+  //     themeLight = themeLight1;
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +141,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       padding: EdgeInsets.all(12),
                       color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.purple[300]
-                          : Colors.teal[400],
+                          ? themeLight
+                          : themeDark,
                       child:
                           Text('Log In', style: TextStyle(color: Colors.white)),
                     ),
@@ -194,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
 //                                child: Image.asset('male.webp',fit: BoxFit.cover,),
                                       radius: 40,
-//                                backgroundColor: Colors.purple[100],
+//                                backgroundColor: colorLight,
                                     )),
                                 Expanded(
                                   flex: 3,
@@ -277,8 +282,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).brightness ==
                                             Brightness.light
-                                        ? Colors.purple[100]
-                                        : Colors.teal[400],
+                                        ? colorLight
+                                        : colorDark,
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   child: ExpansionTile(
@@ -627,6 +632,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ? null
                   : () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PlanBunk())),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: isLoading
+                  ? null
+                  : () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Settings())),
             ),
             Divider(),
             ListTile(

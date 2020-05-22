@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/components/lectures.dart';
+import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/MyHomePage.dart';
 
 class Courses extends StatelessWidget {
@@ -27,8 +28,8 @@ class Courses extends StatelessWidget {
                       margin: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.purple[100]
-                            : Colors.teal[400],
+                            ? colorLight
+                            : colorDark,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ExpansionTile(
