@@ -24,8 +24,14 @@ Color themeDark3 = Colors.red;
 Color colorLight3 = Colors.orange[200];
 Color themeLight3 = Colors.orange;
 
-Color colorDark = colorDark1;
-Color themeDark = themeDark1;
+Color colorDark4 = Colors.green[600];
+Color themeDark4 = Colors.green;
 
-Color colorLight = colorLight1;
-Color themeLight = themeLight1;
+Color colorLight4 = Colors.pink[300];
+Color themeLight4 = Colors.pink;
+
+Color colorDark = colorDark2;
+Color themeDark = themeDark2;
+
+Color colorLight = colorDark2;
+Color themeLight = themeDark2;

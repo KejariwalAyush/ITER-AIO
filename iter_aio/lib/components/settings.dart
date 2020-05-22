@@ -9,7 +9,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  var _brightSwitch = false;
+  // var _brightSwitch = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -229,6 +229,62 @@ class _SettingsState extends State<Settings> {
                             colorLight = colorDark3;
                             themeDark = themeDark3;
                             colorDark = colorDark3;
+                          });
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MyApp()));
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: themeLight4,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: ListTile(
+                        title: Text('Light Theme 4'),
+                        onTap: () {
+                          setState(() {
+                            isLoggedIn = true;
+                            themeLight = themeLight4;
+                            colorLight = colorLight4;
+                            themeDark = themeLight4;
+                            colorDark = colorLight4;
+                          });
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MyApp()));
+                        },
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: themeDark4,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: ListTile(
+                        title: Text('Dark Theme 4'),
+                        onTap: () {
+                          setState(() {
+                            isLoggedIn = true;
+                            themeLight = themeDark4;
+                            colorLight = colorDark4;
+                            themeDark = themeDark4;
+                            colorDark = colorDark4;
                           });
 
                           Navigator.push(context,

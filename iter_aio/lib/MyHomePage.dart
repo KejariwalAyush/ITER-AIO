@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:iteraio/Themes/Theme.dart';
-// import 'package:iteraio/components/login.dart';
 import 'package:iteraio/components/courses.dart';
 import 'package:iteraio/components/planBunk.dart';
 import 'package:iteraio/components/result.dart';
-
 import 'package:html/parser.dart';
 import 'package:iteraio/components/settings.dart';
+import 'package:iteraio/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 var attendData, infoData;
 var resultData, courseData;
@@ -27,22 +27,44 @@ class MyHomePage extends StatefulWidget {
 var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
-  // var c1 = Color(0x0e0f3b);
-  // var c2 = Color(0x07407b);
-  // var c3 = Color(0x7fcdee);
-  // var c4 = Color(0xf7931e);
-  // var c5 = Color(0xffffff);
-  // @override
-  // void initState() {
-  //   setState(() {
-  //     colorDark = colorDark1;
-  //     themeDark = themeDark1;
+  var _isLoggingIn = false;
+  @override
+  void initState() {
+    setState(() {
+      _getCredentials();
+    });
+    super.initState();
+  }
 
-  //     colorLight = colorLight1;
-  //     themeLight = themeLight1;
-  //   });
-  //   super.initState();
-  // }
+  _setCredentials() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('regd', regdNo);
+    await prefs.setString('password', password);
+  }
+
+  _resetCredentials() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setString('regd', regdNo);
+    // await prefs.setString('password', password);
+    prefs.remove('regd');
+    prefs.remove('password');
+  }
+
+  _getCredentials() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      regdNo = prefs.getString('regd');
+      password = prefs.getString('password');
+      if (regdNo != null && password != null && appStarted) {
+        appStarted = false;
+        isLoading = true;
+        _isLoggingIn = true;
+        getData();
+        // getResult();
+      }
+      // print('$regdNo : $password');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +79,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Center(
                     child: Text(
+                      'ITER - AIO',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Center(
+                    child: Text(
                       'Login',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -65,19 +100,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   SizedBox(
-                    height: 80,
+                    height: 50,
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
                     autofocus: false,
                     initialValue: regdNo,
+                    cursorColor: themeDark,
                     onChanged: (String str) {
                       regdNo = str;
                     },
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
+                      icon: Icon(Icons.person_outline),
                       hintText: 'Regd No.',
+                      fillColor: themeDark,
+                      focusColor: themeDark,
+                      hoverColor: themeDark,
                       contentPadding:
                           EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       border: OutlineInputBorder(
@@ -92,13 +132,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     textInputAction: TextInputAction.done,
                     autofocus: false,
                     initialValue: password,
+                    cursorColor: themeDark,
                     onChanged: (String str) {
                       password = str;
                     },
                     obscureText: true,
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
+                      icon: Icon(Icons.lock_outline),
                       hintText: 'Password',
+                      fillColor: themeDark,
+                      focusColor: themeDark,
+                      hoverColor: themeDark,
                       contentPadding:
                           EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       border: OutlineInputBorder(
@@ -110,42 +155,39 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      onPressed: () {
-                        print('$regdNo : $password');
-                        attendData = null;
-                        resultData = null;
-                        name = null;
-                        sem = null;
-                        infoData = null;
-                        Fluttertoast.showToast(
-                          msg: "Loading...",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1500,
-                          backgroundColor: Colors.blueGrey,
-                          textColor: Colors.white,
-                          fontSize: 20.0,
-                        );
-                        setState(() {
-                          isLoading = true;
-                          getData();
-                          getResult();
-                          // isLoggedIn = true;
-                        });
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => MyHomePage()));
-                      },
-                      padding: EdgeInsets.all(12),
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? themeLight
-                          : themeDark,
-                      child:
-                          Text('Log In', style: TextStyle(color: Colors.white)),
-                    ),
+                    child: _isLoggingIn && regdNo != null && password != null
+                        ? Center(
+                            child: CircularProgressIndicator(
+                            backgroundColor: themeDark,
+                          ))
+                        : RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            onPressed: () {
+                              print('$regdNo : $password');
+                              _setCredentials();
+                              attendData = null;
+                              resultData = null;
+                              name = null;
+                              sem = null;
+                              infoData = null;
+                              setState(() {
+                                isLoading = true;
+                                _isLoggingIn = true;
+                                getData();
+                                getResult();
+                                // isLoggedIn = true;
+                              });
+                            },
+                            padding: EdgeInsets.all(12),
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? themeLight
+                                    : themeDark,
+                            child: Text('Log In',
+                                style: TextStyle(color: Colors.white)),
+                          ),
                   ),
                 ],
               ),
@@ -653,6 +695,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 sem = null,
                 infoData = null,
                 isLoggedIn = false,
+                regdNo = null,
+                password = null,
+                _resetCredentials(),
                 Fluttertoast.showToast(
                   msg: "Logged out!",
                   toastLength: Toast.LENGTH_SHORT,
