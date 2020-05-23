@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
         home: SplashScreen(
           seconds: 1,
           //isLoading?sec:1,
-          navigateAfterSeconds: MyHomePage(),
+          navigateAfterSeconds: new MyHomePage(),
           title: new Text(
             'ITER AIO\n\nAn all-in-one app for ITER',
             textAlign: TextAlign.center,
@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
               color: Colors.white70,
             ),
           ),
-          backgroundColor: Colors.black45,
+          backgroundColor: Colors.black87,
           styleTextUnderTheLoader: new TextStyle(),
           // photoSize: 180.0,
           loaderColor: Colors.white,

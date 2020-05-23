@@ -94,8 +94,11 @@ class _SettingsState extends State<Settings> {
                           });
                           themeStr = 'L1';
                           getTheme(themeStr);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),
@@ -121,8 +124,11 @@ class _SettingsState extends State<Settings> {
                           });
                           themeStr = 'D1';
                           getTheme(themeStr);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),
@@ -153,8 +159,11 @@ class _SettingsState extends State<Settings> {
                           themeStr = 'L2';
                           getTheme(themeStr);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),
@@ -181,8 +190,11 @@ class _SettingsState extends State<Settings> {
                           themeStr = 'D2';
                           getTheme(themeStr);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),
@@ -213,8 +225,11 @@ class _SettingsState extends State<Settings> {
                           themeStr = 'L3';
                           getTheme(themeStr);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),
@@ -241,8 +256,11 @@ class _SettingsState extends State<Settings> {
                           themeStr = 'D3';
                           getTheme(themeStr);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),
@@ -273,8 +291,11 @@ class _SettingsState extends State<Settings> {
                           themeStr = 'L4';
                           getTheme(themeStr);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),
@@ -301,8 +322,11 @@ class _SettingsState extends State<Settings> {
                           themeStr = 'D4';
                           getTheme(themeStr);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                            ModalRoute.withName('/'),
+                          );
                         },
                       ),
                     ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,343 +76,374 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return !isLoggedIn
-        ? Scaffold(
-            body: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(10),
-              child: ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.only(left: 24.0, right: 24.0),
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      'ITER - AIO',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+        ? WillPopScope(
+            onWillPop: _onWillPop,
+            child: Scaffold(
+              body: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(10),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0),
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        'ITER - AIO',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Center(
-                    child: Text(
-                      'Login',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Center(
+                      child: Text(
+                        'Login',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.next,
-                    autofocus: false,
-                    initialValue: regdNo,
-                    cursorColor: themeDark,
-                    onChanged: (String str) {
-                      regdNo = str;
-                    },
-                    decoration: InputDecoration(
-                      alignLabelWithHint: true,
-                      icon: Icon(Icons.person_outline),
-                      hintText: 'Regd No.',
-                      fillColor: themeDark,
-                      focusColor: themeDark,
-                      hoverColor: themeDark,
-                      contentPadding:
-                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0)),
+                    SizedBox(
+                      height: 50,
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
-                    textInputAction: TextInputAction.done,
-                    autofocus: false,
-                    initialValue: password,
-                    cursorColor: themeDark,
-                    onChanged: (String str) {
-                      password = str;
-                    },
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      alignLabelWithHint: true,
-                      icon: Icon(Icons.lock_outline),
-                      hintText: 'Password',
-                      fillColor: themeDark,
-                      focusColor: themeDark,
-                      hoverColor: themeDark,
-                      contentPadding:
-                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32.0)),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.next,
+                      autofocus: false,
+                      initialValue: regdNo,
+                      cursorColor: themeDark,
+                      onChanged: (String str) {
+                        regdNo = str;
+                      },
+                      decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        icon: Icon(Icons.person_outline),
+                        hintText: 'Regd No.',
+                        fillColor: themeDark,
+                        focusColor: themeDark,
+                        hoverColor: themeDark,
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: _isLoggingIn && regdNo != null && password != null
-                        ? Center(
-                            child: CircularProgressIndicator(
-                                // backgroundColor: themeDark,valueColor:,
-                                ))
-                        : RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.done,
+                      autofocus: false,
+                      initialValue: password,
+                      cursorColor: themeDark,
+                      onChanged: (String str) {
+                        password = str;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        icon: Icon(Icons.lock_outline),
+                        hintText: 'Password',
+                        fillColor: themeDark,
+                        focusColor: themeDark,
+                        hoverColor: themeDark,
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: _isLoggingIn && regdNo != null && password != null
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  // backgroundColor: themeDark,valueColor:,
+                                  ))
+                          : RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              onPressed: () {
+                                print('$regdNo : $password');
+                                _setCredentials();
+                                attendData = null;
+                                resultData = null;
+                                name = null;
+                                sem = null;
+                                infoData = null;
+                                setState(() {
+                                  isLoading = true;
+                                  _isLoggingIn = true;
+                                  getData();
+                                  getResult();
+                                  // isLoggedIn = true;
+                                });
+                              },
+                              padding: EdgeInsets.all(12),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? themeLight
+                                  : themeDark,
+                              child: Text('Log In',
+                                  style: TextStyle(color: Colors.white)),
                             ),
-                            onPressed: () {
-                              print('$regdNo : $password');
-                              _setCredentials();
-                              attendData = null;
-                              resultData = null;
-                              name = null;
-                              sem = null;
-                              infoData = null;
-                              setState(() {
-                                isLoading = true;
-                                _isLoggingIn = true;
-                                getData();
-                                getResult();
-                                // isLoggedIn = true;
-                              });
-                            },
-                            padding: EdgeInsets.all(12),
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? themeLight
-                                    : themeDark,
-                            child: Text('Log In',
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           )
-        : Scaffold(
-            drawer: widgetDrawer(context),
-            appBar: AppBar(
-              title: Text('ITER AIO'),
-              elevation: 15,
-              leading: Builder(
-                builder: (context) => IconButton(
-                  icon: new Icon(Icons.apps),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                ),
-              ),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: IconButton(
-                    icon: new Icon(Icons.share),
-                    onPressed: () {},
+        : WillPopScope(
+            onWillPop: _onWillPop,
+            child: Scaffold(
+              primary: true,
+              drawer: widgetDrawer(context),
+              appBar: AppBar(
+                title: Text('ITER AIO'),
+                elevation: 15,
+                leading: Builder(
+                  builder: (context) => IconButton(
+                    icon: new Icon(Icons.apps),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
                 ),
-              ],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(25),
-                      bottomRight: Radius.circular(25))),
-            ),
-            body: isLoading || attendData == null
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            margin: EdgeInsets.all(5),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                    flex: 1,
-                                    child: CircleAvatar(
-                                      child: Icon(
-                                        Icons.person,
-                                        size: 60,
-                                      ),
-//                                child: Image.asset('male.webp',fit: BoxFit.cover,),
-                                      radius: 40,
-//                                backgroundColor: colorLight,
-                                    )),
-                                Expanded(
-                                  flex: 3,
-                                  child: InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Result())),
-                                    child: RichText(
-                                      textAlign: TextAlign.end,
-                                      text: TextSpan(
-                                          text: '$name',
-                                          style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.light
-                                                    ? Colors.black87
-                                                    : Colors.white,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                                text: '\nRegd. No.:$regdNo',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.light
-                                                      ? Colors.black54
-                                                      : Colors.white60,
-                                                )),
-                                            TextSpan(
-                                                text: '\nSemester: $sem',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.light
-                                                      ? Colors.black54
-                                                      : Colors.white60,
-                                                )),
-                                          ]),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Avg Attendence: $avgAttend %',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    // color: Colors.black87
-                                  ),
-                                ),
-                                Text(
-                                  'Avg Absent: $avgAbsent',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    // color: Colors.black87
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            children: <Widget>[
-                              for (var i in attendData['griddata'])
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  margin: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? colorLight
-                                        : colorDark,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: ExpansionTile(
-                                    initiallyExpanded: false,
-                                    leading: Image.asset(
-                                      subjectAvatar(i['subjectcode']),
-                                      width: 40,
-                                      alignment: Alignment.center,
-                                    ),
-                                    title: Text(
-                                      '${i['subject']}',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    trailing: Container(
-                                      padding: EdgeInsets.all(5),
-                                      margin: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: i['TotalAttandence'] > 90
-                                            ? Colors.green
-                                            : i['TotalAttandence'] > 80
-                                                ? Colors.lightGreen
-                                                : i['TotalAttandence'] > 75
-                                                    ? Colors.orangeAccent
-                                                    : Colors.redAccent,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Text(
-                                        '${i['TotalAttandence']} %',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    subtitle: Text('Code: ${i['subjectcode']}'),
-                                    children: <Widget>[
-                                      Text(
-                                          'Last Updated On: ${getTime(i['lastupdatedon'])}'),
-                                      if (i['Latt'] != '0 / 0')
-                                        Text(
-                                          'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
-                                          textAlign: TextAlign.justify,
-                                        ),
-                                      if (i['Patt'] != '0 / 0')
-                                        Text(
-                                          'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
-                                          textAlign: TextAlign.justify,
-                                        ),
-                                      if (i['Tatt'] != '0 / 0')
-                                        Text(
-                                          'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
-                                          textAlign: TextAlign.justify,
-                                        ),
-                                      Text(
-                                        'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                      Text(
-                                        'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                      Text(
-                                        bunklogic(i),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      icon: new Icon(Icons.share),
+                      onPressed: () {},
                     ),
                   ),
+                ],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25))),
+              ),
+              body: isLoading || attendData == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SingleChildScrollView(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              margin: EdgeInsets.all(5),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 1,
+                                      child: CircleAvatar(
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 60,
+                                        ),
+//                                child: Image.asset('male.webp',fit: BoxFit.cover,),
+                                        radius: 40,
+//                                backgroundColor: colorLight,
+                                      )),
+                                  Expanded(
+                                    flex: 3,
+                                    child: InkWell(
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Result())),
+                                      child: RichText(
+                                        textAlign: TextAlign.end,
+                                        text: TextSpan(
+                                            text: '$name',
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? Colors.black87
+                                                  : Colors.white,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                  text: '\nRegd. No.:$regdNo',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.light
+                                                        ? Colors.black54
+                                                        : Colors.white60,
+                                                  )),
+                                              TextSpan(
+                                                  text: '\nSemester: $sem',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.light
+                                                        ? Colors.black54
+                                                        : Colors.white60,
+                                                  )),
+                                            ]),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Avg Attendence: $avgAttend %',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      // color: Colors.black87
+                                    ),
+                                  ),
+                                  Text(
+                                    'Avg Absent: $avgAbsent',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      // color: Colors.black87
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                for (var i in attendData['griddata'])
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? colorLight
+                                          : colorDark,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: ExpansionTile(
+                                      initiallyExpanded: false,
+                                      leading: Image.asset(
+                                        subjectAvatar(i['subjectcode']),
+                                        width: 40,
+                                        alignment: Alignment.center,
+                                      ),
+                                      title: Text(
+                                        '${i['subject']}',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      trailing: Container(
+                                        padding: EdgeInsets.all(5),
+                                        margin: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: i['TotalAttandence'] > 90
+                                              ? Colors.green
+                                              : i['TotalAttandence'] > 80
+                                                  ? Colors.lightGreen
+                                                  : i['TotalAttandence'] > 75
+                                                      ? Colors.orangeAccent
+                                                      : Colors.redAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          '${i['TotalAttandence']} %',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      subtitle:
+                                          Text('Code: ${i['subjectcode']}'),
+                                      children: <Widget>[
+                                        Text(
+                                            'Last Updated On: ${getTime(i['lastupdatedon'])}'),
+                                        if (i['Latt'] != '0 / 0')
+                                          Text(
+                                            'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        if (i['Patt'] != '0 / 0')
+                                          Text(
+                                            'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        if (i['Tatt'] != '0 / 0')
+                                          Text(
+                                            'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        Text(
+                                          'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                        Text(
+                                          'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                        Text(
+                                          bunklogic(i),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+            ),
           );
+  }
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              new FlatButton(
+                onPressed: () => exit(0),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
   }
 
   double getPercentage(String x) {
