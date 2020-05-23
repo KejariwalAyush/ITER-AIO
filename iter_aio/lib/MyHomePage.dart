@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var attendData, infoData;
 var resultData, courseData;
-var name, branch, avgAttend, avgAbsent, regdNo, password, themeStr;
+var name, branch, gender, avgAttend, avgAbsent, regdNo, password, themeStr;
 int sem;
 var isLoading = false;
 
@@ -248,13 +248,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Expanded(
                                       flex: 1,
                                       child: CircleAvatar(
-                                        child: Icon(
-                                          Icons.person,
-                                          size: 60,
+                                        // child: Icon(
+                                        //   Icons.person,
+                                        //   size: 60,
+                                        // ),
+                                        child: Image.asset(
+                                          gender == 'M'
+                                              ? 'assets/logos/maleAvtar.png'
+                                              : 'assets/logos/femaleAvtar.png',
+                                          fit: BoxFit.cover,
                                         ),
-//                                child: Image.asset('male.webp',fit: BoxFit.cover,),
                                         radius: 40,
-//                                backgroundColor: colorLight,
+                                        backgroundColor: Colors.transparent,
                                       )),
                                   Expanded(
                                     flex: 3,
@@ -487,8 +492,8 @@ class _MyHomePageState extends State<MyHomePage> {
         await http.post(info_url, headers: headers, body: jsonEncode(payload));
     var attendResp = await http.post(attend_url,
         headers: headers, body: jsonEncode(payload));
-    print('info: ${infoResp.statusCode}');
-    print('attend: ${attendResp.statusCode}');
+    // print('info: ${infoResp.statusCode}');
+    // print('attend: ${attendResp.statusCode}');
     if (infoResp.statusCode == 200 && attendResp.statusCode == 200) {
       infoData = jsonDecode(infoResp.body);
       attendData = jsonDecode(attendResp.body);
@@ -496,6 +501,8 @@ class _MyHomePageState extends State<MyHomePage> {
       name = infoData["detail"][0]['name'];
       branch = infoData['detail'][0]['branchdesc'];
       sem = attendData['griddata'][0]['stynumber'];
+      gender = infoData['detail'][0]['gender'];
+      print(gender);
       double totatt = 0.0;
       int cnt = 0, totAbs = 0;
       for (var i in attendData['griddata']) {
@@ -510,7 +517,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       avgAttend = (totatt / cnt).round();
       avgAbsent = totAbs ~/ cnt;
-      print('$name - $sem');
+      // print('$name - $sem');
       getResult();
       getCourses(sem);
       Fluttertoast.showToast(

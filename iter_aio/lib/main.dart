@@ -67,7 +67,12 @@ class _MyAppState extends State<MyApp> {
           ),
           backgroundColor: Colors.black87,
           styleTextUnderTheLoader: new TextStyle(),
-          // photoSize: 180.0,
+          photoSize: 180.0,
+          image: Image.asset(
+            'assets/logos/codex.jpg',
+            alignment: Alignment.center,
+            fit: BoxFit.contain,
+          ),
           loaderColor: Colors.white,
           // loadingText: Text(
           //   'LOADING...',
