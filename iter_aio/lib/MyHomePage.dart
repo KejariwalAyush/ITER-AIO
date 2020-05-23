@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/components/courses.dart';
 import 'package:iteraio/components/planBunk.dart';
 import 'package:iteraio/components/result.dart';
@@ -158,8 +159,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: _isLoggingIn && regdNo != null && password != null
                         ? Center(
                             child: CircularProgressIndicator(
-                            backgroundColor: themeDark,
-                          ))
+                                // backgroundColor: themeDark,valueColor:,
+                                ))
                         : RaisedButton(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
@@ -330,6 +331,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   child: ExpansionTile(
                                     initiallyExpanded: false,
+                                    leading: Image.asset(
+                                      subjectAvatar(i['subjectcode']),
+                                      width: 40,
+                                      alignment: Alignment.center,
+                                    ),
                                     title: Text(
                                       '${i['subject']}',
                                       style: TextStyle(

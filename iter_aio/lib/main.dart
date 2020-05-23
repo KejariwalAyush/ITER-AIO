@@ -44,7 +44,8 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: themeDark,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           brightness: Brightness.dark, //primaryColor: themeDark,
-          appBarTheme: AppBarTheme(color: themeDark),
+          appBarTheme: AppBarTheme(color: themeDark), indicatorColor: themeDark,
+          hoverColor: themeDark,
         ),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(

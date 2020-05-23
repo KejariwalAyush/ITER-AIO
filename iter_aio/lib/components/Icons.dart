@@ -1,0 +1,97 @@
+String subjectAvatar(String subjectCode) {
+  switch (subjectCode) {
+    case "CHM1002":
+      return 'assets/icons/ic_subject_environmental_studies.png';
+    case "CSE1002":
+      return 'assets/icons/ic_subject_maths.png';
+    case "CSE1011":
+      return 'assets/icons/ic_subject_electrical.png';
+    case "CSE2031":
+      return 'assets/icons/ic_subject_maths.png';
+    case "CSE3151":
+      return 'assets/icons/ic_subject_database.png';
+    case "CSE4042":
+      return 'assets/icons/ic_subject_network.png';
+    case "CSE4043":
+      return 'assets/icons/ic_subject_security.png';
+    case "CSE4044":
+      return 'assets/icons/ic_subject_security.png';
+    case "CSE4051":
+      return 'assets/icons/ic_subject_database.png';
+    case "CSE4052":
+      return 'assets/icons/ic_subject_database.png';
+    case "CSE4053":
+      return 'assets/icons/ic_subject_database.png';
+    case "CSE4054":
+      return 'assets/icons/ic_subject_database.png';
+    case "CSE4102":
+      return 'assets/icons/ic_subject_html.png';
+    case "CSE4141":
+      return 'assets/icons/ic_subject_android.png';
+    case "CSE4151":
+      return 'assets/icons/ic_subject_server.png';
+    case "CVL3071":
+      return 'assets/icons/ic_subject_traffic.png';
+    case "CVL3241":
+      return 'assets/icons/ic_subject_water.png';
+    case "CVL4031":
+      return 'assets/icons/ic_subject_earth.png';
+    case "CVL4032":
+      return 'assets/icons/ic_subject_soil.png';
+    case "CVL4041":
+      return 'assets/icons/ic_subject_water.png';
+    case "CVL4042":
+      return 'assets/icons/ic_subject_water.png';
+    case "EET1001":
+      return 'assets/icons/ic_subject_matlab.png';
+    case "EET3041":
+      return 'assets/icons/ic_subject_electromagnetic_waves.png';
+    case "EET3061":
+      return 'assets/icons/ic_subject_communication.png';
+    case "EET3062":
+      return 'assets/icons/ic_subject_communication.png';
+    case "EET4014":
+      return 'assets/icons/ic_subject_renewable_energy.png';
+    case "EET4041":
+      return 'assets/icons/ic_subject_electromagnetic_waves.png';
+    case "EET4061":
+      return 'assets/icons/ic_subject_wifi.png';
+    case "EET4063":
+      return 'assets/icons/ic_subject_communication.png';
+    case "EET4161":
+      return 'assets/icons/ic_subject_communication.png';
+    case "HSS1001":
+      return 'assets/icons/ic_subject_effective_speech.png';
+    case "HSS1021":
+      return 'assets/icons/ic_subject_economics.png';
+    case "HSS2021":
+      return 'assets/icons/ic_subject_economics.png';
+    case "MEL3211":
+      return 'assets/icons/ic_subject_water.png';
+    case "MTH2002":
+      return 'assets/icons/ic_subject_probability_statistics.png';
+    case "MTH4002":
+      return 'assets/icons/ic_subject_matlab.png';
+  }
+
+  switch (subjectCode.substring(0, 3)) {
+    case "CHM":
+      return 'assets/icons/ic_subject_chemistry.png';
+    case "CSE":
+      return 'assets/icons/ic_subject_computer.png';
+    case "CVL":
+      return 'assets/icons/ic_subject_civil.png';
+    case "EET":
+      return 'assets/icons/ic_subject_electrical.png';
+    case "HSS":
+      return 'assets/icons/ic_subject_humanities.png';
+    case "MEL":
+      return 'assets/icons/ic_subject_mechanical.png';
+    case "MTH":
+      return 'assets/icons/ic_subject_maths.png';
+    case "PHY":
+      return 'assets/icons/ic_subject_physics.png';
+  }
+
+  return 'assets/icons/ic_subject_generic.png';
+}

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/components/Icons.dart';
 
 class Result extends StatelessWidget {
   @override
@@ -15,8 +16,9 @@ class Result extends StatelessWidget {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.share,
+            child: IconButton(
+              icon: new Icon(Icons.share),
+              onPressed: () {},
             ),
           ),
         ],
@@ -122,6 +124,10 @@ class Result extends StatelessWidget {
                               children: <Widget>[
                                 for (var i in jsonDecode(j)['Semdata'])
                                   ListTile(
+                                    leading: Image.asset(
+                                      subjectAvatar(i['subjectcode']),
+                                      width: 40,
+                                    ),
                                     title: Text(
                                       '${i['subjectdesc']}',
                                       style: TextStyle(
