@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var attendData, infoData;
 var resultData, courseData;
-var name, branch, avgAttend, avgAbsent, regdNo, password;
+var name, branch, avgAttend, avgAbsent, regdNo, password, themeStr;
 int sem;
 var isLoading = false;
 
@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('regd', regdNo);
     await prefs.setString('password', password);
+    await prefs.setString('theme', themeStr);
   }
 
   _resetCredentials() async {
@@ -54,8 +55,12 @@ class _MyHomePageState extends State<MyHomePage> {
   _getCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      themeStr = prefs.getString('theme');
       regdNo = prefs.getString('regd');
       password = prefs.getString('password');
+      setState(() {
+        getTheme(themeStr);
+      });
       if (regdNo != null && password != null && appStarted) {
         appStarted = false;
         isLoading = true;

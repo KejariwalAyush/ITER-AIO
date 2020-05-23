@@ -92,7 +92,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeLight1;
                             colorDark = colorLight1;
                           });
-
+                          themeStr = 'L1';
+                          getTheme(themeStr);
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));
                         },
@@ -118,7 +119,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeDark1;
                             colorDark = colorDark1;
                           });
-
+                          themeStr = 'D1';
+                          getTheme(themeStr);
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));
                         },
@@ -148,6 +150,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeLight2;
                             colorDark = colorLight2;
                           });
+                          themeStr = 'L2';
+                          getTheme(themeStr);
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));
@@ -174,6 +178,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeDark2;
                             colorDark = colorDark2;
                           });
+                          themeStr = 'D2';
+                          getTheme(themeStr);
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));
@@ -204,6 +210,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeLight3;
                             colorDark = colorLight3;
                           });
+                          themeStr = 'L3';
+                          getTheme(themeStr);
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));
@@ -230,6 +238,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeDark3;
                             colorDark = colorDark3;
                           });
+                          themeStr = 'D3';
+                          getTheme(themeStr);
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));
@@ -260,6 +270,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeLight4;
                             colorDark = colorLight4;
                           });
+                          themeStr = 'L4';
+                          getTheme(themeStr);
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));
@@ -286,6 +298,8 @@ class _SettingsState extends State<Settings> {
                             themeDark = themeDark4;
                             colorDark = colorDark4;
                           });
+                          themeStr = 'D4';
+                          getTheme(themeStr);
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => MyApp()));

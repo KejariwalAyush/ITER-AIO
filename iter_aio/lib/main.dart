@@ -27,6 +27,10 @@ class _MyAppState extends State<MyApp> {
 
   _getCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    themeStr = prefs.getString('theme');
+    setState(() {
+      getTheme(themeStr);
+    });
     regdNo = prefs.getString('regd');
     password = prefs.getString('password');
   }
@@ -61,15 +65,15 @@ class _MyAppState extends State<MyApp> {
               color: Colors.white70,
             ),
           ),
-          backgroundColor: themeDark,
+          backgroundColor: Colors.black45,
           styleTextUnderTheLoader: new TextStyle(),
           // photoSize: 180.0,
           loaderColor: Colors.white,
-          loadingText: Text(
-            'LOADING...',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
+          // loadingText: Text(
+          //   'LOADING...',
+          //   textAlign: TextAlign.center,
+          //   style: TextStyle(fontSize: 16, color: Colors.white60),
+          // ),
         ));
   }
 }

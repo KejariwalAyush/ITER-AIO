@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Color c1 = Color.fromRGBO(14, 15, 59, 100);
 // Color c2 = Color.fromRGBO(7, 64, 123, 100);
@@ -35,3 +36,64 @@ Color themeDark = themeDark2;
 
 Color colorLight = colorDark2;
 Color themeLight = themeDark2;
+
+getTheme(String t) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  switch (t) {
+    case 'D1':
+      colorDark = colorDark1;
+      themeDark = themeDark1;
+      colorLight = colorDark1;
+      themeLight = themeDark1;
+      break;
+    case 'D2':
+      colorDark = colorDark2;
+      themeDark = themeDark2;
+      colorLight = colorDark2;
+      themeLight = themeDark2;
+      break;
+    case 'D3':
+      colorDark = colorDark3;
+      themeDark = themeDark3;
+      colorLight = colorDark3;
+      themeLight = themeDark3;
+      break;
+    case 'D4':
+      colorDark = colorDark4;
+      themeDark = themeDark4;
+      colorLight = colorDark4;
+      themeLight = themeDark4;
+      break;
+    case 'L1':
+      colorDark = colorLight1;
+      themeDark = themeLight1;
+      colorLight = colorLight1;
+      themeLight = themeLight1;
+      break;
+    case 'L2':
+      colorDark = colorLight2;
+      themeDark = themeLight2;
+      colorLight = colorLight2;
+      themeLight = themeLight2;
+      break;
+    case 'L3':
+      colorDark = colorLight3;
+      themeDark = themeLight3;
+      colorLight = colorLight3;
+      themeLight = themeLight3;
+      break;
+    case 'L4':
+      colorDark = colorLight4;
+      themeDark = themeLight4;
+      colorLight = colorLight4;
+      themeLight = themeLight4;
+      break;
+    default:
+      colorDark = colorDark2;
+      themeDark = themeDark2;
+      colorLight = colorDark2;
+      themeLight = themeDark2;
+    // break;
+  }
+  await prefs.setString('theme', t);
+}
