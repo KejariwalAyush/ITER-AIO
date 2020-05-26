@@ -9,6 +9,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  wiredash: ^0.1.0
+
   http: ^0.12.0+2
   fluttertoast: ^4.0.0
   video_player: ^0.10.11

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/important.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:wiredash/wiredash.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +19,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     setState(() {
@@ -37,7 +41,22 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return Wiredash(
+      projectId: wiredash_project_id,
+      secret: wiredash_api_secret,
+      navigatorKey: _navigatorKey,
+      options: WiredashOptionsData(
+        showDebugFloatingEntryPoint: false,
+      ),
+      theme: WiredashThemeData(
+        brightness: Brightness.dark,
+        primaryColor: themeDark,
+        secondaryColor: themeDark,
+        backgroundColor: colorDark,
+        //primaryBackgroundColor: colorDark
+      ),
+      child: MaterialApp(
+        navigatorKey: _navigatorKey,
         title: 'ITER-AIO',
         themeMode: ThemeMode.system,
         theme: ThemeData(
@@ -79,6 +98,8 @@ class _MyAppState extends State<MyApp> {
           //   textAlign: TextAlign.center,
           //   style: TextStyle(fontSize: 16, color: Colors.white60),
           // ),
-        ));
+        ),
+      ),
+    );
   }
 }

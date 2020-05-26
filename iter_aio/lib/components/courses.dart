@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/components/lectures.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/MyHomePage.dart';
+import 'package:wiredash/wiredash.dart';
 
 class Courses extends StatelessWidget {
   @override
@@ -10,6 +11,14 @@ class Courses extends StatelessWidget {
       appBar: AppBar(
         title: Text('ITER AIO'),
         elevation: 15,
+        actions: <Widget>[
+          IconButton(
+            icon: new Icon(Icons.feedback),
+            onPressed: () {
+              Wiredash.of(context).show();
+            },
+          ),
+        ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),

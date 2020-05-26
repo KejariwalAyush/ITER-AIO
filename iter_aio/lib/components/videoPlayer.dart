@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 // import 'package:chewie/src/chewie_player.dart';
 import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wiredash/wiredash.dart';
 
 class WebPageView extends StatefulWidget {
   String link, title;
@@ -29,6 +30,14 @@ class _WebPageViewState extends State<WebPageView> {
       appBar: MediaQuery.of(context).orientation.index == 0
           ? AppBar(
               title: Text('ITER AIO'),
+              actions: <Widget>[
+                IconButton(
+                  icon: new Icon(Icons.feedback),
+                  onPressed: () {
+                    Wiredash.of(context).show();
+                  },
+                ),
+              ],
               // elevation: 15,
               // shape: RoundedRectangleBorder(
               //     borderRadius: BorderRadius.only(

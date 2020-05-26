@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:iteraio/components/videoPlayer.dart';
+import 'package:wiredash/wiredash.dart';
 // import 'MyHomePage.dart';
 
 class Lectures extends StatefulWidget {
@@ -30,6 +31,14 @@ class _LecturesState extends State<Lectures> {
       appBar: AppBar(
         title: Text('ITER AIO'),
         elevation: 15,
+        actions: <Widget>[
+          IconButton(
+            icon: new Icon(Icons.feedback),
+            onPressed: () {
+              Wiredash.of(context).show();
+            },
+          ),
+        ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),

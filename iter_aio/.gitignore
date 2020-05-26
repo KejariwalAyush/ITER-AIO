@@ -33,6 +33,10 @@
 # Web related
 lib/generated_plugin_registrant.dart
 
+# Key files
+lib/important.dart
+
+
 # Symbolication related
 app.*.symbols
 

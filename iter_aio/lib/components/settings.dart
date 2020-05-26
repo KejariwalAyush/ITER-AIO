@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/main.dart';
+import 'package:wiredash/wiredash.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -16,6 +17,14 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         title: Text('ITER AIO'),
         elevation: 15,
+        actions: <Widget>[
+          IconButton(
+            icon: new Icon(Icons.feedback),
+            onPressed: () {
+              Wiredash.of(context).show();
+            },
+          ),
+        ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),

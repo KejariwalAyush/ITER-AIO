@@ -14,6 +14,7 @@ import 'package:html/parser.dart';
 import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wiredash/wiredash.dart';
 
 var attendData, infoData;
 var resultData, courseData;
@@ -218,12 +219,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      icon: new Icon(Icons.share),
-                      onPressed: () {},
-                    ),
+                  IconButton(
+                    icon: new Icon(Icons.share),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: new Icon(Icons.feedback),
+                    onPressed: () {
+                      Wiredash.of(context).show();
+                    },
                   ),
                 ],
                 shape: RoundedRectangleBorder(
@@ -248,10 +252,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Expanded(
                                       flex: 1,
                                       child: CircleAvatar(
-                                        // child: Icon(
-                                        //   Icons.person,
-                                        //   size: 60,
-                                        // ),
                                         child: Image.asset(
                                           gender == 'M'
                                               ? 'assets/logos/maleAvtar.png'

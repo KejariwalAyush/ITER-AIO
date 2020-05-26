@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/components/Icons.dart';
+import 'package:wiredash/wiredash.dart';
 
 class Result extends StatelessWidget {
   @override
@@ -14,12 +15,15 @@ class Result extends StatelessWidget {
         title: Text('ITER AIO'),
         elevation: 15,
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: new Icon(Icons.share),
-              onPressed: () {},
-            ),
+          IconButton(
+            icon: new Icon(Icons.share),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: new Icon(Icons.feedback),
+            onPressed: () {
+              Wiredash.of(context).show();
+            },
           ),
         ],
         shape: RoundedRectangleBorder(
@@ -44,13 +48,14 @@ class Result extends StatelessWidget {
                           Expanded(
                               flex: 1,
                               child: CircleAvatar(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 60,
+                                child: Image.asset(
+                                  gender == 'M'
+                                      ? 'assets/logos/maleAvtar.png'
+                                      : 'assets/logos/femaleAvtar.png',
+                                  fit: BoxFit.cover,
                                 ),
-//                                child: Image.asset('male.webp',fit: BoxFit.cover,),
                                 radius: 40,
-//                                backgroundColor: colorLight,
+                                backgroundColor: Colors.transparent,
                               )),
                           Expanded(
                             flex: 3,
