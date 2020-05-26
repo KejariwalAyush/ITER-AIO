@@ -22,7 +22,24 @@ class WebPageView extends StatefulWidget {
 
 class _WebPageViewState extends State<WebPageView> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
-  var loadingPage = false;
+  var loadingPage = true;
+
+  num position = 1;
+
+  final key = UniqueKey();
+
+  doneLoading(String A) {
+    setState(() {
+      position = 0;
+    });
+  }
+
+  startLoading(String A) {
+    setState(() {
+      position = 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.link);
@@ -45,20 +62,32 @@ class _WebPageViewState extends State<WebPageView> {
               //         bottomRight: Radius.circular(25))),
             )
           : null,
-      body: Center(
-        child: WebView(
+      body: IndexedStack(index: position, children: <Widget>[
+        WebView(
           initialUrl: widget.link,
           javascriptMode: JavascriptMode.unrestricted,
           gestureNavigationEnabled: true,
           initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller.complete(webViewController);
-            // setState(() {
-            //   loadingPage = _controller.isCompleted;
-            // });
-          },
+          // onWebViewCreated: (WebViewController webViewController) {
+          //   _controller.complete(webViewController);
+          //   });
+          // },
+          key: key,
+          onPageFinished: doneLoading,
+          onPageStarted: startLoading,
         ),
-      ),
+        Container(
+          // color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Center(child: CircularProgressIndicator()),
+              Center(child: Text('Getting Video ready for you.')),
+            ],
+          ),
+        ),
+      ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           SystemChrome.setPreferredOrientations([
