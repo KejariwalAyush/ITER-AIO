@@ -60,10 +60,33 @@ class _MyHomePageState extends State<MyHomePage> {
       themeStr = prefs.getString('theme');
       regdNo = prefs.getString('regd');
       password = prefs.getString('password');
+      if (noInternet) {
+        attendData = jsonDecode(prefs.getString('attendence'));
+        infoData = jsonDecode(prefs.getString('info'));
+        name = infoData["detail"][0]['name'];
+        branch = infoData['detail'][0]['branchdesc'];
+        sem = attendData['griddata'][0]['stynumber'];
+        gender = infoData['detail'][0]['gender'];
+        print(gender);
+        double totatt = 0.0;
+        int cnt = 0, totAbs = 0;
+        for (var i in attendData['griddata']) {
+          totatt += i['TotalAttandence'];
+          totAbs += (int.parse(i['Latt'].toString().split('/')[1].trim()) +
+                  int.parse(i['Patt'].toString().split('/')[1].trim()) +
+                  int.parse(i['Tatt'].toString().split('/')[1].trim())) -
+              (int.parse(i['Latt'].toString().split('/')[0].trim()) +
+                  int.parse(i['Patt'].toString().split('/')[0].trim()) +
+                  int.parse(i['Tatt'].toString().split('/')[0].trim()));
+          cnt++;
+        }
+        avgAttend = (totatt / cnt).round();
+        avgAbsent = totAbs ~/ cnt;
+      }
       setState(() {
         getTheme(themeStr);
       });
-      if (regdNo != null && password != null && appStarted) {
+      if (regdNo != null && password != null && appStarted && !noInternet) {
         appStarted = false;
         isLoading = true;
         _isLoggingIn = true;
@@ -76,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return !isLoggedIn
+    return !isLoggedIn && !noInternet || attendData == null
         ? WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
@@ -264,10 +287,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Expanded(
                                     flex: 3,
                                     child: InkWell(
-                                      onTap: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Result())),
+                                      onTap: () => noInternet
+                                          ? Fluttertoast.showToast(
+                                              msg: "No Internet!",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 2,
+                                              backgroundColor: Colors.redAccent,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0,
+                                            )
+                                          : Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Result())),
                                       child: RichText(
                                         textAlign: TextAlign.end,
                                         text: TextSpan(
@@ -497,6 +531,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (infoResp.statusCode == 200 && attendResp.statusCode == 200) {
       infoData = jsonDecode(infoResp.body);
       attendData = jsonDecode(attendResp.body);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('attendence', attendResp.body);
+      await prefs.setString('info', infoResp.body);
 //      print(attendData);
       name = infoData["detail"][0]['name'];
       branch = infoData['detail'][0]['branchdesc'];
@@ -529,6 +566,7 @@ class _MyHomePageState extends State<MyHomePage> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+
       //showToast(context,'Status: ${attendResp.statusCode}');
       setState(() {
         isLoading = false;
@@ -704,8 +742,20 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Lectures'),
               onTap: isLoading
                   ? null
-                  : () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Courses())),
+                  : noInternet
+                      ? () {
+                          Fluttertoast.showToast(
+                            msg: "No Internet!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.redAccent,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      : () => Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Courses())),
             ),
             Divider(),
             ListTile(
@@ -713,8 +763,20 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Result'),
               onTap: isLoading
                   ? null
-                  : () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Result())),
+                  : noInternet
+                      ? () {
+                          Fluttertoast.showToast(
+                            msg: "No Internet!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.redAccent,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      : () => Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Result())),
             ),
             Divider(),
             ListTile(

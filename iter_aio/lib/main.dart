@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/important.dart';
@@ -11,6 +14,7 @@ void main() {
 }
 
 var appStarted = true;
+bool noInternet = false;
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -23,10 +27,34 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    _getThingsOnStartup().then((value) async {
+      try {
+        final result = await InternetAddress.lookup('google.com');
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          print('connected');
+        }
+      } on SocketException catch (_) {
+        print('not connected');
+        noInternet = true;
+        Fluttertoast.showToast(
+          msg: "No INTERNET !\nOffline Mode activated",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    });
     setState(() {
       _getCredentials();
     });
     super.initState();
+  }
+
+  Future _getThingsOnStartup() async {
+    await Future.delayed(Duration(seconds: 0));
   }
 
   _getCredentials() async {
