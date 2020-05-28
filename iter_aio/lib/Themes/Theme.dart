@@ -10,6 +10,9 @@ Brightness bright = Brightness.light;
 Color colorDark1 = Colors.teal[600];
 Color themeDark1 = Colors.teal;
 
+// Color colorDark1 = Colors.redAccent; //Color(0xFFed0b0e);
+// Color themeDark1 = Colors.black; //Color(0xFF252527);
+
 Color colorLight1 = Colors.purple[100];
 Color themeLight1 = Colors.purple;
 
@@ -19,17 +22,17 @@ Color themeDark2 = Colors.indigo;
 Color colorLight2 = Colors.lightGreen[300];
 Color themeLight2 = Colors.lightGreen;
 
-Color colorDark3 = Colors.red[300];
-Color themeDark3 = Colors.red;
+Color colorDark3 = Colors.deepOrange[400];
+Color themeDark3 = Colors.deepOrange;
 
-Color colorLight3 = Colors.orange[200];
-Color themeLight3 = Colors.orange;
+Color colorLight3 = Colors.blueGrey[300];
+Color themeLight3 = Colors.blueGrey;
 
-Color colorDark4 = Colors.green[600];
-Color themeDark4 = Colors.green;
+Color colorDark4 = Colors.blue[300];
+Color themeDark4 = Colors.blue;
 
-Color colorLight4 = Colors.pink[300];
-Color themeLight4 = Colors.pink;
+Color colorLight4 = Colors.deepPurple[300];
+Color themeLight4 = Colors.deepPurple;
 
 Color colorDark = colorDark2;
 Color themeDark = themeDark2;

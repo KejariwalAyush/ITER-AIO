@@ -15,10 +15,10 @@ class Result extends StatelessWidget {
         title: Text('ITER AIO'),
         elevation: 15,
         actions: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.share),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: new Icon(Icons.share),
+          //   onPressed: () {},
+          // ),
           IconButton(
             icon: new Icon(Icons.feedback),
             onPressed: () {

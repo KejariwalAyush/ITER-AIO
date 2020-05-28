@@ -92,7 +92,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Light Theme 1'),
+                        title: Text('Theme 1'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;
@@ -122,7 +122,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Dark Theme 1'),
+                        title: Text('Theme 1'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;
@@ -156,7 +156,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Light Theme 2'),
+                        title: Text('Theme 2'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;
@@ -187,7 +187,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Dark Theme 2'),
+                        title: Text('Theme 2'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;
@@ -222,7 +222,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Light Theme 3'),
+                        title: Text('Theme 3'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;
@@ -253,7 +253,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Dark Theme 3'),
+                        title: Text('Theme 3'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;
@@ -288,7 +288,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Light Theme 4'),
+                        title: Text('Theme 4'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;
@@ -319,7 +319,7 @@ class _SettingsState extends State<Settings> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListTile(
-                        title: Text('Dark Theme 4'),
+                        title: Text('Theme 4'),
                         onTap: () {
                           setState(() {
                             isLoggedIn = true;

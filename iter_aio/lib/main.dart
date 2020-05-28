@@ -61,13 +61,14 @@ class _MyAppState extends State<MyApp> {
         themeMode: ThemeMode.system,
         theme: ThemeData(
             primarySwatch: themeLight,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
+            // visualDensity: VisualDensity.adaptivePlatformDensity,
             brightness: Brightness.light),
         darkTheme: ThemeData(
           primarySwatch: themeDark,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+          // visualDensity: VisualDensity.adaptivePlatformDensity,
           brightness: Brightness.dark, //primaryColor: themeDark,
           appBarTheme: AppBarTheme(color: themeDark), indicatorColor: themeDark,
+          // backgroundColor: Colors.black,
           hoverColor: themeDark,
         ),
         debugShowCheckedModeBanner: false,
