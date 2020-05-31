@@ -32,12 +32,13 @@ var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
   var _isLoggingIn = false;
-  var acedemicCalenderLink;
+  var acedemicCalenderLink, curriculumLink;
   @override
   void initState() {
     setState(() {
       _getCredentials();
       getCalender();
+      getCurriculum();
     });
     super.initState();
   }
@@ -331,6 +332,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   )),
                                               TextSpan(
                                                   text: '\nSemester: $sem',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.light
+                                                        ? Colors.black54
+                                                        : Colors.white60,
+                                                  )),
+                                              TextSpan(
+                                                  text: '\n$branch',
                                                   style: TextStyle(
                                                     fontSize: 14,
                                                     color: Theme.of(context)
@@ -691,6 +702,37 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  getCurriculum() async {
+    String url = 'https://www.soa.ac.in/btech-academic-curriculum';
+    final resp1 = await http.get(url);
+    if (resp1.statusCode == 200) {
+      var doc = parse(resp1.body);
+      var link =
+          doc.querySelectorAll('main> section> div > div > div> div> div');
+      for (var i in link) {
+        var x = i.querySelector('div> div> div> div> a');
+        if (x != null) {
+          // print('${x.text} : $branch');
+          if (x.text.replaceAll('&', 'and') == branch) {
+            var url2 =
+                url.substring(0, url.lastIndexOf('/')) + x.attributes['href'];
+            var resp2 = await http.get(url2);
+            if (resp2.statusCode == 200) {
+              var doc2 = parse(resp2.body);
+              var link2 =
+                  doc2.querySelectorAll('iframe').last.attributes['src'];
+              // print(link2);
+              curriculumLink = link2.substring(0, link2.lastIndexOf('?'));
+            }
+
+            print(curriculumLink);
+            // return;
+          }
+        }
+      }
+    }
+  }
+
   String bunklogic(var i) {
     var bunkText;
     var absent = (int.parse(i['Latt'].toString().split('/')[1].trim()) +
@@ -828,6 +870,31 @@ class _MyHomePageState extends State<MyHomePage> {
                           MaterialPageRoute(
                               builder: (context) => WebPageView(
                                   'Calender', acedemicCalenderLink))),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.assignment_turned_in),
+              title: Text('Curriculum'),
+              onTap: isLoading
+                  ? null
+                  : noInternet
+                      ? () {
+                          Fluttertoast.showToast(
+                            msg: "No Internet!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.redAccent,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      : () => //getCurriculum(),
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      WebPageView(branch, curriculumLink))),
             ),
             Divider(),
             ListTile(
