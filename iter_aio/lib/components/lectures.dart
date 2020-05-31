@@ -8,8 +8,8 @@ import 'package:wiredash/wiredash.dart';
 // import 'MyHomePage.dart';
 
 class Lectures extends StatefulWidget {
-  String link;
-  Lectures(this.link);
+  String link, title;
+  Lectures(this.title, this.link);
   @override
   _LecturesState createState() => _LecturesState();
 }
@@ -29,7 +29,7 @@ class _LecturesState extends State<Lectures> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ITER AIO'),
+        title: Text(widget.title),
         elevation: 15,
         actions: <Widget>[
           IconButton(
@@ -74,7 +74,7 @@ class _LecturesState extends State<Lectures> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         // VideoApp(i['title'], i['link2'])
-                                        WebPageView(i['title'], i['link2']))),
+                                        WebPageVideo(i['title'], i['link2']))),
                         // subtitle: Text(DateTime.(i['date'])),
                       ),
                   ],

@@ -12,15 +12,15 @@ import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wiredash/wiredash.dart';
 
-class WebPageView extends StatefulWidget {
+class WebPageVideo extends StatefulWidget {
   String link, title;
-  WebPageView(this.title, this.link);
+  WebPageVideo(this.title, this.link);
 
   @override
-  _WebPageViewState createState() => _WebPageViewState();
+  _WebPageVideoState createState() => _WebPageVideoState();
 }
 
-class _WebPageViewState extends State<WebPageView> {
+class _WebPageVideoState extends State<WebPageVideo> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
   var loadingPage = true;
 
@@ -46,7 +46,7 @@ class _WebPageViewState extends State<WebPageView> {
     return Scaffold(
       appBar: MediaQuery.of(context).orientation.index == 0
           ? AppBar(
-              title: Text('ITER AIO'),
+              title: Text(widget.title),
               actions: <Widget>[
                 IconButton(
                   icon: new Icon(Icons.feedback),

@@ -13,6 +13,7 @@ import 'package:iteraio/components/result.dart';
 import 'package:html/parser.dart';
 import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/main.dart';
+import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 
@@ -31,10 +32,12 @@ var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
   var _isLoggingIn = false;
+  var acedemicCalenderLink;
   @override
   void initState() {
     setState(() {
       _getCredentials();
+      getCalender();
     });
     super.initState();
   }
@@ -664,6 +667,30 @@ class _MyHomePageState extends State<MyHomePage> {
     courseData = linkMap;
   }
 
+  getCalender() async {
+    String url = "https://www.soa.ac.in/iter";
+
+    final resp1 = await http.get(url);
+    if (resp1.statusCode == 200) {
+      var doc1 = parse(resp1.body);
+      var link1 = url.substring(0, url.lastIndexOf('/')) +
+          doc1
+              .getElementById('block-yui_3_17_2_1_1576815128904_12538')
+              .querySelector('a')
+              .attributes['href'];
+      print(link1);
+      final resp2 = await http.get(link1);
+      if (resp2.statusCode == 200) {
+        var doc2 = parse(resp2.body);
+        var link2 = doc2
+            .getElementById('block-8f7f068fc7f6fb6d65aa')
+            .querySelector('iframe')
+            .attributes['src'];
+        acedemicCalenderLink = link2;
+      }
+    }
+  }
+
   String bunklogic(var i) {
     var bunkText;
     var absent = (int.parse(i['Latt'].toString().split('/')[1].trim()) +
@@ -777,6 +804,30 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                       : () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Result())),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.calendar_today),
+              title: Text('Academic Calender'),
+              onTap: isLoading
+                  ? null
+                  : noInternet
+                      ? () {
+                          Fluttertoast.showToast(
+                            msg: "No Internet!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.redAccent,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      : () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WebPageView(
+                                  'Calender', acedemicCalenderLink))),
             ),
             Divider(),
             ListTile(

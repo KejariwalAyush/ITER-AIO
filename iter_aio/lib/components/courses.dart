@@ -67,7 +67,7 @@ class Courses extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          Lectures(j['link']))),
+                                          Lectures(j['subject'], j['link']))),
                             ),
                         ],
                       ),
