@@ -32,7 +32,8 @@ var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
   var _isLoggingIn = false;
-  var acedemicCalenderLink, curriculumLink;
+  var acedemicCalenderLink;
+  // var curriculumLink;
   @override
   void initState() {
     setState(() {
@@ -699,34 +700,6 @@ class _MyHomePageState extends State<MyHomePage> {
         acedemicCalenderLink = link2;
       }
     }
-    String url2 = 'https://www.soa.ac.in/btech-academic-curriculum';
-    final resp = await http.get(url2);
-    if (resp.statusCode == 200) {
-      var doc = parse(resp.body);
-      var link =
-          doc.querySelectorAll('main> section> div > div > div> div> div');
-      for (var i in link) {
-        var x = i.querySelector('div> div> div> div> a');
-        if (x != null) {
-          // print('${x.text} : $branch');
-          if (x.text.replaceAll('&', 'and') == branch) {
-            var url3 =
-                url2.substring(0, url2.lastIndexOf('/')) + x.attributes['href'];
-            var resp2 = await http.get(url3);
-            if (resp2.statusCode == 200) {
-              var doc2 = parse(resp2.body);
-              var link2 =
-                  doc2.querySelectorAll('iframe').last.attributes['src'];
-              // print(link2);
-              curriculumLink = link2.substring(0, link2.lastIndexOf('?'));
-            }
-
-            print(curriculumLink);
-            // break;
-          }
-        }
-      }
-    }
   }
 
   // getCurriculum() async {
@@ -904,34 +877,34 @@ class _MyHomePageState extends State<MyHomePage> {
                               builder: (context) => WebPageView(
                                   'Calender', acedemicCalenderLink))),
             ),
-            Divider(),
-            ListTile(
-                leading: Icon(Icons.assignment_turned_in),
-                title: Text('Curriculum'),
-                onTap: isLoading
-                    ? null
-                    : noInternet
-                        ? () {
-                            Fluttertoast.showToast(
-                              msg: "No Internet!",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor: Colors.redAccent,
-                              textColor: Colors.white,
-                              fontSize: 16.0,
-                            );
-                          }
-                        : () {
-                            // setState(() {
-                            //   getCurriculum();
-                            // });
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        WebPageView(branch, curriculumLink)));
-                          }),
+            // Divider(),
+            // ListTile(
+            //     leading: Icon(Icons.assignment_turned_in),
+            //     title: Text('Curriculum'),
+            //     onTap: isLoading
+            //         ? null
+            //         : noInternet
+            //             ? () {
+            //                 Fluttertoast.showToast(
+            //                   msg: "No Internet!",
+            //                   toastLength: Toast.LENGTH_SHORT,
+            //                   gravity: ToastGravity.BOTTOM,
+            //                   timeInSecForIosWeb: 2,
+            //                   backgroundColor: Colors.redAccent,
+            //                   textColor: Colors.white,
+            //                   fontSize: 16.0,
+            //                 );
+            //               }
+            //             : () {
+            //                 // setState(() {
+            //                 //   getCurriculum();
+            //                 // });
+            //                 Navigator.push(
+            //                     context,
+            //                     MaterialPageRoute(
+            //                         builder: (context) =>
+            //                             WebPageView(branch, curriculumLink)));
+            //               }),
             Divider(),
             ListTile(
               leading: Icon(Icons.airline_seat_individual_suite),
