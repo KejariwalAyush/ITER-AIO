@@ -103,11 +103,11 @@ class _WebPageVideoState extends State<WebPageVideo> {
     );
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _controller.dispose();
-  // }
+  @override
+  void dispose() {
+    // _controller.dispose();
+    super.dispose();
+  }
 }
 
 class VideoApp extends StatefulWidget {

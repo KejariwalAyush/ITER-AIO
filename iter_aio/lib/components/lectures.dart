@@ -84,6 +84,12 @@ class _LecturesState extends State<Lectures> {
     );
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    // _controller.dispose();
+  }
+
   getLectures(String url) async {
     setState(() {
       isLoading = true;

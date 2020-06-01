@@ -38,7 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _getCredentials();
       getCalender();
-      getCurriculum();
     });
     super.initState();
   }
@@ -700,13 +699,10 @@ class _MyHomePageState extends State<MyHomePage> {
         acedemicCalenderLink = link2;
       }
     }
-  }
-
-  getCurriculum() async {
-    String url = 'https://www.soa.ac.in/btech-academic-curriculum';
-    final resp1 = await http.get(url);
-    if (resp1.statusCode == 200) {
-      var doc = parse(resp1.body);
+    String url2 = 'https://www.soa.ac.in/btech-academic-curriculum';
+    final resp = await http.get(url2);
+    if (resp.statusCode == 200) {
+      var doc = parse(resp.body);
       var link =
           doc.querySelectorAll('main> section> div > div > div> div> div');
       for (var i in link) {
@@ -714,9 +710,9 @@ class _MyHomePageState extends State<MyHomePage> {
         if (x != null) {
           // print('${x.text} : $branch');
           if (x.text.replaceAll('&', 'and') == branch) {
-            var url2 =
-                url.substring(0, url.lastIndexOf('/')) + x.attributes['href'];
-            var resp2 = await http.get(url2);
+            var url3 =
+                url2.substring(0, url2.lastIndexOf('/')) + x.attributes['href'];
+            var resp2 = await http.get(url3);
             if (resp2.statusCode == 200) {
               var doc2 = parse(resp2.body);
               var link2 =
@@ -726,12 +722,49 @@ class _MyHomePageState extends State<MyHomePage> {
             }
 
             print(curriculumLink);
-            // return;
+            // break;
           }
         }
       }
     }
   }
+
+  // getCurriculum() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   String url = 'https://www.soa.ac.in/btech-academic-curriculum';
+  //   final resp1 = await http.get(url);
+  //   if (resp1.statusCode == 200) {
+  //     var doc = parse(resp1.body);
+  //     var link =
+  //         doc.querySelectorAll('main> section> div > div > div> div> div');
+  //     for (var i in link) {
+  //       var x = i.querySelector('div> div> div> div> a');
+  //       if (x != null) {
+  //         // print('${x.text} : $branch');
+  //         if (x.text.replaceAll('&', 'and') == branch) {
+  //           var url2 =
+  //               url.substring(0, url.lastIndexOf('/')) + x.attributes['href'];
+  //           var resp2 = await http.get(url2);
+  //           if (resp2.statusCode == 200) {
+  //             var doc2 = parse(resp2.body);
+  //             var link2 =
+  //                 doc2.querySelectorAll('iframe').last.attributes['src'];
+  //             // print(link2);
+  //             curriculumLink = link2.substring(0, link2.lastIndexOf('?'));
+  //           }
+
+  //           print(curriculumLink);
+  //           // break;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
   String bunklogic(var i) {
     var bunkText;
@@ -873,29 +906,32 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.assignment_turned_in),
-              title: Text('Curriculum'),
-              onTap: isLoading
-                  ? null
-                  : noInternet
-                      ? () {
-                          Fluttertoast.showToast(
-                            msg: "No Internet!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.redAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                      : () => //getCurriculum(),
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WebPageView(branch, curriculumLink))),
-            ),
+                leading: Icon(Icons.assignment_turned_in),
+                title: Text('Curriculum'),
+                onTap: isLoading
+                    ? null
+                    : noInternet
+                        ? () {
+                            Fluttertoast.showToast(
+                              msg: "No Internet!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.redAccent,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          }
+                        : () {
+                            // setState(() {
+                            //   getCurriculum();
+                            // });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        WebPageView(branch, curriculumLink)));
+                          }),
             Divider(),
             ListTile(
               leading: Icon(Icons.airline_seat_individual_suite),
