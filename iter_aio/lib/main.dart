@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/MyHomePage.dart';
@@ -115,7 +116,7 @@ class _MyAppState extends State<MyApp> {
           ),
           backgroundColor: Colors.black87,
           styleTextUnderTheLoader: new TextStyle(),
-          photoSize: 180.0,
+          photoSize: 100.0,
           image: Image.asset(
             'assets/logos/codex.jpg',
             alignment: Alignment.center,
@@ -130,5 +131,18 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+}
+
+class Flare extends StatefulWidget {
+  @override
+  _FlareState createState() => _FlareState();
+}
+
+class _FlareState extends State<Flare> {
+  @override
+  Widget build(BuildContext context) {
+    return new FlareActor("assets/animations/ITER-AIO.flr",
+        alignment: Alignment.center, fit: BoxFit.contain, animation: "entry");
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,10 +34,12 @@ var isLoggedIn = false, dataLoading = false;
 class _MyHomePageState extends State<MyHomePage> {
   var _isLoggingIn = false;
   var acedemicCalenderLink;
+  String animationName;
   // var curriculumLink;
   @override
   void initState() {
     setState(() {
+      animationName = 'hello';
       _getCredentials();
       getCalender();
     });
@@ -127,6 +130,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(
                       height: 50,
                     ),
+                    new Container(
+                      height: 240,
+                      width: MediaQuery.of(context).size.width,
+                      child: new FlareActor("assets/animations/ITER-AIO.flr",
+                          alignment: Alignment.center,
+                          fit: BoxFit.contain,
+                          animation: animationName),
+                    ),
                     Center(
                       child: Text(
                         'Login',
@@ -141,12 +152,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     TextFormField(
                       keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.next,
+                      // textInputAction: TextInputAction.continueAction,
                       autofocus: false,
                       initialValue: regdNo,
                       cursorColor: themeDark,
                       onChanged: (String str) {
                         regdNo = str;
+                        animationName = 'ok';
+                      },
+                      onTap: () {
+                        setState(() {
+                          animationName = 'hello';
+                        });
                       },
                       decoration: InputDecoration(
                         alignLabelWithHint: true,
@@ -172,7 +189,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       cursorColor: themeDark,
                       onChanged: (String str) {
                         password = str;
+                        animationName = 'head anti rotate';
                       },
+                      onTap: () {
+                        setState(() {
+                          // animationName = 'hello';
+                          animationName = 'head rotate';
+                        });
+                      },
+                      // onFieldSubmitted: (value) {
+                      //   setState(() {
+                      //     animationName = 'head anti rotate';
+                      //     // animationName = 'ok';
+                      //   });
+                      // },
                       obscureText: true,
                       decoration: InputDecoration(
                         alignLabelWithHint: true,
@@ -210,6 +240,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 sem = null;
                                 infoData = null;
                                 setState(() {
+                                  // animationName = 'idle';
+                                  animationName = 'hello';
                                   isLoading = true;
                                   _isLoggingIn = true;
                                   getData();
@@ -277,17 +309,18 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
-                                      flex: 1,
-                                      child: CircleAvatar(
-                                        child: Image.asset(
-                                          gender == 'M'
-                                              ? 'assets/logos/maleAvtar.png'
-                                              : 'assets/logos/femaleAvtar.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                        radius: 40,
-                                        backgroundColor: Colors.transparent,
-                                      )),
+                                    flex: 1,
+                                    child: CircleAvatar(
+                                      child: Image.asset(
+                                        gender == 'M'
+                                            ? 'assets/logos/maleAvtar.png'
+                                            : 'assets/logos/femaleAvtar.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                                      radius: 40,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                  ),
                                   Expanded(
                                     flex: 3,
                                     child: InkWell(

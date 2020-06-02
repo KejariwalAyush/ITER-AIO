@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iteraio/MyHomePage.dart';
@@ -46,17 +47,27 @@ class Result extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                              flex: 1,
-                              child: CircleAvatar(
-                                child: Image.asset(
-                                  gender == 'M'
-                                      ? 'assets/logos/maleAvtar.png'
-                                      : 'assets/logos/femaleAvtar.png',
+                            flex: 1,
+                            child: Container(
+                              height: 80,
+                              // width: 100,
+                              child: FlareActor(
+                                  "assets/animations/ITER-AIO.flr",
+                                  alignment: Alignment.center,
                                   fit: BoxFit.cover,
-                                ),
-                                radius: 40,
-                                backgroundColor: Colors.transparent,
-                              )),
+                                  animation: "ok"),
+                            ),
+                            // child: CircleAvatar(
+                            //   child: Image.asset(
+                            //     gender == 'M'
+                            //         ? 'assets/logos/maleAvtar.png'
+                            //         : 'assets/logos/femaleAvtar.png',
+                            //     fit: BoxFit.cover,
+                            //   ),
+                            //   radius: 40,
+                            //   backgroundColor: Colors.transparent,
+                            // ),
+                          ),
                           Expanded(
                             flex: 3,
                             child: InkWell(
