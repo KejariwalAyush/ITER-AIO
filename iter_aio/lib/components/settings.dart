@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 
 class Settings extends StatefulWidget {
@@ -9,8 +10,14 @@ class Settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
+var _brightSwitch = true;
+
 class _SettingsState extends State<Settings> {
-  // var _brightSwitch = false;
+  setBrightness(bool value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isbright', value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +43,34 @@ class _SettingsState extends State<Settings> {
             children: <Widget>[
               SizedBox(
                 height: 10,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text('Dark Mode'),
+                  Switch.adaptive(
+                    value: _brightSwitch,
+                    onChanged: (value) {
+                      setState(() {
+                        _brightSwitch = value;
+                        value
+                            ? brightness = Brightness.dark
+                            : brightness = Brightness.light;
+                        setBrightness(!value);
+                      });
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyApp()),
+                        ModalRoute.withName('/'),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Divider(
+                height: 10,
+                thickness: 2,
               ),
               Text(
                 'Change Theme',

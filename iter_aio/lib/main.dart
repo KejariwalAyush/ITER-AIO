@@ -16,6 +16,7 @@ void main() {
 
 var appStarted = true;
 bool noInternet = false;
+Brightness brightness = Brightness.dark;
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -66,6 +67,9 @@ class _MyAppState extends State<MyApp> {
     });
     regdNo = prefs.getString('regd');
     password = prefs.getString('password');
+    brightness = prefs.getBool('isbright') != null && prefs.getBool('isbright')
+        ? Brightness.light
+        : Brightness.dark;
   }
 
   @override
@@ -78,7 +82,7 @@ class _MyAppState extends State<MyApp> {
         showDebugFloatingEntryPoint: false,
       ),
       theme: WiredashThemeData(
-        brightness: Brightness.dark,
+        brightness: brightness,
         primaryColor: themeDark,
         secondaryColor: themeDark,
         backgroundColor: colorDark,
@@ -87,19 +91,21 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         navigatorKey: _navigatorKey,
         title: 'ITER-AIO',
-        themeMode: ThemeMode.system,
+        // themeMode: ThemeMode.system,
         theme: ThemeData(
-            primarySwatch: themeLight,
-            // visualDensity: VisualDensity.adaptivePlatformDensity,
-            brightness: Brightness.light),
-        darkTheme: ThemeData(
-          primarySwatch: themeDark,
+          primarySwatch: themeLight,
           // visualDensity: VisualDensity.adaptivePlatformDensity,
-          brightness: Brightness.dark, //primaryColor: themeDark,
-          appBarTheme: AppBarTheme(color: themeDark), indicatorColor: themeDark,
-          // backgroundColor: Colors.black,
-          hoverColor: themeDark,
+          brightness: brightness,
+          appBarTheme: AppBarTheme(color: themeDark),
         ),
+        // darkTheme: ThemeData(
+        //   primarySwatch: themeDark,
+        //   // visualDensity: VisualDensity.adaptivePlatformDensity,
+        //   brightness: Brightness.dark, //primaryColor: themeDark,
+        //   appBarTheme: AppBarTheme(color: themeDark), indicatorColor: themeDark,
+        //   // backgroundColor: Colors.black,
+        //   hoverColor: themeDark,
+        // ),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(
           seconds: 1,

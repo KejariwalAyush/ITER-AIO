@@ -65,6 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
   _getCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      brightness =
+          prefs.getBool('isbright') != null && prefs.getBool('isbright')
+              ? Brightness.light
+              : Brightness.dark;
       themeStr = prefs.getString('theme');
       regdNo = prefs.getString('regd');
       password = prefs.getString('password');
@@ -723,7 +727,7 @@ class _MyHomePageState extends State<MyHomePage> {
               .getElementById('block-yui_3_17_2_1_1576815128904_12538')
               .querySelector('a')
               .attributes['href'];
-      print(link1);
+      // print(link1);
       final resp2 = await http.get(link1);
       if (resp2.statusCode == 200) {
         var doc2 = parse(resp2.body);
