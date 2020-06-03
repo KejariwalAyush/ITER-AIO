@@ -12,9 +12,11 @@ class Notices extends StatefulWidget {
 
 class _NoticesState extends State<Notices> {
   List iterNoticeData = List();
+  List iterExamNoticeData = List();
   List soaNoticeData = List();
   var _isLoading = false;
   int currentIndex = 0;
+  bool showExamNotice = false;
   @override
   void initState() {
     getIterNotices();
@@ -76,16 +78,40 @@ class _NoticesState extends State<Notices> {
                   ),
                   Center(
                     child: Text(
-                      currentIndex == 0 ? 'ITER Notices' : 'SOA Notices',
+                      currentIndex == 0
+                          ? showExamNotice
+                              ? 'ITER Exam Notices'
+                              : 'ITER Notices'
+                          : 'SOA Notices',
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ),
+                  currentIndex == 0
+                      ? Center(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text('Exam Notices'),
+                              Switch.adaptive(
+                                value: showExamNotice,
+                                onChanged: (value) {
+                                  setState(() {
+                                    showExamNotice = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        )
+                      : SizedBox(),
                   if (iterNoticeData == null || soaNoticeData == null)
                     Center(child: Text('No Data Available!'))
                   else
-                    for (var i
-                        in currentIndex == 0 ? iterNoticeData : soaNoticeData)
+                    for (var i in currentIndex == 0
+                        ? showExamNotice ? iterExamNoticeData : iterNoticeData
+                        : soaNoticeData)
                       InkWell(
                         onTap: () => Navigator.push(
                             context,
@@ -156,11 +182,14 @@ class _NoticesState extends State<Notices> {
     });
     final mainurl = 'https://www.soa.ac.in';
     var resp = await http.get(mainurl + '/iter-student-notice/');
-    print(mainurl + '/iter-student-notice/');
+    var resp2 = await http.get(mainurl + '/iter-exam-notice/');
+    // print(mainurl + '/iter-student-notice/');
     if (resp.statusCode == 200) {
       var doc = parse(resp.body);
+      var doc2 = parse(resp2.body);
       var links = doc.querySelectorAll('main > section > section > article');
-      print(links.length);
+      var links2 = doc2.querySelectorAll('main > section > section > article');
+      // print(links.length);
       List<Map<String, dynamic>> linkMap = [];
       // print(linkMap);
       for (var link in links) {
@@ -172,7 +201,18 @@ class _NoticesState extends State<Notices> {
         });
       }
       iterNoticeData = linkMap;
-      print(linkMap[0]);
+      List<Map<String, dynamic>> linkMap2 = [];
+      // print(linkMap);
+      for (var link in links2) {
+        linkMap2.add({
+          'title': link.querySelector('a').text,
+          'link': mainurl + link.querySelector('a').attributes['href'],
+          'author': link.querySelector('div > a').text,
+          'time': link.querySelector('div > time').text,
+        });
+      }
+      iterExamNoticeData = linkMap2;
+      // print(linkMap[0]);
     } else {
       iterNoticeData = null;
     }
