@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:flutter/services.dart';
 // import 'package:neeko/neeko.dart';
 // import 'package:chewie/src/chewie_player.dart';
@@ -48,6 +49,13 @@ class _WebPageVideoState extends State<WebPageVideo> {
           ? AppBar(
               title: Text(widget.title),
               actions: <Widget>[
+                IconButton(
+                  icon: new Icon(Icons.open_in_browser),
+                  onPressed: () {
+                    _launchURL(widget.link);
+                  },
+                  tooltip: 'Open in Browser',
+                ),
                 IconButton(
                   icon: new Icon(Icons.feedback),
                   onPressed: () {
@@ -107,6 +115,16 @@ class _WebPageVideoState extends State<WebPageVideo> {
   void dispose() {
     // _controller.dispose();
     super.dispose();
+  }
+
+  _launchURL(String url) async {
+    // const url = 'https://flutter.dev';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+    return;
   }
 }
 

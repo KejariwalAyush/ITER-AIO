@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wiredash/wiredash.dart';
 
@@ -40,6 +41,13 @@ class _WebPageViewState extends State<WebPageView> {
           ? AppBar(
               title: Text(widget.title),
               actions: <Widget>[
+                IconButton(
+                  icon: new Icon(Icons.open_in_browser),
+                  onPressed: () {
+                    _launchURL(widget.link);
+                  },
+                  tooltip: 'Open in Browser',
+                ),
                 IconButton(
                   icon: new Icon(Icons.feedback),
                   onPressed: () {
@@ -95,5 +103,15 @@ class _WebPageViewState extends State<WebPageView> {
   void dispose() {
     super.dispose();
     // _controller.dispose();
+  }
+
+  _launchURL(String url) async {
+    // const url = 'https://flutter.dev';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+    return;
   }
 }

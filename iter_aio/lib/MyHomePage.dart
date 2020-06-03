@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/components/courses.dart';
+import 'package:iteraio/components/notices.dart';
 import 'package:iteraio/components/planBunk.dart';
 import 'package:iteraio/components/result.dart';
 import 'package:html/parser.dart';
@@ -885,6 +886,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                       : () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Result())),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.notifications_none),
+              title: Text('Notices & News'),
+              onTap: isLoading
+                  ? null
+                  : noInternet
+                      ? () {
+                          Fluttertoast.showToast(
+                            msg: "No Internet!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.redAccent,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      : () => Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Notices())),
             ),
             Divider(),
             ListTile(
