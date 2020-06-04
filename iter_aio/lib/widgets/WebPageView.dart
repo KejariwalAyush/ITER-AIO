@@ -5,6 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wiredash/wiredash.dart';
 
+import 'loading.dart';
+
 class WebPageView extends StatefulWidget {
   String link, title;
   WebPageView(this.title, this.link);
@@ -87,7 +89,9 @@ class _WebPageViewState extends State<WebPageView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Center(child: CircularProgressIndicator()),
+                    Center(
+                      child: Container(height: 200, child: loading()),
+                    ),
                     SizedBox(
                       height: 10,
                     ),

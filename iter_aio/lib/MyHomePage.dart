@@ -16,6 +16,7 @@ import 'package:html/parser.dart';
 import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
+import 'package:iteraio/widgets/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 
@@ -167,6 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       onTap: () {
                         setState(() {
+                          animationName = 'still';
                           animationName = 'hello';
                         });
                       },
@@ -194,20 +196,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       cursorColor: themeDark,
                       onChanged: (String str) {
                         password = str;
-                        animationName = 'head anti rotate';
+                        animationName = 'openEyes';
                       },
                       onTap: () {
                         setState(() {
                           // animationName = 'hello';
-                          animationName = 'head rotate';
+                          animationName = 'closeEyes';
                         });
                       },
-                      // onFieldSubmitted: (value) {
-                      //   setState(() {
-                      //     animationName = 'head anti rotate';
-                      //     // animationName = 'ok';
-                      //   });
-                      // },
                       obscureText: true,
                       decoration: InputDecoration(
                         alignLabelWithHint: true,
@@ -245,7 +241,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 sem = null;
                                 infoData = null;
                                 setState(() {
-                                  // animationName = 'idle';
                                   animationName = 'hello';
                                   isLoading = true;
                                   _isLoggingIn = true;
@@ -301,7 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               body: isLoading || attendData == null
                   ? Center(
-                      child: CircularProgressIndicator(),
+                      child: Container(height: 200, child: loading()),
                     )
                   : SingleChildScrollView(
                       child: Center(
@@ -315,16 +310,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: <Widget>[
                                   Expanded(
                                     flex: 1,
-                                    child: CircleAvatar(
-                                      child: Image.asset(
-                                        gender == 'M'
-                                            ? 'assets/logos/maleAvtar.png'
-                                            : 'assets/logos/femaleAvtar.png',
-                                        fit: BoxFit.cover,
-                                      ),
-                                      radius: 40,
-                                      backgroundColor: Colors.transparent,
+                                    child: Container(
+                                      height: 90,
+                                      child: FlareActor(
+                                          "assets/animations/ITER-AIO.flr",
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.contain,
+                                          animation: "hello"),
                                     ),
+                                    // child: CircleAvatar(
+                                    //   child: Image.asset(
+                                    //     gender == 'M'
+                                    //         ? 'assets/logos/maleAvtar.png'
+                                    //         : 'assets/logos/femaleAvtar.png',
+                                    //     fit: BoxFit.cover,
+                                    //   ),
+                                    //   radius: 40,
+                                    //   backgroundColor: Colors.transparent,
+                                    // ),
                                   ),
                                   Expanded(
                                     flex: 3,

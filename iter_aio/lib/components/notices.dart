@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
+import 'package:iteraio/widgets/loading.dart';
 import 'package:wiredash/wiredash.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,7 +69,8 @@ class _NoticesState extends State<Notices> {
       ),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Container(
+                  height: 200, child: loading()), //CircularProgressIndicator(),
             )
           : SingleChildScrollView(
               child: Column(

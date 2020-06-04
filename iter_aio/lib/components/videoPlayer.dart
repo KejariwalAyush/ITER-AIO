@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/services.dart';
+import 'package:iteraio/widgets/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'package:flutter/services.dart';
 // import 'package:neeko/neeko.dart';
@@ -90,7 +91,9 @@ class _WebPageVideoState extends State<WebPageVideo> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Center(child: CircularProgressIndicator()),
+              Center(
+                child: Container(height: 200, child: loading()),
+              ),
               Center(child: Text('Getting Video ready for you.')),
             ],
           ),

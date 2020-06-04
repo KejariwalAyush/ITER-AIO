@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/components/Icons.dart';
+import 'package:iteraio/widgets/loading.dart';
 import 'package:wiredash/wiredash.dart';
 
 class Result extends StatelessWidget {
@@ -34,7 +35,7 @@ class Result extends StatelessWidget {
       ),
       body: isLoading || resultData == null
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Container(height: 200, child: loading()),
             )
           : SingleChildScrollView(
               child: Center(
@@ -55,7 +56,7 @@ class Result extends StatelessWidget {
                                   "assets/animations/ITER-AIO.flr",
                                   alignment: Alignment.center,
                                   fit: BoxFit.cover,
-                                  animation: "ok"),
+                                  animation: "still"),
                             ),
                             // child: CircleAvatar(
                             //   child: Image.asset(

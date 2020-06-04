@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:iteraio/components/videoPlayer.dart';
+import 'package:iteraio/widgets/loading.dart';
 import 'package:wiredash/wiredash.dart';
 // import 'MyHomePage.dart';
 
@@ -46,7 +47,7 @@ class _LecturesState extends State<Lectures> {
       ),
       body: isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Container(height: 200, child: loading()),
             )
           : SingleChildScrollView(
               child: Container(

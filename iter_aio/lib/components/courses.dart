@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/components/lectures.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/MyHomePage.dart';
+import 'package:iteraio/widgets/loading.dart';
 import 'package:wiredash/wiredash.dart';
 
 class Courses extends StatelessWidget {
@@ -26,7 +27,7 @@ class Courses extends StatelessWidget {
       ),
       body: isLoading || courseData == null
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Container(height: 200, child: loading()),
             )
           : SingleChildScrollView(
               child: Column(
