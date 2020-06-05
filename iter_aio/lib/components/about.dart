@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:wiredash/wiredash.dart';
+import 'package:iteraio/widgets/WebPageView.dart';
 
 class AboutUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notices & News'),
+        title: Text('About Us'),
         actions: <Widget>[
           IconButton(
             icon: new Icon(Icons.feedback),
@@ -42,17 +44,84 @@ class AboutUs extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Center(
-              child: Text(
-                'THIS APP DOES NOT PROMOTE BUNKING. THE APP WAS DESIGNED TO ENSURE THAT YOU CAN MANAGE A PROPER ATTENDANCE AND BUNK SAFELY.THE ATTENDANCE & DATA SHOWN IS COMPLETELY MANAGED BY COLLEGE.THE DEVELOPER IS NOT RESPONSIBLE FOR INACCURATE ATTENDANCE & DATA OR DELAY IN ATTENDANCE UPDATE.',
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  'THIS APP DOES NOT PROMOTE BUNKING.\n\nTHE APP WAS DESIGNED TO ENSURE THAT YOU CAN MANAGE A PROPER ATTENDANCE AND BUNK SAFELY.THE ATTENDANCE & DATA SHOWN IS COMPLETELY MANAGED BY COLLEGE.\n\nTHE DEVELOPER IS NOT RESPONSIBLE FOR INACCURATE ATTENDANCE & DATA OR DELAY IN ATTENDANCE UPDATE.',
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
-            // Row(children: <Widget>[
-            //   // Icon(Icons.)
-            // ],)
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WebPageView('Facebook',
+                            'https://www.facebook.com/ayushkejariwal.ayush'),
+                      )),
+                  icon: Icon(
+                    LineAwesomeIcons.facebook,
+                    size: 45,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WebPageView('Instagram',
+                            'https://www.instagram.com/a_kejariwal/'),
+                      )),
+                  icon: Icon(
+                    LineAwesomeIcons.instagram,
+                    size: 45,
+                    color: Colors.orangeAccent,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WebPageView('LinkedIn',
+                            'https://www.linkedin.com/in/ayush-kejariwal-1923a2191/'),
+                      )),
+                  icon: Icon(
+                    LineAwesomeIcons.linkedin_square,
+                    size: 45,
+                    color: Colors.lightBlueAccent,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WebPageView(
+                            'Github', 'https://www.github.com/KejariwalAyush'),
+                      )),
+                  icon: Icon(
+                    LineAwesomeIcons.github_square,
+                    size: 45,
+                    color: Colors.white60,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: SelectableText('Email Us at: iteraio2020@gmail.com'),
+            ),
           ],
         ),
       )),

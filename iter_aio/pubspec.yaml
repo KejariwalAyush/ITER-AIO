@@ -17,6 +17,7 @@ dependencies:
   video_player: ^0.10.11
   chewie: ^0.9.10
   webview_flutter: ^0.3.21
+  line_awesome_icons: ^1.0.4+2
   html:
   url_launcher:
   flutter:

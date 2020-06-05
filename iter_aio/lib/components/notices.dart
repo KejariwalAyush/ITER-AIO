@@ -84,7 +84,7 @@ class _NoticesState extends State<Notices> {
                           ? showExamNotice
                               ? 'ITER Exam Notices'
                               : 'ITER Notices'
-                          : 'SOA Notices',
+                          : 'SOA News & Events',
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),

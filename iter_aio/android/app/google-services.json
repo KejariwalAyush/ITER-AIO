@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "98303786042",
+    "firebase_url": "https://iter-aio.firebaseio.com",
+    "project_id": "iter-aio",
+    "storage_bucket": "iter-aio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98303786042:android:4fdac34dfa627c460d0903",
+        "android_client_info": {
+          "package_name": "com.kejariwalayush.iteraio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98303786042-f7d2q07ssb5u84vbg0q1t1ug6kedgb71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJGoMoA-qICiS2Tul2xDWqQMkoadcAAvI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98303786042-f7d2q07ssb5u84vbg0q1t1ug6kedgb71.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
