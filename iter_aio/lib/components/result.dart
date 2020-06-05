@@ -56,7 +56,7 @@ class Result extends StatelessWidget {
                                   "assets/animations/ITER-AIO.flr",
                                   alignment: Alignment.center,
                                   fit: BoxFit.cover,
-                                  animation: "still"),
+                                  animation: "hello"),
                             ),
                             // child: CircleAvatar(
                             //   child: Image.asset(
@@ -137,6 +137,16 @@ class Result extends StatelessWidget {
                                 '${getTotalresult(j)}',
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              leading: Image.asset(
+                                getTotalresult(j) >= 9.0
+                                    ? 'assets/logos/happy.gif'
+                                    : getTotalresult(j) >= 7.5
+                                        ? 'assets/logos/low happy.gif'
+                                        : getTotalresult(j) <= 5.0
+                                            ? 'assets/logos/sad.gif'
+                                            : 'assets/logos/low sad.gif',
+                                fit: BoxFit.contain,
                               ),
                               children: <Widget>[
                                 for (var i in jsonDecode(j)['Semdata'])

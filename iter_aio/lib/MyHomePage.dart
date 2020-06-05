@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/components/Icons.dart';
+import 'package:iteraio/components/about.dart';
 import 'package:iteraio/components/courses.dart';
 import 'package:iteraio/components/notices.dart';
 import 'package:iteraio/components/planBunk.dart';
@@ -304,7 +305,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Container(
-                              padding: EdgeInsets.all(15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 5),
                               margin: EdgeInsets.all(5),
                               child: Row(
                                 children: <Widget>[
@@ -427,7 +429,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: <Widget>[
                                 for (var i in attendData['griddata'])
                                   Container(
-                                    padding: EdgeInsets.all(5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 3),
                                     margin: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       color: Theme.of(context).brightness ==
@@ -474,30 +477,74 @@ class _MyHomePageState extends State<MyHomePage> {
                                       subtitle:
                                           Text('Code: ${i['subjectcode']}'),
                                       children: <Widget>[
-                                        Text(
-                                            'Last Updated On: ${getTime(i['lastupdatedon'])}'),
-                                        if (i['Latt'] != '0 / 0')
-                                          Text(
-                                            'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
-                                            textAlign: TextAlign.justify,
-                                          ),
-                                        if (i['Patt'] != '0 / 0')
-                                          Text(
-                                            'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
-                                            textAlign: TextAlign.justify,
-                                          ),
-                                        if (i['Tatt'] != '0 / 0')
-                                          Text(
-                                            'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
-                                            textAlign: TextAlign.justify,
-                                          ),
-                                        Text(
-                                          'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
-                                          textAlign: TextAlign.justify,
-                                        ),
-                                        Text(
-                                          'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
-                                          textAlign: TextAlign.justify,
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 4,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  top: 3.0,
+                                                  bottom: 3,
+                                                  left: 15,
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      'Last Updated On: ${getTime(i['lastupdatedon'])}',
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    ),
+                                                    if (i['Latt'] != '0 / 0')
+                                                      Text(
+                                                        'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                    if (i['Patt'] != '0 / 0')
+                                                      Text(
+                                                        'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                    if (i['Tatt'] != '0 / 0')
+                                                      Text(
+                                                        'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                    Text(
+                                                      'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    ),
+                                                    Text(
+                                                      'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Image.asset(
+                                                i['TotalAttandence'] >= 90
+                                                    ? 'assets/logos/happy.gif'
+                                                    : i['TotalAttandence'] > 80
+                                                        ? 'assets/logos/low happy.gif'
+                                                        : i['TotalAttandence'] >
+                                                                75
+                                                            ? 'assets/logos/low sad.gif'
+                                                            : 'assets/logos/sad.gif',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         Text(
                                           bunklogic(i),
@@ -984,6 +1031,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ? null
                   : () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Settings())),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text('About Us'),
+              onTap: isLoading
+                  ? null
+                  : () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AboutUs())),
             ),
             Divider(),
             ListTile(
