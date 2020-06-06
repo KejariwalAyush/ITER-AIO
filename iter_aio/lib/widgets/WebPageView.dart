@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:wiredash/wiredash.dart';
 
 import 'loading.dart';
 
@@ -51,12 +50,12 @@ class _WebPageViewState extends State<WebPageView> {
                   },
                   tooltip: 'Open in Browser',
                 ),
-                IconButton(
-                  icon: new Icon(Icons.feedback),
-                  onPressed: () {
-                    Wiredash.of(context).show();
-                  },
-                ),
+                // IconButton(
+                //   icon: new Icon(Icons.feedback),
+                //   onPressed: () {
+                //     Wiredash.of(context).show();
+                //   },
+                // ),
               ],
               // elevation: 15,
               // shape: RoundedRectangleBorder(

@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:wiredash/wiredash.dart';
 
 // ignore: must_be_immutable
 class WebPageVideo extends StatefulWidget {
@@ -52,12 +51,6 @@ class _WebPageVideoState extends State<WebPageVideo> {
                     _launchURL(widget.link);
                   },
                   tooltip: 'Open in Browser',
-                ),
-                IconButton(
-                  icon: new Icon(Icons.feedback),
-                  onPressed: () {
-                    Wiredash.of(context).show();
-                  },
                 ),
               ],
               // elevation: 15,

@@ -2,7 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Themes/Theme.dart';
-import 'package:wiredash/wiredash.dart';
+import 'package:iteraio/components/Icons.dart';
 
 class PlanBunk extends StatefulWidget {
   @override
@@ -13,6 +13,7 @@ class _PlanBunkState extends State<PlanBunk> {
   var dropdownValue,
       subject,
       subdata,
+      subjectCode,
       subatt = 0.0,
       classes = 0,
       absent = 0,
@@ -22,15 +23,16 @@ class _PlanBunkState extends State<PlanBunk> {
     return Scaffold(
       appBar: AppBar(
         title: Text('ITER AIO'),
+        centerTitle: true,
         elevation: 15,
-        actions: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.feedback),
-            onPressed: () {
-              Wiredash.of(context).show();
-            },
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: new Icon(Icons.feedback),
+        //     onPressed: () {
+        //       Wiredash.of(context).show();
+        //     },
+        //   ),
+        // ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
@@ -53,6 +55,7 @@ class _PlanBunkState extends State<PlanBunk> {
                             newValue.split(' ')[0]) {
                           subject = i['subject'];
                           subatt = i['TotalAttandence'];
+                          subjectCode = i['subjectcode'];
                           classes = int.parse(
                                   i['Latt'].toString().split('/')[1].trim()) +
                               int.parse(
@@ -113,37 +116,51 @@ class _PlanBunkState extends State<PlanBunk> {
                           fit: BoxFit.contain,
                           animation: "hello"),
                     )
-                  : ListTile(
-                      title: Text(
-                        '$subject',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        'Absent / Classes : $absent/$classes',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      trailing: Container(
-                        padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: subatt > 90
-                              ? Colors.green
-                              : subatt > 80
-                                  ? Colors.lightGreen
-                                  : subatt > 75
-                                      ? Colors.orangeAccent
-                                      : Colors.redAccent,
-                          borderRadius: BorderRadius.circular(10),
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          subjectAvatar(subjectCode),
+                          width: 70,
+                          alignment: Alignment.center,
                         ),
-                        child: Text(
-                          '$subatt %',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ListTile(
+                          title: Text(
+                            '$subject',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            'Absent / Classes : $absent/$classes',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          trailing: Container(
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: subatt > 90
+                                  ? Colors.green
+                                  : subatt > 80
+                                      ? Colors.lightGreen
+                                      : subatt > 75
+                                          ? Colors.orangeAccent
+                                          : Colors.redAccent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '$subatt %',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
               SizedBox(
                 height: 10,

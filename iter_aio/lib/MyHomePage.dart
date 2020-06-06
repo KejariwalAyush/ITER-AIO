@@ -18,6 +18,7 @@ import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 
@@ -117,6 +118,29 @@ class _MyHomePageState extends State<MyHomePage> {
         ? WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
+              bottomSheet: InkWell(
+                onTap: () => Wiredash.of(context).show(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        LineAwesomeIcons.bug,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Report a Bug',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               body: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(10),
@@ -242,6 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 sem = null;
                                 infoData = null;
                                 setState(() {
+                                  animationName = 'openEyes';
                                   animationName = 'hello';
                                   isLoading = true;
                                   _isLoggingIn = true;
@@ -271,6 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
               drawer: widgetDrawer(context),
               appBar: AppBar(
                 title: Text('ITER AIO'),
+                centerTitle: true,
                 elevation: 15,
                 leading: Builder(
                   builder: (context) => IconButton(
@@ -278,18 +304,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
                 ),
-                actions: <Widget>[
-                  // IconButton(
-                  //   icon: new Icon(Icons.share),
-                  //   onPressed: () {},
-                  // ),
-                  IconButton(
-                    icon: new Icon(Icons.feedback),
-                    onPressed: () {
-                      Wiredash.of(context).show();
-                    },
-                  ),
-                ],
+                // actions: <Widget>[
+                //   // IconButton(
+                //   //   icon: new Icon(Icons.share),
+                //   //   onPressed: () {},
+                //   // ),
+                //   IconButton(
+                //     icon: new Icon(Icons.feedback),
+                //     onPressed: () {
+                //       Wiredash.of(context).show();
+                //     },
+                //   ),
+                // ],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
@@ -425,12 +451,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ],
                               ),
                             ),
+                            SizedBox(
+                              height: 3,
+                            ),
                             Column(
                               children: <Widget>[
                                 for (var i in attendData['griddata'])
                                   Container(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 3),
+                                      horizontal: 5,
+                                    ),
                                     margin: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       color: Theme.of(context).brightness ==
@@ -692,9 +722,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   getResult() async {
-//    setState(() {
-//      isLoading = true;
-//    });
+    setState(() {
+      isLoading = true;
+    });
     resultData = List();
     // String results = '';
     print('loading results...');
@@ -708,7 +738,6 @@ class _MyHomePageState extends State<MyHomePage> {
       const headers = {'Content-Type': 'application/json'};
       var resultResp = await http.post(result_url,
           headers: headers, body: jsonEncode(resultPayload));
-      print(resultResp.statusCode);
       if (resultResp.statusCode == 200) {
         resultData.add('${resultResp.body}');
       }
@@ -716,9 +745,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // resultData = jsonDecode(results);
     // print(resultData);
     print('Result Fetching Complete');
-//    setState(() {
-//      isLoading = false;
-//    });
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> getCourses(var semester) async {
@@ -778,7 +807,8 @@ class _MyHomePageState extends State<MyHomePage> {
               .querySelector('a')
               .attributes['href'];
       // print(link1);
-      final resp2 = await http.get(link1);
+      final resp2 = await http
+          .get(link1); //.catchError(() => acedemicCalenderLink = null)
       if (resp2.statusCode == 200) {
         var doc2 = parse(resp2.body);
         var link2 = doc2

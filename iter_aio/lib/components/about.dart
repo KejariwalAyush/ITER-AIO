@@ -122,6 +122,37 @@ class AboutUs extends StatelessWidget {
             Center(
               child: SelectableText('Email Us at: iteraio2020@gmail.com'),
             ),
+            SizedBox(
+              height: 15,
+            ),
+            Divider(
+              height: 15,
+              thickness: 5,
+            ),
+            InkWell(
+              onTap: () => Wiredash.of(context).show(),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      LineAwesomeIcons.bug,
+                      size: 40,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Report a Bug/Request a feature',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       )),
