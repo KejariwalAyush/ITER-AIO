@@ -30,6 +30,7 @@ dependencies:
 
   firebase_core: ^0.4.0+9
   firebase_analytics: ^5.0.2
+  firebase_crashlytics: ^0.1.3+3
   # cloud_firestore: ^0.12.9+5
 
 dev_dependencies:
