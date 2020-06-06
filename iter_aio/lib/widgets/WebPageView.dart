@@ -1,4 +1,4 @@
-import 'dart:async';
+//import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,6 +7,7 @@ import 'package:wiredash/wiredash.dart';
 
 import 'loading.dart';
 
+// ignore: must_be_immutable
 class WebPageView extends StatefulWidget {
   String link, title;
   WebPageView(this.title, this.link);
@@ -16,7 +17,7 @@ class WebPageView extends StatefulWidget {
 }
 
 class _WebPageViewState extends State<WebPageView> {
-  Completer<WebViewController> _controller = Completer<WebViewController>();
+//  Completer<WebViewController> _controller = Completer<WebViewController>();
   var loadingPage = true;
 
   num position = 1;

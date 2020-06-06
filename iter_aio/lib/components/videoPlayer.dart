@@ -1,19 +1,15 @@
-import 'dart:async';
+//import 'dart:async';
 
 // import 'package:html/parser.dart';
 // import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-// import 'package:chewie/chewie.dart';
 import 'package:flutter/services.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:flutter/services.dart';
-// import 'package:neeko/neeko.dart';
-// import 'package:chewie/src/chewie_player.dart';
-// import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wiredash/wiredash.dart';
 
+// ignore: must_be_immutable
 class WebPageVideo extends StatefulWidget {
   String link, title;
   WebPageVideo(this.title, this.link);
@@ -23,7 +19,7 @@ class WebPageVideo extends StatefulWidget {
 }
 
 class _WebPageVideoState extends State<WebPageVideo> {
-  Completer<WebViewController> _controller = Completer<WebViewController>();
+//  Completer<WebViewController> _controller = Completer<WebViewController>();
   var loadingPage = true;
 
   num position = 1;

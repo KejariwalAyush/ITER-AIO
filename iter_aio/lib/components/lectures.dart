@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
+import 'package:http/http.dart' as http;
 import 'package:iteraio/components/videoPlayer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:wiredash/wiredash.dart';
 // import 'MyHomePage.dart';
 
+// ignore: must_be_immutable
 class Lectures extends StatefulWidget {
   String link, title;
   Lectures(this.title, this.link);
