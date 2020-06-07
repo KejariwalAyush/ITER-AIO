@@ -3,7 +3,7 @@ import 'package:html/parser.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
-import 'package:wiredash/wiredash.dart';
+// import 'package:wiredash/wiredash.dart';
 import 'package:http/http.dart' as http;
 
 class Notices extends StatefulWidget {
@@ -30,14 +30,14 @@ class _NoticesState extends State<Notices> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Notices & News'),
-        actions: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.feedback),
-            onPressed: () {
-              Wiredash.of(context).show();
-            },
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: new Icon(Icons.feedback),
+        //     onPressed: () {
+        //       Wiredash.of(context).show();
+        //     },
+        //   ),
+        // ],
         elevation: 15,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
