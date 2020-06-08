@@ -370,56 +370,60 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Expanded(
                                     flex: 3,
-                                    child: InkWell(
-                                      onTap: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Result())),
-                                      child: RichText(
-                                        textAlign: TextAlign.end,
-                                        text: TextSpan(
-                                            text: '$name',
-                                            style: TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.light
-                                                  ? Colors.black87
-                                                  : Colors.white,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                  text: '\nRegd. No.:$regdNo',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.light
-                                                        ? Colors.black54
-                                                        : Colors.white60,
-                                                  )),
-                                              TextSpan(
-                                                  text: '\nSemester: $sem',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.light
-                                                        ? Colors.black54
-                                                        : Colors.white60,
-                                                  )),
-                                              TextSpan(
-                                                  text: '\n$branch',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.light
-                                                        ? Colors.black54
-                                                        : Colors.white60,
-                                                  )),
-                                            ]),
+                                    child: Hero(
+                                      tag: 'home animation',
+                                      child: InkWell(
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Result())),
+                                        child: RichText(
+                                          textAlign: TextAlign.end,
+                                          text: TextSpan(
+                                              text: '$name',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black87
+                                                    : Colors.white,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                    text: '\nRegd. No.:$regdNo',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.light
+                                                          ? Colors.black54
+                                                          : Colors.white60,
+                                                    )),
+                                                TextSpan(
+                                                    text: '\nSemester: $sem',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.light
+                                                          ? Colors.black54
+                                                          : Colors.white60,
+                                                    )),
+                                                TextSpan(
+                                                    text: '\n$branch',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.light
+                                                          ? Colors.black54
+                                                          : Colors.white60,
+                                                    )),
+                                              ]),
+                                        ),
                                       ),
                                     ),
                                   )
@@ -658,7 +662,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var infoResp = await http
         .post(info_url, headers: headers, body: jsonEncode(payload))
         .timeout(
-      Duration(seconds: 5),
+      Duration(seconds: 8),
       onTimeout: () {
         Fluttertoast.showToast(
           msg: "Server Error: Timeout",

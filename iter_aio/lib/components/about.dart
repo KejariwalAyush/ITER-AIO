@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 
@@ -114,14 +115,22 @@ class AboutUs extends StatelessWidget {
                     color: Colors.white60,
                   ),
                 ),
+                IconButton(
+                  onPressed: () => _launchURL('mailto:iteraio2020@gmail.com'),
+                  icon: Icon(
+                    LineAwesomeIcons.inbox,
+                    size: 45,
+                    color: Colors.white60,
+                  ),
+                ),
               ],
             ),
-            SizedBox(
-              height: 15,
-            ),
-            Center(
-              child: SelectableText('Email Us at: iteraio2020@gmail.com'),
-            ),
+            // SizedBox(
+            //   height: 15,
+            // ),
+            // Center(
+            //   child: SelectableText('Email Us at: iteraio2020@gmail.com'),
+            // ),
             SizedBox(
               height: 15,
             ),
@@ -157,5 +166,15 @@ class AboutUs extends StatelessWidget {
         ),
       )),
     );
+  }
+
+  _launchURL(String url) async {
+    // const url = 'https://flutter.dev';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+    return;
   }
 }

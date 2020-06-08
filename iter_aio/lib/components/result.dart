@@ -71,42 +71,45 @@ class Result extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 3,
-                            child: InkWell(
-                              onTap: () => Navigator.pop(context, false),
-                              child: RichText(
-                                textAlign: TextAlign.end,
-                                text: TextSpan(
-                                    text: '$name',
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.light
-                                          ? Colors.black87
-                                          : Colors.white,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                          text: '\nRegd. No.:$regdNo',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.light
-                                                    ? Colors.black54
-                                                    : Colors.white60,
-                                          )),
-                                      TextSpan(
-                                          text: '\nSemester: $sem',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                        Brightness.light
-                                                    ? Colors.black54
-                                                    : Colors.white60,
-                                          )),
-                                    ]),
+                            child: Hero(
+                              tag: 'home animation',
+                              child: InkWell(
+                                onTap: () => Navigator.pop(context, false),
+                                child: RichText(
+                                  textAlign: TextAlign.end,
+                                  text: TextSpan(
+                                      text: '$name',
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.light
+                                            ? Colors.black87
+                                            : Colors.white,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                            text: '\nRegd. No.:$regdNo',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? Colors.black54
+                                                  : Colors.white60,
+                                            )),
+                                        TextSpan(
+                                            text: '\nSemester: $sem',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? Colors.black54
+                                                  : Colors.white60,
+                                            )),
+                                      ]),
+                                ),
                               ),
                             ),
                           )

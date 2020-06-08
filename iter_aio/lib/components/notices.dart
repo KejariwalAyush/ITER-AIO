@@ -64,8 +64,8 @@ class _NoticesState extends State<Notices> {
             }
           });
         },
-        selectedFontSize: 16,
-        unselectedFontSize: 14,
+        selectedFontSize: 18,
+        unselectedFontSize: 12,
       ),
       body: _isLoading
           ? Center(
