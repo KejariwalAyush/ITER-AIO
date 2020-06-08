@@ -76,27 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
       regdNo = prefs.getString('regd');
       password = prefs.getString('password');
       if (noInternet) {
-        attendData = jsonDecode(prefs.getString('attendence'));
-        infoData = jsonDecode(prefs.getString('info'));
-        name = infoData["detail"][0]['name'];
-        branch = infoData['detail'][0]['branchdesc'];
-        sem = attendData['griddata'][0]['stynumber'];
-        gender = infoData['detail'][0]['gender'];
-        print(gender);
-        double totatt = 0.0;
-        int cnt = 0, totAbs = 0;
-        for (var i in attendData['griddata']) {
-          totatt += i['TotalAttandence'];
-          totAbs += (int.parse(i['Latt'].toString().split('/')[1].trim()) +
-                  int.parse(i['Patt'].toString().split('/')[1].trim()) +
-                  int.parse(i['Tatt'].toString().split('/')[1].trim())) -
-              (int.parse(i['Latt'].toString().split('/')[0].trim()) +
-                  int.parse(i['Patt'].toString().split('/')[0].trim()) +
-                  int.parse(i['Tatt'].toString().split('/')[0].trim()));
-          cnt++;
-        }
-        avgAttend = (totatt / cnt).round();
-        avgAbsent = totAbs ~/ cnt;
+        getoldData();
+        // Future.delayed(Duration(seconds: 2))
+        //     .then((value) => {if (serverTimeout) noInternet = false});
       }
       setState(() {
         getTheme(themeStr);
@@ -109,6 +91,35 @@ class _MyHomePageState extends State<MyHomePage> {
         // getResult();
       }
       // print('$regdNo : $password');
+    });
+  }
+
+  getoldData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      attendData = jsonDecode(prefs.getString('attendence'));
+      infoData = jsonDecode(prefs.getString('info'));
+      String s = prefs.getString('result');
+      resultData = s.substring(1, s.length - 1).split(', ').toList();
+      name = infoData["detail"][0]['name'];
+      branch = infoData['detail'][0]['branchdesc'];
+      sem = attendData['griddata'][0]['stynumber'];
+      gender = infoData['detail'][0]['gender'];
+      // print(gender);
+      double totatt = 0.0;
+      int cnt = 0, totAbs = 0;
+      for (var i in attendData['griddata']) {
+        totatt += i['TotalAttandence'];
+        totAbs += (int.parse(i['Latt'].toString().split('/')[1].trim()) +
+                int.parse(i['Patt'].toString().split('/')[1].trim()) +
+                int.parse(i['Tatt'].toString().split('/')[1].trim())) -
+            (int.parse(i['Latt'].toString().split('/')[0].trim()) +
+                int.parse(i['Patt'].toString().split('/')[0].trim()) +
+                int.parse(i['Tatt'].toString().split('/')[0].trim()));
+        cnt++;
+      }
+      avgAttend = (totatt / cnt).round();
+      avgAbsent = totAbs ~/ cnt;
     });
   }
 
@@ -360,21 +371,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Expanded(
                                     flex: 3,
                                     child: InkWell(
-                                      onTap: () => noInternet
-                                          ? Fluttertoast.showToast(
-                                              msg: "No Internet!",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.BOTTOM,
-                                              timeInSecForIosWeb: 2,
-                                              backgroundColor: Colors.redAccent,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0,
-                                            )
-                                          : Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Result())),
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Result())),
                                       child: RichText(
                                         textAlign: TextAlign.end,
                                         text: TextSpan(
@@ -652,10 +652,43 @@ class _MyHomePageState extends State<MyHomePage> {
     const info_url = 'https://iterapi-web.herokuapp.com/info/';
     const attend_url = 'https://iterapi-web.herokuapp.com/attendence/';
 
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     var payload = {"user_id": "$regdNo", "password": "$password"};
     const headers = {'Content-Type': 'application/json'};
-    var infoResp =
-        await http.post(info_url, headers: headers, body: jsonEncode(payload));
+    var infoResp = await http
+        .post(info_url, headers: headers, body: jsonEncode(payload))
+        .timeout(
+      Duration(seconds: 5),
+      onTimeout: () {
+        Fluttertoast.showToast(
+          msg: "Server Error: Timeout",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        print('server timeout');
+        // getoldData();
+        // isLoggedIn = false;
+        setState(() {
+          noInternet = true;
+          //_getCredentials();
+          serverTimeout = true;
+        });
+
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+        return null;
+      },
+    );
+    if (serverTimeout) {
+      sem =
+          jsonDecode(prefs.getString('attendence'))['griddata'][0]['stynumber'];
+      getCourses(sem);
+      return;
+    }
     var attendResp = await http.post(attend_url,
         headers: headers, body: jsonEncode(payload));
     // print('info: ${infoResp.statusCode}');
@@ -663,7 +696,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (infoResp.statusCode == 200 && attendResp.statusCode == 200) {
       infoData = jsonDecode(infoResp.body);
       attendData = jsonDecode(attendResp.body);
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('attendence', attendResp.body);
       await prefs.setString('info', infoResp.body);
 //      print(attendData);
@@ -745,6 +777,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // resultData = jsonDecode(results);
     // print(resultData);
     print('Result Fetching Complete');
+    // String s = resultData.toString();
+    // print(s);
+    // print(s.substring(1, s.length - 2).split(', ').length);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('result', resultData.toString());
     setState(() {
       isLoading = false;
     });
@@ -935,7 +972,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Lectures'),
               onTap: isLoading
                   ? null
-                  : noInternet
+                  : !serverTimeout && noInternet
                       ? () {
                           Fluttertoast.showToast(
                             msg: "No Internet!",
@@ -954,22 +991,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               leading: Icon(Icons.assignment),
               title: Text('Result'),
-              onTap: isLoading
-                  ? null
-                  : noInternet
-                      ? () {
-                          Fluttertoast.showToast(
-                            msg: "No Internet!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.redAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                      : () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Result())),
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Result())),
             ),
             Divider(),
             ListTile(
@@ -977,7 +1000,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Notices & News'),
               onTap: isLoading
                   ? null
-                  : noInternet
+                  : !serverTimeout && noInternet
                       ? () {
                           Fluttertoast.showToast(
                             msg: "No Internet!",
@@ -998,7 +1021,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Academic Calender'),
               onTap: isLoading
                   ? null
-                  : noInternet
+                  : !serverTimeout && noInternet
                       ? () {
                           Fluttertoast.showToast(
                             msg: "No Internet!",

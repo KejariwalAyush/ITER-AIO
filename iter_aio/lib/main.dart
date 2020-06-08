@@ -16,6 +16,7 @@ void main() {
 
 var appStarted = true;
 bool noInternet = false;
+bool serverTimeout = false;
 Brightness brightness = Brightness.dark;
 
 class MyApp extends StatefulWidget {
