@@ -33,6 +33,18 @@ class Result extends StatelessWidget {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
+      bottomSheet: Container(
+        height: 20,
+        padding: EdgeInsets.only(bottom: 8),
+        alignment: Alignment.bottomCenter,
+        child: Text(
+          'All data may take some time to load.',
+          style: TextStyle(
+            fontSize: 10,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
       body: isLoading //|| resultData == null
           ? Center(
               child: Container(height: 200, child: loading()),

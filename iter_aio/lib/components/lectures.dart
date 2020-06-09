@@ -5,7 +5,7 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:iteraio/components/videoPlayer.dart';
 import 'package:iteraio/widgets/loading.dart';
-// import 'MyHomePage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class Lectures extends StatefulWidget {
@@ -24,6 +24,13 @@ class _LecturesState extends State<Lectures> {
       getLectures(widget.link);
     });
     super.initState();
+  }
+
+  _setLastVideoDetails(String title, String link) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('video title', title);
+    await prefs.setString('video link', link);
   }
 
   @override
@@ -71,12 +78,15 @@ class _LecturesState extends State<Lectures> {
                           ),
                         ),
                         onTap: //null,
-                            () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        // VideoApp(i['title'], i['link2'])
-                                        WebPageVideo(i['title'], i['link2']))),
+                            () {
+                          _setLastVideoDetails(i['title'], i['link2']);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      // VideoApp(i['title'], i['link2'])
+                                      WebPageVideo(i['title'], i['link2'])));
+                        },
                         // subtitle: Text(DateTime.(i['date'])),
                       ),
                   ],

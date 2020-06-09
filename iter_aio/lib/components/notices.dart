@@ -3,6 +3,7 @@ import 'package:html/parser.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
+import 'package:iteraio/main.dart';
 // import 'package:wiredash/wiredash.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,6 +67,7 @@ class _NoticesState extends State<Notices> {
         },
         selectedFontSize: 18,
         unselectedFontSize: 12,
+        unselectedIconTheme: IconThemeData(size: 16),
       ),
       body: _isLoading
           ? Center(
@@ -147,9 +149,7 @@ class _NoticesState extends State<Notices> {
                                 text: '\n${i['time']}',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: MediaQuery.of(context)
-                                                .platformBrightness ==
-                                            Brightness.light
+                                    color: brightness == Brightness.light
                                         ? Colors.black54
                                         : Colors.white54),
                                 // children: [

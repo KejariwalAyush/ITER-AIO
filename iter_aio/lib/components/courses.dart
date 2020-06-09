@@ -2,9 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/components/lectures.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/MyHomePage.dart';
+import 'package:iteraio/components/videoPlayer.dart';
+import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/loading.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Courses extends StatelessWidget {
+class Courses extends StatefulWidget {
+  @override
+  _CoursesState createState() => _CoursesState();
+}
+
+class _CoursesState extends State<Courses> {
+  String videoTitle;
+  String videoLink;
+
+  void initState() {
+    setState(() {
+      _getLastVideoDetails();
+    });
+    super.initState();
+  }
+
+  _getLastVideoDetails() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      videoTitle = prefs.getString('video title');
+      videoLink = prefs.getString('video link');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +52,23 @@ class Courses extends StatelessWidget {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
+      floatingActionButton: videoTitle == null
+          ? SizedBox()
+          : FloatingActionButton(
+              tooltip: 'Play Last Video',
+              child: Icon(
+                LineAwesomeIcons.play,
+                size: 35,
+                color:
+                    brightness == Brightness.dark ? Colors.white : Colors.grey,
+              ),
+              backgroundColor: themeDark,
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            WebPageVideo(videoTitle, videoLink)),
+                  )),
       body: isLoading || courseData == null
           ? Center(
               child: Container(height: 200, child: loading()),

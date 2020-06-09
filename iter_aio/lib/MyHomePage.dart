@@ -662,7 +662,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var infoResp = await http
         .post(info_url, headers: headers, body: jsonEncode(payload))
         .timeout(
-      Duration(seconds: 8),
+      Duration(seconds: 13),
       onTimeout: () {
         Fluttertoast.showToast(
           msg: "Server Error: Timeout",
@@ -761,6 +761,9 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       isLoading = true;
     });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String s = prefs.getString('result');
+    // resultData = s.substring(1, s.length - 1).split(', ').toList();
     resultData = List();
     // String results = '';
     print('loading results...');
@@ -784,7 +787,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // String s = resultData.toString();
     // print(s);
     // print(s.substring(1, s.length - 2).split(', ').length);
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('result', resultData.toString());
     setState(() {
       isLoading = false;
