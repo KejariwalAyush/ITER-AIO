@@ -97,7 +97,8 @@ class _CoursesState extends State<Courses> {
                         children: <Widget>[
                           for (var j in i['subjects'])
                             ListTile(
-                              contentPadding: EdgeInsets.only(top: 5, left: 30),
+                              contentPadding:
+                                  EdgeInsets.only(top: 5, left: 30, right: 15),
                               title: Text(
                                 j['subject'],
                                 style: TextStyle(
@@ -110,7 +111,7 @@ class _CoursesState extends State<Courses> {
                                 ),
                               ),
                               trailing: Image.asset(
-                                subjectAvatar(j['subjectcode']),
+                                subjectAvatar(j['subjectCode']),
                                 width: 40,
                               ),
                               onTap: () => Navigator.push(
