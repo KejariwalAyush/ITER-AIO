@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/components/lectures.dart';
 import 'package:iteraio/Themes/Theme.dart';
 import 'package:iteraio/MyHomePage.dart';
@@ -107,6 +108,10 @@ class _CoursesState extends State<Courses> {
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
+                              ),
+                              trailing: Image.asset(
+                                subjectAvatar(j['subjectcode']),
+                                width: 40,
                               ),
                               onTap: () => Navigator.push(
                                   context,

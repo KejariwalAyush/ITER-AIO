@@ -662,7 +662,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var infoResp = await http
         .post(info_url, headers: headers, body: jsonEncode(payload))
         .timeout(
-      Duration(seconds: 13),
+      Duration(seconds: 15),
       onTimeout: () {
         Fluttertoast.showToast(
           msg: "Server Error: Timeout",
@@ -1000,6 +1000,31 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Result'),
               onTap: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Result())),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(LineAwesomeIcons.book),
+              title: Text('Study Materials'),
+              onTap: isLoading
+                  ? null
+                  : !serverTimeout && noInternet
+                      ? () {
+                          Fluttertoast.showToast(
+                            msg: "No Internet!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.redAccent,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      : () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WebPageView(
+                                  'ITER Book Shelf',
+                                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'))),
             ),
             Divider(),
             ListTile(
