@@ -53,15 +53,28 @@ class _CoursesState extends State<Courses> {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: videoTitle == null
           ? SizedBox()
-          : FloatingActionButton(
-              tooltip: 'Play Last Video',
-              child: Icon(
-                LineAwesomeIcons.play,
-                size: 35,
-                color:
-                    brightness == Brightness.dark ? Colors.white : Colors.grey,
+          : FloatingActionButton.extended(
+              // tooltip: 'Play Last Video',
+              label: Row(
+                children: <Widget>[
+                  Icon(
+                    LineAwesomeIcons.play,
+                    // size: 35,
+                    color: brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.grey,
+                  ),
+                  Text(
+                    'Play Last Video',
+                    style: TextStyle(
+                        color: brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.grey),
+                  ),
+                ],
               ),
               backgroundColor: themeDark,
               onPressed: () => Navigator.push(

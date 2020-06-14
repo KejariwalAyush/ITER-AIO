@@ -60,8 +60,8 @@ Color themeDark3 = Colors.deepOrange;
 Color colorLight3 = Colors.brown[400];
 Color themeLight3 = Colors.brown;
 
-Color colorDark4 = Colors.blue[300];
-Color themeDark4 = Colors.blue;
+Color colorDark4 = Colors.pinkAccent;
+Color themeDark4 = Colors.pink;
 
 Color colorLight4 = Colors.deepPurple[300];
 Color themeLight4 = Colors.deepPurple;
