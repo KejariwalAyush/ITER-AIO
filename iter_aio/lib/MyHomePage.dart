@@ -128,189 +128,214 @@ class _MyHomePageState extends State<MyHomePage> {
     return !isLoggedIn && !noInternet || attendData == null
         ? WillPopScope(
             onWillPop: _onWillPop,
-            child: SafeArea(
-              child: Scaffold(
-                bottomSheet: InkWell(
-                  onTap: () => Wiredash.of(context).show(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          LineAwesomeIcons.bug,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Report a Bug',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                body: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(10),
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(left: 24.0, right: 24.0),
+            child: Scaffold(
+              bottomSheet: InkWell(
+                onTap: () => Wiredash.of(context).show(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Center(
-                        child: Text(
-                          'ITER - AIO',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      Icon(
+                        LineAwesomeIcons.bug,
                       ),
                       SizedBox(
-                        height: 50,
+                        width: 10,
                       ),
-                      new Container(
-                        height: 240,
-                        width: MediaQuery.of(context).size.width,
-                        child: new FlareActor("assets/animations/ITER-AIO.flr",
-                            alignment: Alignment.center,
-                            fit: BoxFit.contain,
-                            animation: animationName),
-                      ),
-                      Center(
-                        child: Text(
-                          'Login',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.number,
-                        // textInputAction: TextInputAction.continueAction,
-                        autofocus: false,
-                        initialValue: regdNo,
-                        cursorColor: themeDark,
-                        onChanged: (String str) {
-                          regdNo = str;
-                          animationName = 'ok';
-                        },
-                        onTap: () {
-                          setState(() {
-                            animationName = 'still';
-                            Future.delayed(Duration(seconds: 1))
-                                .whenComplete(() {
-                              setState(() {
-                                animationName = 'hello';
-                              });
-                            });
-                          });
-                        },
-                        enabled: !_isLoggingIn,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          icon: Icon(Icons.person_outline),
-                          hintText: 'Regd No.',
-                          fillColor: themeDark,
-                          focusColor: themeDark,
-                          hoverColor: themeDark,
-                          contentPadding:
-                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(32.0)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        autofocus: false,
-                        initialValue: password,
-                        cursorColor: themeDark,
-                        onChanged: (String str) {
-                          password = str;
-                          animationName = 'openEyes';
-                        },
-                        onTap: () {
-                          setState(() {
-                            animationName = 'closeEyes';
-                          });
-                        },
-                        enabled: !_isLoggingIn,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          icon: Icon(Icons.lock_outline),
-                          hintText: 'Password',
-                          fillColor: themeDark,
-                          focusColor: themeDark,
-                          hoverColor: themeDark,
-                          contentPadding:
-                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(32.0)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        child: _isLoggingIn &&
-                                regdNo != null &&
-                                password != null
-                            ? Center(
-                                child: CircularProgressIndicator(
-                                    // backgroundColor: themeDark,valueColor:,
-                                    ))
-                            : RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                                onPressed: () {
-                                  print('$regdNo : $password');
-                                  _setCredentials();
-                                  attendData = null;
-                                  resultData = null;
-                                  name = null;
-                                  sem = null;
-                                  infoData = null;
-                                  setState(() {
-                                    animationName = 'openEyes';
-                                    Future.delayed(Duration(seconds: 1))
-                                        .whenComplete(() {
-                                      setState(() {
-                                        animationName = 'hello';
-                                      });
-                                    });
-                                    isLoading = true;
-                                    _isLoggingIn = true;
-                                    getData();
-                                    getResult();
-                                    // isLoggedIn = true;
-                                  });
-                                },
-                                padding: EdgeInsets.all(12),
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? themeLight
-                                    : themeDark,
-                                child: Text('Log In',
-                                    style: TextStyle(color: Colors.white)),
-                              ),
+                      Text(
+                        'Report a Bug',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
+                ),
+              ),
+              floatingActionButton: isLoading
+                  ? SizedBox()
+                  : FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          _isLoggingIn = false;
+                          isLoading = false;
+                          attendData = null;
+                          resultData = null;
+                          name = null;
+                          sem = null;
+                          infoData = null;
+                          regdNo = null;
+                        });
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                        );
+                      },
+                      backgroundColor: themeDark,
+                      tooltip: 'Cancel LogIn',
+                      child: Icon(
+                        LineAwesomeIcons.close,
+                        // size: 35,
+                        color: brightness == Brightness.dark ||
+                                themeDark == themeDark1
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
+              body: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(10),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0),
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        'ITER - AIO',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    new Container(
+                      height: 240,
+                      width: MediaQuery.of(context).size.width,
+                      child: new FlareActor("assets/animations/ITER-AIO.flr",
+                          alignment: Alignment.center,
+                          fit: BoxFit.contain,
+                          animation: animationName),
+                    ),
+                    Center(
+                      child: Text(
+                        'Login',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      // textInputAction: TextInputAction.continueAction,
+                      autofocus: false,
+                      initialValue: regdNo,
+                      cursorColor: themeDark,
+                      onChanged: (String str) {
+                        regdNo = str;
+                        animationName = 'ok';
+                      },
+                      onTap: () {
+                        setState(() {
+                          animationName = 'still';
+                          Future.delayed(Duration(seconds: 1)).whenComplete(() {
+                            setState(() {
+                              animationName = 'hello';
+                            });
+                          });
+                        });
+                      },
+                      enabled: !_isLoggingIn,
+                      decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        icon: Icon(Icons.person_outline),
+                        hintText: 'Regd No.',
+                        fillColor: themeDark,
+                        focusColor: themeDark,
+                        hoverColor: themeDark,
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.done,
+                      autofocus: false,
+                      initialValue: password,
+                      cursorColor: themeDark,
+                      onChanged: (String str) {
+                        password = str;
+                        animationName = 'openEyes';
+                      },
+                      onTap: () {
+                        setState(() {
+                          animationName = 'closeEyes';
+                        });
+                      },
+                      enabled: !_isLoggingIn,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        icon: Icon(Icons.lock_outline),
+                        hintText: 'Password',
+                        fillColor: themeDark,
+                        focusColor: themeDark,
+                        hoverColor: themeDark,
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: _isLoggingIn && regdNo != null && password != null
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  // backgroundColor: themeDark,valueColor:,
+                                  ))
+                          : RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              onPressed: () {
+                                print('$regdNo : $password');
+                                _setCredentials();
+                                attendData = null;
+                                resultData = null;
+                                name = null;
+                                sem = null;
+                                infoData = null;
+                                setState(() {
+                                  animationName = 'openEyes';
+                                  Future.delayed(Duration(seconds: 1))
+                                      .whenComplete(() {
+                                    setState(() {
+                                      animationName = 'hello';
+                                    });
+                                  });
+                                  isLoading = true;
+                                  _isLoggingIn = true;
+                                  getData();
+                                  getResult();
+                                  // isLoggedIn = true;
+                                });
+                              },
+                              padding: EdgeInsets.all(12),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? themeLight
+                                  : themeDark,
+                              child: Text('Log In',
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                    ),
+                  ],
                 ),
               ),
             ),
