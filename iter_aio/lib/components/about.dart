@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iteraio/main.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
@@ -95,7 +96,9 @@ class AboutUs extends StatelessWidget {
                   icon: Icon(
                     LineAwesomeIcons.github_square,
                     size: 45,
-                    color: Colors.white60,
+                    color: brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 ),
                 IconButton(
@@ -103,7 +106,9 @@ class AboutUs extends StatelessWidget {
                   icon: Icon(
                     LineAwesomeIcons.inbox,
                     size: 45,
-                    color: Colors.white60,
+                    color: brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 ),
               ],

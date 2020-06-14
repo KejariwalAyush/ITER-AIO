@@ -63,16 +63,18 @@ class _CoursesState extends State<Courses> {
                   Icon(
                     LineAwesomeIcons.play,
                     // size: 35,
-                    color: brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.grey,
+                    color:
+                        brightness == Brightness.dark || themeDark == themeDark1
+                            ? Colors.white
+                            : Colors.black,
                   ),
                   Text(
                     'Play Last Video',
                     style: TextStyle(
-                        color: brightness == Brightness.dark
+                        color: brightness == Brightness.dark ||
+                                themeDark == themeDark1
                             ? Colors.white
-                            : Colors.grey),
+                            : Colors.black),
                   ),
                 ],
               ),

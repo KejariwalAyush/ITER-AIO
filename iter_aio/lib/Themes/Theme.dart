@@ -39,11 +39,8 @@ const MaterialColor primaryBlue = MaterialColor(
 );
 const int _bluePrimaryValue = 0xFF007Fe0;
 
-Color colorDark1 = primaryBlack[200]; //Colors.redAccent;
+Color colorDark1 = primaryBlack[200];
 Color themeDark1 = primaryBlack;
-
-// Color colorDark1 = Colors.redAccent; //Color(0xFFed0b0e);
-// Color themeDark1 = Colors.black; //Color(0xFF252527);
 
 Color colorLight1 = primaryBlue[400]; //Colors.purple[100];
 Color themeLight1 = primaryBlue; //Colors.purple;

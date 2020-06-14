@@ -482,10 +482,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     margin: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.light
-                                          ? colorLight
-                                          : colorDark,
+                                      color: colorDark,
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: ExpansionTile(
