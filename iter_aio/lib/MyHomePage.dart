@@ -152,24 +152,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              floatingActionButton: isLoading
+              floatingActionButton: !_isLoggingIn && !isLoading
                   ? SizedBox()
                   : FloatingActionButton(
                       onPressed: () {
                         setState(() {
                           _isLoggingIn = false;
                           isLoading = false;
+                          password = null;
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage()),
+                          );
                           attendData = null;
                           resultData = null;
                           name = null;
                           sem = null;
                           infoData = null;
-                          regdNo = null;
                         });
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
-                        );
                       },
                       backgroundColor: themeDark,
                       tooltip: 'Cancel LogIn',
@@ -234,8 +235,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       onTap: () {
                         setState(() {
-                          animationName = 'still';
-                          Future.delayed(Duration(seconds: 1)).whenComplete(() {
+                          if (animationName == 'closeEyes')
+                            animationName = 'openEyes';
+                          else
+                            animationName = 'still';
+                          Future.delayed(Duration(milliseconds: 1500))
+                              .whenComplete(() {
                             setState(() {
                               animationName = 'hello';
                             });

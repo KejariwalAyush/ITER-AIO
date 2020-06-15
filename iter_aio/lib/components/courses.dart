@@ -58,25 +58,15 @@ class _CoursesState extends State<Courses> {
           ? SizedBox()
           : FloatingActionButton.extended(
               // tooltip: 'Play Last Video',
-              label: Row(
-                children: <Widget>[
-                  Icon(
-                    LineAwesomeIcons.play,
-                    // size: 35,
-                    color:
-                        brightness == Brightness.dark || themeDark == themeDark1
-                            ? Colors.white
-                            : Colors.black,
-                  ),
-                  Text(
-                    'Play Last Video',
-                    style: TextStyle(
-                        color: brightness == Brightness.dark ||
-                                themeDark == themeDark1
-                            ? Colors.white
-                            : Colors.black),
-                  ),
-                ],
+              icon: Icon(
+                LineAwesomeIcons.play,
+              ),
+              foregroundColor:
+                  brightness == Brightness.dark || themeDark == themeDark1
+                      ? Colors.white
+                      : Colors.black,
+              label: Text(
+                'Play Last Video',
               ),
               backgroundColor: themeDark,
               onPressed: () => Navigator.push(
