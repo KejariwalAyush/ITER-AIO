@@ -16,6 +16,7 @@ import 'package:iteraio/components/result.dart';
 import 'package:html/parser.dart';
 import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/main.dart';
+import 'package:iteraio/widgets/Mdviewer.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -190,6 +191,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   shrinkWrap: true,
                   padding: EdgeInsets.only(left: 24.0, right: 24.0),
                   children: <Widget>[
+                    InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MdViewer('Privacy Policy',
+                                  'assets/policy/PrivacyPolicy.md'))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.lock,
+                              size: 20,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Privacy Policy',
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
                     Center(
                       child: Text(
                         'ITER - AIO',

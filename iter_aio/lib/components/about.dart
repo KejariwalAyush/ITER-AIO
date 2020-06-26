@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/main.dart';
+import 'package:iteraio/widgets/Mdviewer.dart';
+import 'package:iteraio/widgets/ReportBugs.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 
-class AboutUs extends StatelessWidget {
+// ignore: must_be_immutable
+class AboutUs extends StatefulWidget {
+  @override
+  _AboutUsState createState() => _AboutUsState();
+}
+
+class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +112,7 @@ class AboutUs extends StatelessWidget {
                 IconButton(
                   onPressed: () => _launchURL('mailto:iteraio2020@gmail.com'),
                   icon: Icon(
-                    LineAwesomeIcons.inbox,
+                    LineAwesomeIcons.envelope,
                     size: 45,
                     color: brightness == Brightness.dark
                         ? Colors.white
@@ -127,7 +135,11 @@ class AboutUs extends StatelessWidget {
               thickness: 5,
             ),
             InkWell(
-              onTap: () => Wiredash.of(context).show(),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MdViewer(
+                          'Privacy Policy', 'assets/policy/PrivacyPolicy.md'))),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
@@ -135,14 +147,14 @@ class AboutUs extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Icon(
-                      LineAwesomeIcons.bug,
-                      size: 40,
+                      LineAwesomeIcons.lock,
+                      size: 35,
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     Text(
-                      'Report a Bug/Request a feature',
+                      'Privacy Policy',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -150,9 +162,11 @@ class AboutUs extends StatelessWidget {
                 ),
               ),
             ),
+            // ReportBugs(),
           ],
         ),
       )),
+      bottomSheet: ReportBugs(),
     );
   }
 
