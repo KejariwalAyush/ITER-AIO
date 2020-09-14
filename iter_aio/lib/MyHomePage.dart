@@ -1069,29 +1069,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.clear),
                   onPressed: () => Navigator.pop(context, false)),
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.video_library),
-              title: Text('Lectures'),
-              onTap: isLoading
-                  ? null
-                  : !serverTimeout && noInternet
-                      ? () {
-                          Fluttertoast.showToast(
-                            msg: "No Internet!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.redAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                      : () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Courses())),
-            ),
-            if (_isLoggingIn) Divider(),
-            if (_isLoggingIn)
+            if (isLoggedIn) Divider(),
+            if (isLoggedIn)
+              ListTile(
+                leading: Icon(Icons.video_library),
+                title: Text('Lectures'),
+                onTap: isLoading
+                    ? null
+                    : !serverTimeout && noInternet
+                        ? () {
+                            Fluttertoast.showToast(
+                              msg: "No Internet!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.redAccent,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          }
+                        : () => Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Courses())),
+              ),
+            if (isLoggedIn) Divider(),
+            if (isLoggedIn)
               ListTile(
                 leading: Icon(Icons.assignment),
                 title: Text('Result'),
@@ -1196,8 +1197,8 @@ class _MyHomePageState extends State<MyHomePage> {
             //                         builder: (context) =>
             //                             WebPageView(branch, curriculumLink)));
             //               }),
-            if (_isLoggingIn) Divider(),
-            if (_isLoggingIn)
+            if (isLoggedIn) Divider(),
+            if (isLoggedIn)
               ListTile(
                 leading: Icon(Icons.airline_seat_individual_suite),
                 title: Text('Plan a Bunk'),
@@ -1225,7 +1226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(builder: (context) => AboutUs())),
             ),
             Divider(),
-            if (_isLoggingIn)
+            if (isLoggedIn)
               ListTile(
                 leading: Icon(Icons.power_settings_new),
                 title: Text('Logout'),
