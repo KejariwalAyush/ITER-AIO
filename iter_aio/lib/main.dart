@@ -9,6 +9,7 @@ import 'package:iteraio/important.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:wiredash/wiredash.dart';
+import 'package:package_info/package_info.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,6 +19,14 @@ var appStarted = true;
 bool noInternet = false;
 bool serverTimeout = false;
 Brightness brightness = Brightness.dark;
+
+String appName = 'NCOV-19';
+String packageName;
+String version = '1.0';
+String buildNumber;
+String updatelink;
+String latestversion;
+bool isUpdateAvailable = false;
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -58,6 +67,13 @@ class _MyAppState extends State<MyApp> {
 
   Future _getThingsOnStartup() async {
     await Future.delayed(Duration(seconds: 0));
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appName = packageInfo.appName;
+      packageName = packageInfo.packageName;
+      version = packageInfo.version;
+      buildNumber = packageInfo.buildNumber;
+    });
   }
 
   _getCredentials() async {
@@ -99,14 +115,6 @@ class _MyAppState extends State<MyApp> {
           brightness: brightness,
           appBarTheme: AppBarTheme(color: themeDark),
         ),
-        // darkTheme: ThemeData(
-        //   primarySwatch: themeDark,
-        //   // visualDensity: VisualDensity.adaptivePlatformDensity,
-        //   brightness: Brightness.dark, //primaryColor: themeDark,
-        //   appBarTheme: AppBarTheme(color: themeDark), indicatorColor: themeDark,
-        //   // backgroundColor: Colors.black,
-        //   hoverColor: themeDark,
-        // ),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(
           seconds: 1,
@@ -130,11 +138,11 @@ class _MyAppState extends State<MyApp> {
             fit: BoxFit.contain,
           ),
           loaderColor: Colors.white,
-          // loadingText: Text(
-          //   'LOADING...',
-          //   textAlign: TextAlign.center,
-          //   style: TextStyle(fontSize: 16, color: Colors.white60),
-          // ),
+          loadingText: Text(
+            'LOADING...',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, color: Colors.white60),
+          ),
         ),
       ),
     );

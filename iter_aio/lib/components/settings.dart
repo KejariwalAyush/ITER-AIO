@@ -131,7 +131,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 1'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeLight1;
                             colorLight = colorLight1;
                             themeDark = themeLight1;
@@ -161,7 +161,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 1'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeDark1;
                             colorLight = colorDark1;
                             themeDark = themeDark1;
@@ -195,7 +195,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 2'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeLight2;
                             colorLight = colorLight2;
                             themeDark = themeLight2;
@@ -226,7 +226,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 2'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeDark2;
                             colorLight = colorDark2;
                             themeDark = themeDark2;
@@ -261,7 +261,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 3'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeLight3;
                             colorLight = colorLight3;
                             themeDark = themeLight3;
@@ -292,7 +292,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 3'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeDark3;
                             colorLight = colorDark3;
                             themeDark = themeDark3;
@@ -327,7 +327,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 4'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeLight4;
                             colorLight = colorLight4;
                             themeDark = themeLight4;
@@ -358,7 +358,7 @@ class _SettingsState extends State<Settings> {
                         title: Text('Theme 4'),
                         onTap: () {
                           setState(() {
-                            isLoggedIn = true;
+                            //isLoggedIn = false;
                             themeLight = themeDark4;
                             colorLight = colorDark4;
                             themeDark = themeDark4;

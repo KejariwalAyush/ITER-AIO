@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
@@ -38,22 +39,25 @@ class _AboutUsState extends State<AboutUs> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                    child: Image.asset(
-                  'assets/logos/codex.jpg',
-                  fit: BoxFit.contain,
-                )),
-                Expanded(
-                    child: Image.asset(
-                  'assets/logos/icon.png',
-                  fit: BoxFit.contain,
-                )),
-              ],
+            SizedBox(
+              height: 150,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Image.asset(
+                    'assets/logos/codex.jpg',
+                    fit: BoxFit.contain,
+                  )),
+                  Expanded(
+                      child: Image.asset(
+                    'assets/logos/icon.png',
+                    fit: BoxFit.contain,
+                  )),
+                ],
+              ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Center(
               child: Padding(
@@ -65,7 +69,7 @@ class _AboutUsState extends State<AboutUs> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -127,6 +131,50 @@ class _AboutUsState extends State<AboutUs> {
             // Center(
             //   child: SelectableText('Email Us at: iteraio2020@gmail.com'),
             // ),
+            Divider(),
+            Center(
+              child: RichText(
+                text: TextSpan(
+                    text: 'Source Code : ',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: 'GitHub',
+                          style:
+                              TextStyle(color: Colors.blueAccent, fontSize: 20),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _launchURL(
+                                  "https://github.com/KejariwalAyush/ITER-AIO");
+                            }
+//                      ) // Not Working on click of url
+                          )
+                    ]),
+              ),
+            ),
+            Divider(),
+            Center(
+              child: RichText(
+                text: TextSpan(
+                    text: 'Version ',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: '$version',
+                          style:
+                              TextStyle(color: Colors.blueAccent, fontSize: 20),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _launchURL(
+                                  "https://github.com/KejariwalAyush/ITER-AIO/releases");
+                            })
+                    ]),
+              ),
+            ),
             SizedBox(
               height: 15,
             ),
@@ -162,7 +210,6 @@ class _AboutUsState extends State<AboutUs> {
                 ),
               ),
             ),
-            // ReportBugs(),
           ],
         ),
       )),
