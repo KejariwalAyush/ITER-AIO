@@ -48,9 +48,13 @@ class _NoticesState extends State<Notices> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.business_center), title: Text('ITER')),
+              icon: Icon(Icons.business_center),
+              // ignore: deprecated_member_use
+              title: Text('ITER')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.business), title: Text('SOA')),
+              icon: Icon(Icons.business),
+              // ignore: deprecated_member_use
+              title: Text('SOA')),
         ],
         selectedItemColor: themeDark,
         elevation: 5,
@@ -114,7 +118,9 @@ class _NoticesState extends State<Notices> {
                     Center(child: Text('No Data Available!'))
                   else
                     for (var i in currentIndex == 0
-                        ? showExamNotice ? iterExamNoticeData : iterNoticeData
+                        ? showExamNotice
+                            ? iterExamNoticeData
+                            : iterNoticeData
                         : soaNoticeData)
                       InkWell(
                         onTap: () => Navigator.push(

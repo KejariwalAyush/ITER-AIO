@@ -130,6 +130,56 @@ class _MyHomePageState extends State<MyHomePage> {
         ? WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
+              drawer: widgetDrawer(context),
+              appBar: AppBar(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                leading: Builder(
+                  builder: (context) => IconButton(
+                    icon: new Icon(Icons.apps),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      LineAwesomeIcons.lock,
+                      size: 20,
+                    ),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MdViewer('Privacy Policy',
+                                'assets/policy/PrivacyPolicy.md'))),
+                    tooltip: 'Privacy Policy',
+                  ),
+                  // InkWell(
+                  //   onTap: () => Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => MdViewer('Privacy Policy',
+                  //               'assets/policy/PrivacyPolicy.md'))),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.end,
+                  //     crossAxisAlignment: CrossAxisAlignment.end,
+                  //     children: <Widget>[
+                  //       Icon(
+                  //         LineAwesomeIcons.lock,
+                  //         size: 20,
+                  //       ),
+                  //       SizedBox(
+                  //         width: 10,
+                  //       ),
+                  //       Text(
+                  //         'Privacy Policy',
+                  //         style: TextStyle(
+                  //             fontSize: 12, fontWeight: FontWeight.bold),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                ],
+              ),
               bottomSheet: InkWell(
                 onTap: () => Wiredash.of(context).show(),
                 child: Padding(
@@ -191,34 +241,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   shrinkWrap: true,
                   padding: EdgeInsets.only(left: 24.0, right: 24.0),
                   children: <Widget>[
-                    InkWell(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MdViewer('Privacy Policy',
-                                  'assets/policy/PrivacyPolicy.md'))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Icon(
-                              LineAwesomeIcons.lock,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Privacy Policy',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                     SizedBox(
                       height: 25,
                     ),
@@ -1068,13 +1090,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       : () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Courses())),
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.assignment),
-              title: Text('Result'),
-              onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Result())),
-            ),
+            if (_isLoggingIn) Divider(),
+            if (_isLoggingIn)
+              ListTile(
+                leading: Icon(Icons.assignment),
+                title: Text('Result'),
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Result())),
+              ),
             Divider(),
             ListTile(
               leading: Icon(LineAwesomeIcons.book),
@@ -1173,15 +1196,16 @@ class _MyHomePageState extends State<MyHomePage> {
             //                         builder: (context) =>
             //                             WebPageView(branch, curriculumLink)));
             //               }),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.airline_seat_individual_suite),
-              title: Text('Plan a Bunk'),
-              onTap: isLoading
-                  ? null
-                  : () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PlanBunk())),
-            ),
+            if (_isLoggingIn) Divider(),
+            if (_isLoggingIn)
+              ListTile(
+                leading: Icon(Icons.airline_seat_individual_suite),
+                title: Text('Plan a Bunk'),
+                onTap: isLoading
+                    ? null
+                    : () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PlanBunk())),
+              ),
             Divider(),
             ListTile(
               leading: Icon(Icons.settings),
@@ -1201,32 +1225,33 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(builder: (context) => AboutUs())),
             ),
             Divider(),
-            ListTile(
-              leading: Icon(Icons.power_settings_new),
-              title: Text('Logout'),
-              onTap: () => {
-                attendData = null,
-                resultData = null,
-                name = null,
-                sem = null,
-                infoData = null,
-                isLoggedIn = false,
-                regdNo = null,
-                password = null,
-                _resetCredentials(),
-                Fluttertoast.showToast(
-                  msg: "Logged out!",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 2,
-                  backgroundColor: Colors.blueGrey,
-                  textColor: Colors.white,
-                  fontSize: 16.0,
-                ),
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()))
-              },
-            ),
+            if (_isLoggingIn)
+              ListTile(
+                leading: Icon(Icons.power_settings_new),
+                title: Text('Logout'),
+                onTap: () => {
+                  attendData = null,
+                  resultData = null,
+                  name = null,
+                  sem = null,
+                  infoData = null,
+                  isLoggedIn = false,
+                  regdNo = null,
+                  password = null,
+                  _resetCredentials(),
+                  Fluttertoast.showToast(
+                    msg: "Logged out!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 2,
+                    backgroundColor: Colors.blueGrey,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()))
+                },
+              ),
           ],
         ),
       ),
