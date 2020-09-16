@@ -137,13 +137,13 @@ class _AboutUsState extends State<AboutUs> {
                 text: TextSpan(
                     text: 'Source Code : ',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 14,
                     ),
                     children: <TextSpan>[
                       TextSpan(
                           text: 'GitHub',
                           style:
-                              TextStyle(color: Colors.blueAccent, fontSize: 20),
+                              TextStyle(color: Colors.blueAccent, fontSize: 14),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               _launchURL(
@@ -160,13 +160,13 @@ class _AboutUsState extends State<AboutUs> {
                 text: TextSpan(
                     text: 'Version ',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 14,
                     ),
                     children: <TextSpan>[
                       TextSpan(
                           text: '$version',
                           style:
-                              TextStyle(color: Colors.blueAccent, fontSize: 20),
+                              TextStyle(color: Colors.blueAccent, fontSize: 14),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               _launchURL(

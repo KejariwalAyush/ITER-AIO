@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -116,36 +117,101 @@ class _MyAppState extends State<MyApp> {
           appBarTheme: AppBarTheme(color: themeDark),
         ),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(
-          seconds: 1,
-          //isLoading?sec:1,
-          navigateAfterSeconds: new MyHomePage(),
-          title: new Text(
-            'ITER AIO\n\nAn all-in-one app for ITER',
-            textAlign: TextAlign.center,
-            style: new TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25.0,
-              color: Colors.white70,
-            ),
-          ),
-          backgroundColor: Colors.black87,
-          styleTextUnderTheLoader: new TextStyle(),
-          photoSize: 100.0,
-          image: Image.asset(
-            'assets/logos/codex.jpg',
-            alignment: Alignment.center,
-            fit: BoxFit.contain,
-          ),
-          loaderColor: Colors.white,
-          loadingText: Text(
-            'LOADING...',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, color: Colors.white60),
-          ),
-        ),
+        home: PushMessagingExample(),
       ),
     );
+  }
+}
+
+class Splash extends StatelessWidget {
+  const Splash({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      seconds: 1,
+      //isLoading?sec:1,
+      navigateAfterSeconds: new MyHomePage(),
+      title: new Text(
+        'ITER AIO\n\nAn all-in-one app for ITER',
+        textAlign: TextAlign.center,
+        style: new TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 25.0,
+          color: Colors.white70,
+        ),
+      ),
+      backgroundColor: Colors.black87,
+      styleTextUnderTheLoader: new TextStyle(),
+      photoSize: 100.0,
+      image: Image.asset(
+        'assets/logos/codex.jpg',
+        alignment: Alignment.center,
+        fit: BoxFit.contain,
+      ),
+      loaderColor: Colors.white,
+      loadingText: Text(
+        'LOADING...',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 16, color: Colors.white60),
+      ),
+    );
+  }
+}
+
+class PushMessagingExample extends StatefulWidget {
+  @override
+  _PushMessagingExampleState createState() => _PushMessagingExampleState();
+}
+
+class _PushMessagingExampleState extends State<PushMessagingExample> {
+  String _homeScreenText = "Waiting for token...";
+  String _messageText = "Waiting for message...";
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        setState(() {
+          _messageText = "Push Messaging message: $message";
+        });
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        setState(() {
+          _messageText = "Push Messaging message: $message";
+        });
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        setState(() {
+          _messageText = "Push Messaging message: $message";
+        });
+        print("onResume: $message");
+      },
+    );
+    //  _firebaseMessaging.requestNotificationPermissions(
+    //      const IosNotificationSettings(sound: true, badge: true, alert: true));
+    //  _firebaseMessaging.onIosSettingsRegistered
+    //      .listen((IosNotificationSettings settings) {
+    //    print("Settings registered: $settings");
+    //  });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      setState(() {
+        _homeScreenText = "Push Messaging token: $token";
+      });
+      print(_homeScreenText);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Splash();
   }
 }
 

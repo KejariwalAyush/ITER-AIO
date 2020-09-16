@@ -19,6 +19,7 @@ import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
+// import 'package:iteraio/widgets/push_notifications.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // var curriculumLink;
   @override
   void initState() {
+    // PushNotificationsManager();
     setState(() {
       animationName = 'hello';
       _getCredentials();
@@ -784,9 +786,14 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
     if (serverTimeout) {
-      sem =
-          jsonDecode(prefs.getString('attendence'))['griddata'][0]['stynumber'];
-      getCourses(sem);
+      try {
+        sem = jsonDecode(prefs.getString('attendence'))['griddata'][0]
+            ['stynumber'];
+        getCourses(sem);
+      } catch (e) {
+        print(e);
+      }
+
       return;
     }
     var attendResp = await http.post(attend_url,
