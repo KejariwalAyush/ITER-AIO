@@ -33,6 +33,7 @@ class _CoursesState extends State<Courses> {
     });
   }
 
+  bool showLectures = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,52 +83,93 @@ class _CoursesState extends State<Courses> {
           : SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  for (var i in courseData)
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? colorLight
-                            : colorDark,
-                        borderRadius: BorderRadius.circular(15),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (!showLectures)
+                    Center(
+                      child: Text(
+                        'Semester: $sem',
+                        style: TextStyle(fontSize: 15),
                       ),
-                      child: ExpansionTile(
-                        initiallyExpanded: false,
-                        title: Text(
-                          i['course'],
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        children: <Widget>[
-                          for (var j in i['subjects'])
-                            ListTile(
-                              contentPadding:
-                                  EdgeInsets.only(top: 5, left: 30, right: 15),
-                              title: Text(
-                                j['subject'],
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                j['subjectCode'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                              trailing: Image.asset(
-                                subjectAvatar(j['subjectCode']),
-                                width: 40,
-                              ),
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          Lectures(j['subject'], j['link']))),
-                            ),
-                        ],
+                    )
+                  else
+                    Center(
+                      child: Text(
+                        'You are Viewing Lectures of Semester: ${sem - 1 == 0 ? 8 : (sem - 1)}',
+                        style: TextStyle(fontSize: 15),
                       ),
                     ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (!showLectures &&
+                      (sem == 1 || sem == 3 || sem == 5 || sem == 7))
+                    Center(
+                      child: RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            showLectures = true;
+                          });
+                        },
+                        elevation: 20,
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'New Lectures are yet to be Uploaded.\nWant to access old lectures!\nTap Here',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
+                    )
+                  else
+                    for (var i in courseData)
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? colorLight
+                                  : colorDark,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: ExpansionTile(
+                          initiallyExpanded: false,
+                          title: Text(
+                            i['course'],
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          children: <Widget>[
+                            for (var j in i['subjects'])
+                              ListTile(
+                                contentPadding: EdgeInsets.only(
+                                    top: 5, left: 30, right: 15),
+                                title: Text(
+                                  j['subject'],
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  j['subjectCode'],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                trailing: Image.asset(
+                                  subjectAvatar(j['subjectCode']),
+                                  width: 40,
+                                ),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Lectures(j['subject'], j['link']))),
+                              ),
+                          ],
+                        ),
+                      ),
                 ],
               ),
             ),

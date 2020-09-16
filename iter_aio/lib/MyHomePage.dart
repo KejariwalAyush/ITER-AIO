@@ -827,7 +827,11 @@ class _MyHomePageState extends State<MyHomePage> {
       avgAbsent = totAbs ~/ cnt;
       // print('$name - $sem');
       getResult();
-      getCourses(sem);
+      if (sem == 3 || sem == 5 || sem == 7)
+        getCourses(sem - 1);
+      else
+        getCourses(sem);
+
       Fluttertoast.showToast(
         msg: "Data Fetched",
         toastLength: Toast.LENGTH_SHORT,
