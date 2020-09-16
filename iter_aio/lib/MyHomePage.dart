@@ -833,7 +833,7 @@ class _MyHomePageState extends State<MyHomePage> {
         getCourses(sem);
 
       Fluttertoast.showToast(
-        msg: "Data Fetched",
+        msg: "Data Fetched Sucessful!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -1080,8 +1080,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.clear),
                   onPressed: () => Navigator.pop(context, false)),
             ),
-            if (isLoggedIn) Divider(),
-            if (isLoggedIn)
+            if (isLoggedIn || sem != null) Divider(),
+            if (isLoggedIn || sem != null)
               ListTile(
                 leading: Icon(Icons.video_library),
                 title: Text('Lectures'),
@@ -1102,8 +1102,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         : () => Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Courses())),
               ),
-            if (isLoggedIn) Divider(),
-            if (isLoggedIn)
+            if (isLoggedIn || sem != null) Divider(),
+            if (isLoggedIn || sem != null)
               ListTile(
                 leading: Icon(Icons.assignment),
                 title: Text('Result'),
@@ -1236,7 +1236,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => AboutUs())),
             ),
-            Divider(),
+            if (isLoggedIn) Divider(),
             if (isLoggedIn)
               ListTile(
                 leading: Icon(Icons.power_settings_new),
@@ -1264,6 +1264,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(builder: (context) => MyHomePage()))
                 },
               ),
+            // if (noInternet)
+            //   Divider(
+            //     thickness: 5,
+            //   ),
+            // if (noInternet)
+            //   ListTile(
+            //     leading:
+            //         Icon(Icons.signal_cellular_connected_no_internet_4_bar),
+            //     title: RichText(
+            //       text: TextSpan(children: [
+            //         TextSpan(
+            //           text: 'No Internet!',
+            //           style: TextStyle(color: Colors.redAccent),
+            //         ),
+            //         TextSpan(
+            //           text: '\nTap here to restart the app',
+            //           style: TextStyle(fontSize: 12),
+            //         )
+            //       ]),
+            //     ),
+            //     onTap: isLoading
+            //         ? null
+            //         : () => Navigator.push(context,
+            //             MaterialPageRoute(builder: (context) => new MyApp())),
+            //   ),
           ],
         ),
       ),

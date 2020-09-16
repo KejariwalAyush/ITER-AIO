@@ -21,7 +21,7 @@ bool noInternet = false;
 bool serverTimeout = false;
 Brightness brightness = Brightness.dark;
 
-String appName = 'NCOV-19';
+String appName = 'ITER-AIO';
 String packageName;
 String version = '1.0';
 String buildNumber;
@@ -168,7 +168,7 @@ class PushMessagingExample extends StatefulWidget {
 
 class _PushMessagingExampleState extends State<PushMessagingExample> {
   String _homeScreenText = "Waiting for token...";
-  String _messageText = "Waiting for message...";
+  // String _messageText = "Waiting for message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
@@ -176,21 +176,21 @@ class _PushMessagingExampleState extends State<PushMessagingExample> {
     super.initState();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
+        // setState(() {
+        //   _messageText = "Push Messaging message: $message";
+        // });
         print("onMessage: $message");
       },
       onLaunch: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
+        // setState(() {
+        //   _messageText = "Push Messaging message: $message";
+        // });
         print("onLaunch: $message");
       },
       onResume: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
+        // setState(() {
+        //   _messageText = "Push Messaging message: $message";
+        // });
         print("onResume: $message");
       },
     );

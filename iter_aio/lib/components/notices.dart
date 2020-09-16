@@ -17,7 +17,7 @@ class _NoticesState extends State<Notices> {
   List iterExamNoticeData = List();
   List soaNoticeData = List();
   var _isLoading = false;
-  int currentIndex = 1;
+  int currentIndex = 0;
   bool showExamNotice = false;
   @override
   void initState() {
@@ -251,7 +251,7 @@ class _NoticesState extends State<Notices> {
         });
       }
       soaNoticeData = linkMap;
-      print(linkMap[0]);
+      // print(linkMap[0]);
     } else {
       soaNoticeData = null;
     }
