@@ -45,7 +45,9 @@ class _AboutUsState extends State<AboutUs> {
                 children: <Widget>[
                   Expanded(
                       child: Image.asset(
-                    'assets/logos/codex.jpg',
+                    brightness == Brightness.light
+                        ? 'assets/logos/codex.jpg'
+                        : 'assets/logos/codexLogo.png',
                     fit: BoxFit.contain,
                   )),
                   Expanded(

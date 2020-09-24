@@ -875,7 +875,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // String results = '';
     print('loading results...');
     const result_url = 'https://iterapi-web.herokuapp.com/result/';
-    for (int i = sem - 1; i >= 1; i--) {
+    for (int i = 8; i >= 1; i--) {
       var resultPayload = {
         "user_id": "$regdNo",
         "password": "$password",
@@ -885,7 +885,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var resultResp = await http.post(result_url,
           headers: headers, body: jsonEncode(resultPayload));
       if (resultResp.statusCode == 200) {
-        resultData.add('${resultResp.body}');
+        await resultData.add('${resultResp.body}');
       }
     }
     // resultData = jsonDecode(results);

@@ -151,7 +151,7 @@ class Splash extends StatelessWidget {
       styleTextUnderTheLoader: new TextStyle(),
       photoSize: 100.0,
       image: Image.asset(
-        'assets/logos/codex.jpg',
+        'assets/logos/codexLogo.png',
         alignment: Alignment.center,
         fit: BoxFit.contain,
       ),
