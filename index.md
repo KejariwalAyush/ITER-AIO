@@ -1,37 +1,32 @@
-## Welcome to GitHub Pages
+# ITER-AIO
 
-You can use the [editor on GitHub](https://github.com/KejariwalAyush/ITER-AIO/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![Logo](https://github.com/KejariwalAyush/ITER-AIO/blob/master/iter_aio/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png?raw=true)
+All in one app for ITER students.
+## [Download (Click Here!)](https://github.com/KejariwalAyush/ITER-AIO/releases/latest)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+![GitHub top language](https://img.shields.io/github/languages/top/KejariwalAyush/ITER-AIO?style=plastic)
+![Android](https://img.shields.io/badge/Android-FLUTTER-blue) ![enter image description here](https://img.shields.io/badge/IOS-FLUTTER-brightgreen)
+[![GitHub issues](https://img.shields.io/github/issues/KejariwalAyush/ITER-AIO)](https://github.com/KejariwalAyush/ITER-AIO/issues) [![GitHub forks](https://img.shields.io/github/forks/KejariwalAyush/ITER-AIO)](https://github.com/KejariwalAyush/ITER-AIO/network) [![GitHub stars](https://img.shields.io/github/stars/KejariwalAyush/ITER-AIO)](https://github.com/KejariwalAyush/ITER-AIO/stargazers) [![GitHub license](https://img.shields.io/github/license/KejariwalAyush/ITER-AIO)](https://github.com/KejariwalAyush/ITER-AIO/blob/master/LICENSE)
 
-### Markdown
+## Features
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- Attendence
+- Results
+- Video Lectures (Can Play video on 3rd Party Players e.g., MX Player, VLC, etc)
+- News & Notices about SOA & ITER
+- Bunk Planning
+- Academic Calender
+- Study Materials (Coming Soon)
+- Switch Themes & Dark Mode
+- Report a bug from within the App
 
-```markdown
-Syntax highlighted code block
+## Screenshots
 
-# Header 1
-## Header 2
-### Header 3
+![Login Page](https://github.com/KejariwalAyush/ITER-AIO/blob/master/Screenshots/sc1.png?raw=true)
+![Inside App](https://github.com/KejariwalAyush/ITER-AIO/blob/master/Screenshots/sc2.png?raw=true)
 
-- Bulleted
-- List
+### Follow me
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/KejariwalAyush/ITER-AIO/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+| ![Ayush Kejariwal](https://avatars0.githubusercontent.com/u/53415956?s=30&u=36af1e2bed940f8d45769feef50cb564cec69c29&v=4) | **Ayush Kejariwal** | [Github](https://github.com/KejariwalAyush/) | [LinkedIn](https://www.linkedin.com/in/ayush-kejariwal-1923a2191/) | [Instagram](https://www.instagram.com/a_kejariwal/) |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------- | -------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------- |
+|                                                                                                                           |                     |                                              |                                                                    |                                                     |
