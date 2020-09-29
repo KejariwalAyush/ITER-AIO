@@ -2,7 +2,11 @@
 
 ![Logo](https://github.com/KejariwalAyush/ITER-AIO/blob/master/iter_aio/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png?raw=true)
 All in one app for ITER students.
-## [Download (Click Here!)](https://github.com/KejariwalAyush/ITER-AIO/releases/latest)
+
+### 2nd Sem Results are OUT!
+
+## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.1.0/ITER-AIO-v1.1.0.apk)
+## [Download Page](https://github.com/KejariwalAyush/ITER-AIO/releases/latest)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/KejariwalAyush/ITER-AIO?style=plastic)
 ![Android](https://img.shields.io/badge/Android-FLUTTER-blue) ![enter image description here](https://img.shields.io/badge/IOS-FLUTTER-brightgreen)
