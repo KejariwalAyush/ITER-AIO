@@ -33,18 +33,18 @@ class Result extends StatelessWidget {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
-      bottomSheet: Container(
-        height: 20,
-        padding: EdgeInsets.only(bottom: 8),
-        alignment: Alignment.bottomCenter,
-        child: Text(
-          'All data may take some time to load.',
-          style: TextStyle(
-            fontSize: 10,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ),
+      // bottomSheet: Container(
+      //   height: 20,
+      //   padding: EdgeInsets.only(bottom: 8),
+      //   alignment: Alignment.bottomCenter,
+      //   child: Text(
+      //     'All data may take some time to load.',
+      //     style: TextStyle(
+      //       fontSize: 10,
+      //     ),
+      //     textAlign: TextAlign.center,
+      //   ),
+      // ),
       body: isLoading //|| resultData == null
           ? Center(
               child: Container(height: 200, child: loading()),
@@ -128,8 +128,23 @@ class Result extends StatelessWidget {
                         ],
                       ),
                     ),
+                    // if (resultData == null && resultload)
+                    //   Container(
+                    //     width: 300,
+                    //     height: 300,
+                    //     child: loading(),
+                    //   )
+                    // else
                     Column(
                       children: <Widget>[
+                        Text(
+                          'CGPA : ' + getcgpa().toString(),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            // color: Colors.black87
+                          ),
+                        ),
                         for (var j in resultData)
                           Container(
                             padding: EdgeInsets.all(5),
@@ -202,27 +217,23 @@ class Result extends StatelessWidget {
     );
   }
 
-  double getTotalresult(String x) {
-    double res = 0.0, sum = 0.0;
+  double getcgpa() {
+    double sum = 0.0;
     int cnt = 0;
-    for (var i in jsonDecode(x)['Semdata']) {
-      if (i['grade'] == 'O')
-        sum += 10;
-      else if (i['grade'] == 'A')
-        sum += 9.5;
-      else if (i['grade'] == 'B')
-        sum += 8.5;
-      else if (i['grade'] == 'C')
-        sum += 7.5;
-      else if (i['grade'] == 'D')
-        sum += 6.5;
-      else if (i['grade'] == 'E')
-        sum += 5.5;
-      else
-        sum += 0;
+    for (var i in cgpaData['data']) {
+      sum = sum + i['sgpaR'];
       cnt++;
     }
-    res = sum / cnt;
+
+    return (sum ~/ (cnt * 0.01) / 100);
+  }
+
+  double getTotalresult(String x) {
+    double res;
+    for (var i in cgpaData['data']) {
+      if (i['stynumber'] == jsonDecode(x)['Semdata'][1]['stynumber'])
+        res = i['sgpaR'];
+    }
     return res;
   }
 }

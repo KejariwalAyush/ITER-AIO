@@ -25,10 +25,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 
 var attendData, infoData;
-var resultData, courseData;
+var resultData, courseData, cgpaData;
 var name, branch, gender, avgAttend, avgAbsent, regdNo, password, themeStr;
 int sem;
 var isLoading = false;
+var resultload = true;
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -39,6 +40,7 @@ var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
   var _isLoggingIn = false;
+
   var acedemicCalenderLink;
   String animationName;
   // var curriculumLink;
@@ -48,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       animationName = 'hello';
       _getCredentials();
-      getCalender();
+      // getCalender();
     });
     super.initState();
   }
@@ -474,11 +476,25 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: Hero(
                                       tag: 'home animation',
                                       child: InkWell(
-                                        onTap: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Result())),
+                                        onTap: resultload
+                                            ? () {
+                                                Fluttertoast.showToast(
+                                                  msg: "Getting Result!",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  timeInSecForIosWeb: 2,
+                                                  backgroundColor:
+                                                      Colors.greenAccent,
+                                                  textColor: Colors.black,
+                                                  fontSize: 16.0,
+                                                );
+                                              }
+                                            : () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Result())),
                                         child: RichText(
                                           textAlign: TextAlign.end,
                                           text: TextSpan(
@@ -867,6 +883,7 @@ class _MyHomePageState extends State<MyHomePage> {
   getResult() async {
     setState(() {
       isLoading = true;
+      resultload = true;
     });
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // String s = prefs.getString('result');
@@ -874,6 +891,15 @@ class _MyHomePageState extends State<MyHomePage> {
     resultData = List();
     // String results = '';
     print('loading results...');
+    const cgpa_url = 'https://iterapi-web.herokuapp.com/cgpa/';
+    var cgpaPayload = {"user_id": "$regdNo", "password": "$password"};
+    const headers = {'Content-Type': 'application/json'};
+    var cgpaResp = await http.post(cgpa_url,
+        headers: headers, body: jsonEncode(cgpaPayload));
+    if (cgpaResp.statusCode == 200) {
+      cgpaData = '${cgpaResp.body}';
+      cgpaData = jsonDecode(cgpaData);
+    }
     const result_url = 'https://iterapi-web.herokuapp.com/result/';
     for (int i = 8; i >= 1; i--) {
       var resultPayload = {
@@ -888,16 +914,21 @@ class _MyHomePageState extends State<MyHomePage> {
         await resultData.add('${resultResp.body}');
       }
     }
-    // resultData = jsonDecode(results);
-    // print(resultData);
     print('Result Fetching Complete');
-    // String s = resultData.toString();
-    // print(s);
-    // print(s.substring(1, s.length - 2).split(', ').length);
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('result', resultData.toString());
     setState(() {
+      // resultData = resultData;
+      resultload = false;
       isLoading = false;
+      Fluttertoast.showToast(
+        msg: "Results Fetched!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.greenAccent,
+        textColor: Colors.black,
+        fontSize: 16.0,
+      );
     });
   }
 
@@ -1107,8 +1138,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ListTile(
                 leading: Icon(Icons.assignment),
                 title: Text('Result'),
-                onTap: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Result())),
+                onTap: resultload
+                    ? () {
+                        Fluttertoast.showToast(
+                          msg: "Getting Result!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.greenAccent,
+                          textColor: Colors.black,
+                          fontSize: 16.0,
+                        );
+                      }
+                    : () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Result())),
               ),
             Divider(),
             ListTile(
@@ -1156,30 +1199,30 @@ class _MyHomePageState extends State<MyHomePage> {
                       : () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Notices())),
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text('Academic Calender'),
-              onTap: isLoading
-                  ? null
-                  : !serverTimeout && noInternet
-                      ? () {
-                          Fluttertoast.showToast(
-                            msg: "No Internet!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.redAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                      : () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => WebPageView(
-                                  'Calender', acedemicCalenderLink))),
-            ),
+            // Divider(),
+            // ListTile(
+            //   leading: Icon(Icons.calendar_today),
+            //   title: Text('Academic Calender'),
+            //   onTap: isLoading
+            //       ? null
+            //       : !serverTimeout && noInternet
+            //           ? () {
+            //               Fluttertoast.showToast(
+            //                 msg: "No Internet!",
+            //                 toastLength: Toast.LENGTH_SHORT,
+            //                 gravity: ToastGravity.BOTTOM,
+            //                 timeInSecForIosWeb: 2,
+            //                 backgroundColor: Colors.redAccent,
+            //                 textColor: Colors.white,
+            //                 fontSize: 16.0,
+            //               );
+            //             }
+            //           : () => Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => WebPageView(
+            //                       'Calender', acedemicCalenderLink))),
+            // ),
             // Divider(),
             // ListTile(
             //     leading: Icon(Icons.assignment_turned_in),
