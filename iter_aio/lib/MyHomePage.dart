@@ -901,7 +901,7 @@ class _MyHomePageState extends State<MyHomePage> {
       cgpaData = jsonDecode(cgpaData);
     }
     const result_url = 'https://iterapi-web.herokuapp.com/result/';
-    for (int i = 8; i >= 1; i--) {
+    for (int i = sem; i >= 1; i--) {
       var resultPayload = {
         "user_id": "$regdNo",
         "password": "$password",
@@ -917,7 +917,6 @@ class _MyHomePageState extends State<MyHomePage> {
     print('Result Fetching Complete');
     await prefs.setString('result', resultData.toString());
     setState(() {
-      // resultData = resultData;
       resultload = false;
       isLoading = false;
       Fluttertoast.showToast(
@@ -977,30 +976,30 @@ class _MyHomePageState extends State<MyHomePage> {
     courseData = linkMap;
   }
 
-  getCalender() async {
-    String url = "https://www.soa.ac.in/iter";
+  // getCalender() async {
+  //   String url = "https://www.soa.ac.in/iter";
 
-    final resp1 = await http.get(url);
-    if (resp1.statusCode == 200) {
-      var doc1 = parse(resp1.body);
-      var link1 = url.substring(0, url.lastIndexOf('/')) +
-          doc1
-              .getElementById('block-yui_3_17_2_1_1576815128904_12538')
-              .querySelector('a')
-              .attributes['href'];
-      // print(link1);
-      final resp2 = await http
-          .get(link1); //.catchError(() => acedemicCalenderLink = null)
-      if (resp2.statusCode == 200) {
-        var doc2 = parse(resp2.body);
-        var link2 = doc2
-            .getElementById('block-8f7f068fc7f6fb6d65aa')
-            .querySelector('iframe')
-            .attributes['src'];
-        acedemicCalenderLink = link2;
-      }
-    }
-  }
+  //   final resp1 = await http.get(url);
+  //   if (resp1.statusCode == 200) {
+  //     var doc1 = parse(resp1.body);
+  //     var link1 = url.substring(0, url.lastIndexOf('/')) +
+  //         doc1
+  //             .getElementById('block-yui_3_17_2_1_1576815128904_12538')
+  //             .querySelector('a')
+  //             .attributes['href'];
+  //     // print(link1);
+  //     final resp2 = await http
+  //         .get(link1); //.catchError(() => acedemicCalenderLink = null)
+  //     if (resp2.statusCode == 200) {
+  //       var doc2 = parse(resp2.body);
+  //       var link2 = doc2
+  //           .getElementById('block-8f7f068fc7f6fb6d65aa')
+  //           .querySelector('iframe')
+  //           .attributes['src'];
+  //       acedemicCalenderLink = link2;
+  //     }
+  //   }
+  // }
 
   // getCurriculum() async {
   //   setState(() {
