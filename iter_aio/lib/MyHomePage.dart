@@ -19,9 +19,10 @@ import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
-// import 'package:iteraio/widgets/push_notifications.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 
 var attendData, infoData;
@@ -46,7 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
   // var curriculumLink;
   @override
   void initState() {
-    // PushNotificationsManager();
     setState(() {
       animationName = 'hello';
       _getCredentials();
@@ -64,8 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _resetCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // await prefs.setString('regd', regdNo);
-    // await prefs.setString('password', password);
     prefs.remove('regd');
     prefs.remove('password');
   }
@@ -82,8 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
       password = prefs.getString('password');
       if (noInternet) {
         getoldData();
-        // Future.delayed(Duration(seconds: 2))
-        //     .then((value) => {if (serverTimeout) noInternet = false});
       }
       setState(() {
         getTheme(themeStr);
@@ -93,9 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         isLoading = true;
         _isLoggingIn = true;
         getData();
-        // getResult();
       }
-      // print('$regdNo : $password');
     });
   }
 
@@ -110,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
       branch = infoData['detail'][0]['branchdesc'];
       sem = attendData['griddata'][0]['stynumber'];
       gender = infoData['detail'][0]['gender'];
-      // print(gender);
       double totatt = 0.0;
       int cnt = 0, totAbs = 0;
       for (var i in attendData['griddata']) {
@@ -157,31 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 'assets/policy/PrivacyPolicy.md'))),
                     tooltip: 'Privacy Policy',
                   ),
-                  // InkWell(
-                  //   onTap: () => Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) => MdViewer('Privacy Policy',
-                  //               'assets/policy/PrivacyPolicy.md'))),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.end,
-                  //     crossAxisAlignment: CrossAxisAlignment.end,
-                  //     children: <Widget>[
-                  //       Icon(
-                  //         LineAwesomeIcons.lock,
-                  //         size: 20,
-                  //       ),
-                  //       SizedBox(
-                  //         width: 10,
-                  //       ),
-                  //       Text(
-                  //         'Privacy Policy',
-                  //         style: TextStyle(
-                  //             fontSize: 12, fontWeight: FontWeight.bold),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
               bottomSheet: InkWell(
@@ -788,11 +756,8 @@ class _MyHomePageState extends State<MyHomePage> {
           fontSize: 16.0,
         );
         print('server timeout');
-        // getoldData();
-        // isLoggedIn = false;
         setState(() {
           noInternet = true;
-          //_getCredentials();
           serverTimeout = true;
         });
 
@@ -814,19 +779,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     var attendResp = await http.post(attend_url,
         headers: headers, body: jsonEncode(payload));
-    // print('info: ${infoResp.statusCode}');
-    // print('attend: ${attendResp.statusCode}');
     if (infoResp.statusCode == 200 && attendResp.statusCode == 200) {
       infoData = jsonDecode(infoResp.body);
       attendData = jsonDecode(attendResp.body);
       await prefs.setString('attendence', attendResp.body);
       await prefs.setString('info', infoResp.body);
-//      print(attendData);
       name = infoData["detail"][0]['name'];
       branch = infoData['detail'][0]['branchdesc'];
       sem = attendData['griddata'][0]['stynumber'];
       gender = infoData['detail'][0]['gender'];
-      print(gender);
+      // print(gender);
       double totatt = 0.0;
       int cnt = 0, totAbs = 0;
       for (var i in attendData['griddata']) {
@@ -857,8 +819,6 @@ class _MyHomePageState extends State<MyHomePage> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-
-      //showToast(context,'Status: ${attendResp.statusCode}');
       setState(() {
         isLoading = false;
         isLoggedIn = true;
@@ -878,6 +838,42 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MyHomePage()));
     }
+    if (isUpdateAvailable) {
+      Alert(
+        context: context,
+        type: AlertType.none,
+        title: "UPDATE Available!",
+        desc: "Version: $latestversion\n$updateText.",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "UPDATE",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => {_launchURL(updatelink)},
+            // onPressed: () => {},
+            color: Color(0xFF333366),
+          ),
+          DialogButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+            color: Colors.blueGrey,
+          )
+        ],
+      ).show();
+    }
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+    return;
   }
 
   getResult() async {
@@ -886,10 +882,7 @@ class _MyHomePageState extends State<MyHomePage> {
       resultload = true;
     });
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String s = prefs.getString('result');
-    // resultData = s.substring(1, s.length - 1).split(', ').toList();
     resultData = List();
-    // String results = '';
     print('loading results...');
     const cgpa_url = 'https://iterapi-web.herokuapp.com/cgpa/';
     var cgpaPayload = {"user_id": "$regdNo", "password": "$password"};
@@ -972,71 +965,8 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     }
-    // print(linkMap[0]['subjects']);
     courseData = linkMap;
   }
-
-  // getCalender() async {
-  //   String url = "https://www.soa.ac.in/iter";
-
-  //   final resp1 = await http.get(url);
-  //   if (resp1.statusCode == 200) {
-  //     var doc1 = parse(resp1.body);
-  //     var link1 = url.substring(0, url.lastIndexOf('/')) +
-  //         doc1
-  //             .getElementById('block-yui_3_17_2_1_1576815128904_12538')
-  //             .querySelector('a')
-  //             .attributes['href'];
-  //     // print(link1);
-  //     final resp2 = await http
-  //         .get(link1); //.catchError(() => acedemicCalenderLink = null)
-  //     if (resp2.statusCode == 200) {
-  //       var doc2 = parse(resp2.body);
-  //       var link2 = doc2
-  //           .getElementById('block-8f7f068fc7f6fb6d65aa')
-  //           .querySelector('iframe')
-  //           .attributes['src'];
-  //       acedemicCalenderLink = link2;
-  //     }
-  //   }
-  // }
-
-  // getCurriculum() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   String url = 'https://www.soa.ac.in/btech-academic-curriculum';
-  //   final resp1 = await http.get(url);
-  //   if (resp1.statusCode == 200) {
-  //     var doc = parse(resp1.body);
-  //     var link =
-  //         doc.querySelectorAll('main> section> div > div > div> div> div');
-  //     for (var i in link) {
-  //       var x = i.querySelector('div> div> div> div> a');
-  //       if (x != null) {
-  //         // print('${x.text} : $branch');
-  //         if (x.text.replaceAll('&', 'and') == branch) {
-  //           var url2 =
-  //               url.substring(0, url.lastIndexOf('/')) + x.attributes['href'];
-  //           var resp2 = await http.get(url2);
-  //           if (resp2.statusCode == 200) {
-  //             var doc2 = parse(resp2.body);
-  //             var link2 =
-  //                 doc2.querySelectorAll('iframe').last.attributes['src'];
-  //             // print(link2);
-  //             curriculumLink = link2.substring(0, link2.lastIndexOf('?'));
-  //           }
-
-  //           print(curriculumLink);
-  //           // break;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
 
   String bunklogic(var i) {
     var bunkText;
@@ -1104,7 +1034,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               elevation: 15,
               centerTitle: true,
-              //            backgroundColor: Colors.lightBlueAccent,
               automaticallyImplyLeading: true,
               leading: IconButton(
                   icon: Icon(Icons.clear),
@@ -1198,58 +1127,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       : () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Notices())),
             ),
-            // Divider(),
-            // ListTile(
-            //   leading: Icon(Icons.calendar_today),
-            //   title: Text('Academic Calender'),
-            //   onTap: isLoading
-            //       ? null
-            //       : !serverTimeout && noInternet
-            //           ? () {
-            //               Fluttertoast.showToast(
-            //                 msg: "No Internet!",
-            //                 toastLength: Toast.LENGTH_SHORT,
-            //                 gravity: ToastGravity.BOTTOM,
-            //                 timeInSecForIosWeb: 2,
-            //                 backgroundColor: Colors.redAccent,
-            //                 textColor: Colors.white,
-            //                 fontSize: 16.0,
-            //               );
-            //             }
-            //           : () => Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => WebPageView(
-            //                       'Calender', acedemicCalenderLink))),
-            // ),
-            // Divider(),
-            // ListTile(
-            //     leading: Icon(Icons.assignment_turned_in),
-            //     title: Text('Curriculum'),
-            //     onTap: isLoading
-            //         ? null
-            //         : noInternet
-            //             ? () {
-            //                 Fluttertoast.showToast(
-            //                   msg: "No Internet!",
-            //                   toastLength: Toast.LENGTH_SHORT,
-            //                   gravity: ToastGravity.BOTTOM,
-            //                   timeInSecForIosWeb: 2,
-            //                   backgroundColor: Colors.redAccent,
-            //                   textColor: Colors.white,
-            //                   fontSize: 16.0,
-            //                 );
-            //               }
-            //             : () {
-            //                 // setState(() {
-            //                 //   getCurriculum();
-            //                 // });
-            //                 Navigator.push(
-            //                     context,
-            //                     MaterialPageRoute(
-            //                         builder: (context) =>
-            //                             WebPageView(branch, curriculumLink)));
-            //               }),
             if (isLoggedIn) Divider(),
             if (isLoggedIn)
               ListTile(
@@ -1281,59 +1158,124 @@ class _MyHomePageState extends State<MyHomePage> {
             if (isLoggedIn) Divider(),
             if (isLoggedIn)
               ListTile(
-                leading: Icon(Icons.power_settings_new),
-                title: Text('Logout'),
-                onTap: () => {
-                  attendData = null,
-                  resultData = null,
-                  name = null,
-                  sem = null,
-                  infoData = null,
-                  isLoggedIn = false,
-                  regdNo = null,
-                  password = null,
-                  _resetCredentials(),
-                  Fluttertoast.showToast(
-                    msg: "Logged out!",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 2,
-                    backgroundColor: Colors.blueGrey,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()))
-                },
-              ),
-            // if (noInternet)
-            //   Divider(
-            //     thickness: 5,
-            //   ),
-            // if (noInternet)
-            //   ListTile(
-            //     leading:
-            //         Icon(Icons.signal_cellular_connected_no_internet_4_bar),
-            //     title: RichText(
-            //       text: TextSpan(children: [
-            //         TextSpan(
-            //           text: 'No Internet!',
-            //           style: TextStyle(color: Colors.redAccent),
-            //         ),
-            //         TextSpan(
-            //           text: '\nTap here to restart the app',
-            //           style: TextStyle(fontSize: 12),
-            //         )
-            //       ]),
-            //     ),
-            //     onTap: isLoading
-            //         ? null
-            //         : () => Navigator.push(context,
-            //             MaterialPageRoute(builder: (context) => new MyApp())),
-            //   ),
+                  leading: Icon(Icons.power_settings_new),
+                  title: Text('Logout'),
+                  onTap: () => Alert(
+                        context: context,
+                        onWillPopActive: true,
+                        type: AlertType.warning,
+                        title: "Do you want to Logout?",
+                        buttons: [
+                          DialogButton(
+                            color: colorDark,
+                            child: Text(
+                              "Logout",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                attendData = null;
+                                resultData = null;
+                                name = null;
+                                sem = null;
+                                infoData = null;
+                                isLoggedIn = false;
+                                regdNo = null;
+                                password = null;
+                                _resetCredentials();
+                                Fluttertoast.showToast(
+                                  msg: "Logged out!",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.blueGrey,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyHomePage()));
+                              });
+                            },
+                          ),
+                          DialogButton(
+                            color: colorDark,
+                            child: Text(
+                              "Cancel",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          )
+                        ],
+                      ).show()),
           ],
         ),
       ),
     );
   }
 }
+
+// getCalender() async {
+//   String url = "https://www.soa.ac.in/iter";
+
+//   final resp1 = await http.get(url);
+//   if (resp1.statusCode == 200) {
+//     var doc1 = parse(resp1.body);
+//     var link1 = url.substring(0, url.lastIndexOf('/')) +
+//         doc1
+//             .getElementById('block-yui_3_17_2_1_1576815128904_12538')
+//             .querySelector('a')
+//             .attributes['href'];
+//     // print(link1);
+//     final resp2 = await http
+//         .get(link1); //.catchError(() => acedemicCalenderLink = null)
+//     if (resp2.statusCode == 200) {
+//       var doc2 = parse(resp2.body);
+//       var link2 = doc2
+//           .getElementById('block-8f7f068fc7f6fb6d65aa')
+//           .querySelector('iframe')
+//           .attributes['src'];
+//       acedemicCalenderLink = link2;
+//     }
+//   }
+// }
+
+// getCurriculum() async {
+//   setState(() {
+//     isLoading = true;
+//   });
+//   String url = 'https://www.soa.ac.in/btech-academic-curriculum';
+//   final resp1 = await http.get(url);
+//   if (resp1.statusCode == 200) {
+//     var doc = parse(resp1.body);
+//     var link =
+//         doc.querySelectorAll('main> section> div > div > div> div> div');
+//     for (var i in link) {
+//       var x = i.querySelector('div> div> div> div> a');
+//       if (x != null) {
+//         // print('${x.text} : $branch');
+//         if (x.text.replaceAll('&', 'and') == branch) {
+//           var url2 =
+//               url.substring(0, url.lastIndexOf('/')) + x.attributes['href'];
+//           var resp2 = await http.get(url2);
+//           if (resp2.statusCode == 200) {
+//             var doc2 = parse(resp2.body);
+//             var link2 =
+//                 doc2.querySelectorAll('iframe').last.attributes['src'];
+//             // print(link2);
+//             curriculumLink = link2.substring(0, link2.lastIndexOf('?'));
+//           }
+
+//           print(curriculumLink);
+//           // break;
+//         }
+//       }
+//     }
+//   }
+//   setState(() {
+//     isLoading = false;
+//   });
+// }

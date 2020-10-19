@@ -9,33 +9,34 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  wiredash: ^0.1.0
-
-  package_info: ^0.4.3
-  flare_flutter: any
-  flutter_markdown: ^0.4.2
-
-  http: ^0.12.0+2
-  fluttertoast: ^4.0.0
-  # video_player: ^0.10.11
-  # chewie: ^0.9.10
-  webview_flutter: ^0.3.21
-  line_awesome_icons: ^1.0.4+2
-  html: null
-  url_launcher: null
   flutter:
     sdk: flutter
-
   cupertino_icons: ^0.1.3
-  shared_preferences: ^0.5.7+3
-  splashscreen: null
-  flutter_launcher_icons: ^0.7.2+1
-
-  firebase_core: ^0.5.0
+  # Firebase
   firebase_analytics: ^6.0.0
+  firebase_core: ^0.5.0
   firebase_crashlytics: ^0.1.4+1
   firebase_messaging: ^7.0.0
-  # cloud_firestore: ^0.12.9+5
+  # Flare
+  flare_flutter: any
+  # Essentials
+  flutter_launcher_icons: ^0.7.2+1
+  flutter_markdown: ^0.4.2
+  fluttertoast: ^4.0.0
+  html: null
+  http: ^0.12.0+2
+  splashscreen: null
+  line_awesome_icons: ^1.0.4+2
+  # Alert Dialog / Update
+  overlay_support: ^1.0.5
+  package_info: ^0.4.3
+  rflutter_alert: ^1.1.0
+  shared_preferences: ^0.5.7+3
+  # Url Handler
+  url_launcher: null
+  webview_flutter: ^0.3.21
+  # Report bugs
+  wiredash: ^0.1.0
 
 dev_dependencies:
   flutter_test:
