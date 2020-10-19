@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/components/about.dart';
 import 'package:iteraio/components/courses.dart';
@@ -29,6 +29,8 @@ var attendData, infoData;
 var resultData, courseData, cgpaData;
 var name, branch, gender, avgAttend, avgAbsent, regdNo, password, themeStr;
 int sem;
+var iterNotice, examNotice, soaNotice;
+bool newNotification = false;
 var isLoading = false;
 var resultload = true;
 
@@ -41,7 +43,7 @@ var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
   var _isLoggingIn = false;
-
+  // FetchNotice _fetchNotice;
   var acedemicCalenderLink;
   String animationName;
   // var curriculumLink;
@@ -50,6 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       animationName = 'hello';
       _getCredentials();
+      FetchNotice();
+      checkForNewNotification();
       // getCalender();
     });
     super.initState();
@@ -78,6 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
       themeStr = prefs.getString('theme');
       regdNo = prefs.getString('regd');
       password = prefs.getString('password');
+      // iterNotice = prefs.getString('iterNotice');
+      // examNotice = prefs.getString('examNotice');
+      // soaNotice = prefs.getString('soaNotice');
       if (noInternet) {
         getoldData();
       }
@@ -149,6 +156,13 @@ class _MyHomePageState extends State<MyHomePage> {
                             builder: (context) => MdViewer('Privacy Policy',
                                 'assets/policy/PrivacyPolicy.md'))),
                     tooltip: 'Privacy Policy',
+                  ),
+                  IconButton(
+                    icon: new Icon(
+                      Icons.circle_notifications,
+                    ),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Notices())),
                   ),
                 ],
               ),
@@ -386,18 +400,48 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
                 ),
-                // actions: <Widget>[
-                //   // IconButton(
-                //   //   icon: new Icon(Icons.share),
-                //   //   onPressed: () {},
-                //   // ),
-                //   IconButton(
-                //     icon: new Icon(Icons.feedback),
-                //     onPressed: () {
-                //       Wiredash.of(context).show();
-                //     },
-                //   ),
-                // ],
+                actions: <Widget>[
+                  // IconButton(
+                  //   icon: new Icon(Icons.share),
+                  //   onPressed: () {},
+                  // ),
+                  Stack(
+                    children: [
+                      IconButton(
+                        icon: new Icon(
+                          Icons.notifications,
+                        ),
+                        onPressed: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Notices())),
+                      ),
+                      newNotification
+                          ? new Positioned(
+                              right: 11,
+                              top: 11,
+                              child: new Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 14,
+                                  minHeight: 14,
+                                ),
+                                child: Text(
+                                  ' ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 8,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          : new Container()
+                    ],
+                  ),
+                ],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
@@ -1020,6 +1064,15 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     return bunkText;
+  }
+
+  void checkForNewNotification() async {
+    if (iterExamNoticeData[0] == examNotice ||
+        iterNoticeData[0] == iterNotice ||
+        soaNoticeData[0] == soaNotice)
+      setState(() {
+        newNotification = true;
+      });
   }
 
   Widget widgetDrawer(context) {

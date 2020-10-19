@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
-import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/main.dart';
-// import 'package:wiredash/wiredash.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Notices extends StatefulWidget {
   @override
   _NoticesState createState() => _NoticesState();
 }
 
+List iterNoticeData = List();
+List iterExamNoticeData = List();
+List soaNoticeData = List();
+int currentIndex = 0;
+bool showExamNotice = false;
+
 class _NoticesState extends State<Notices> {
-  List iterNoticeData = List();
-  List iterExamNoticeData = List();
-  List soaNoticeData = List();
   var _isLoading = false;
-  int currentIndex = 0;
-  bool showExamNotice = false;
+  FetchNotice _fetchNotice;
   @override
   void initState() {
-    getIterNotices();
-    getSoaNotices();
+    setState(() {
+      _isLoading = true;
+    });
+    _fetchNotice = new FetchNotice();
+    if (iterExamNoticeData != null &&
+        iterNoticeData != null &&
+        soaNoticeData != null)
+      setState(() {
+        _isLoading = false;
+      });
     super.initState();
   }
 
@@ -63,9 +73,9 @@ class _NoticesState extends State<Notices> {
           setState(() {
             currentIndex = value;
             if (value == 0) {
-              if (iterNoticeData == null) getIterNotices();
+              if (iterNoticeData == null) _fetchNotice.getIterNotices();
             } else {
-              if (soaNoticeData == null) getSoaNotices();
+              if (soaNoticeData == null) _fetchNotice.getSoaNotices();
             }
           });
         },
@@ -183,11 +193,18 @@ class _NoticesState extends State<Notices> {
             ),
     );
   }
+}
 
+class FetchNotice {
+  FetchNotice() {
+    getIterNotices();
+    getSoaNotices();
+  }
   getIterNotices() async {
-    setState(() {
-      _isLoading = true;
-    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // setState(() {
+    //   _isLoading = true;
+    // });
     final mainurl = 'https://www.soa.ac.in';
     var resp = await http.get(mainurl + '/iter-student-notice/');
     var resp2 = await http.get(mainurl + '/iter-exam-notice/');
@@ -224,15 +241,19 @@ class _NoticesState extends State<Notices> {
     } else {
       iterNoticeData = null;
     }
-    setState(() {
-      _isLoading = false;
-    });
+
+    // setState(() {
+    //   _isLoading = false;
+    // });
+    await prefs.setString('examNotice', iterExamNoticeData[0].toString());
+    await prefs.setString('iterNotice', iterNoticeData[0].toString());
   }
 
   getSoaNotices() async {
-    setState(() {
-      _isLoading = true;
-    });
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // setState(() {
+    //   _isLoading = true;
+    // });
     final mainurl = 'https://www.soa.ac.in';
     var resp = await http.get(mainurl + '/general-notifications/');
     print(mainurl + '/iter-student-notice/');
@@ -255,8 +276,9 @@ class _NoticesState extends State<Notices> {
     } else {
       soaNoticeData = null;
     }
-    setState(() {
-      _isLoading = false;
-    });
+    // setState(() {
+    //   _isLoading = false;
+    // });
+    await prefs.setString('soaNotice', soaNoticeData[0].toString());
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
-import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/main.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';

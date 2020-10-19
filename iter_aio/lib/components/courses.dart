@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/components/lectures.dart';
-import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/components/videoPlayer.dart';
 import 'package:iteraio/main.dart';

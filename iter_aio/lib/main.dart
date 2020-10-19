@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
 import 'package:iteraio/MyHomePage.dart';
-import 'package:iteraio/Themes/Theme.dart';
+import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/important.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -152,7 +152,7 @@ class _MyAppState extends State<MyApp> {
     if (response.statusCode == 200) {
       var document = parse(response.body);
       updateText = document.querySelector('div.markdown-body').text;
-      print(updateText);
+      // print(updateText);
       List links = document.querySelectorAll('div > ul > li > a > span ');
       List<Map<String, String>> linkMap = [];
       for (var link in links) {
