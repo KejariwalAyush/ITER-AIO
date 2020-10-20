@@ -37,6 +37,8 @@ dependencies:
   webview_flutter: ^0.3.21
   # Report bugs
   wiredash: ^0.1.0
+  # Restart
+  flutter_phoenix: "^0.1.0"
 
 dev_dependencies:
   flutter_test:

@@ -79,12 +79,16 @@ class _MyHomePageState extends State<MyHomePage> {
           prefs.getBool('isbright') != null && prefs.getBool('isbright')
               ? Brightness.light
               : Brightness.dark;
-      themeStr = prefs.getString('theme');
-      regdNo = prefs.getString('regd');
-      password = prefs.getString('password');
-      // iterNotice = prefs.getString('iterNotice');
-      // examNotice = prefs.getString('examNotice');
-      // soaNotice = prefs.getString('soaNotice');
+      if (prefs.getString('theme') != null) themeStr = prefs.getString('theme');
+      if (prefs.getString('regd') != null) regdNo = prefs.getString('regd');
+      if (prefs.getString('password') != null)
+        password = prefs.getString('password');
+      if (prefs.getString('iterNotice') != null)
+        iterNotice = prefs.getString('iterNotice');
+      if (prefs.getString('examNotice') != null)
+        examNotice = prefs.getString('examNotice');
+      if (prefs.getString('soaNotice') != null)
+        soaNotice = prefs.getString('soaNotice');
       if (noInternet) {
         getoldData();
       }
@@ -1067,6 +1071,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void checkForNewNotification() async {
+    if (iterExamNoticeData != null) await FetchNotice().getIterNotices();
     if (iterExamNoticeData[0] == examNotice ||
         iterNoticeData[0] == iterNotice ||
         soaNoticeData[0] == soaNotice)

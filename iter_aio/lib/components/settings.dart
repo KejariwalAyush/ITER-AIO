@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/main.dart';
@@ -60,11 +61,10 @@ class _SettingsState extends State<Settings> {
                             : brightness = Brightness.light;
                         setBrightness(!value);
                       });
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
-                        ModalRoute.withName('/'),
-                      );
+
+                      Future.microtask(() async {
+                        await setBrightness(!value);
+                      }).whenComplete(() => Phoenix.rebirth(context));
                     },
                   ),
                 ],
@@ -138,12 +138,10 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorLight1;
                           });
                           themeStr = 'L1';
-                          getTheme(themeStr);
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
@@ -168,12 +166,9 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorDark1;
                           });
                           themeStr = 'D1';
-                          getTheme(themeStr);
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
@@ -202,13 +197,10 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorLight2;
                           });
                           themeStr = 'L2';
-                          getTheme(themeStr);
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
@@ -233,13 +225,10 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorDark2;
                           });
                           themeStr = 'D2';
-                          getTheme(themeStr);
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
@@ -268,13 +257,10 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorLight3;
                           });
                           themeStr = 'L3';
-                          getTheme(themeStr);
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
@@ -299,13 +285,10 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorDark3;
                           });
                           themeStr = 'D3';
-                          getTheme(themeStr);
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
@@ -334,13 +317,10 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorLight4;
                           });
                           themeStr = 'L4';
-                          getTheme(themeStr);
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
@@ -365,13 +345,10 @@ class _SettingsState extends State<Settings> {
                             colorDark = colorDark4;
                           });
                           themeStr = 'D4';
-                          getTheme(themeStr);
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyApp()),
-                            ModalRoute.withName('/'),
-                          );
+                          Future.microtask(() async {
+                            await getTheme(themeStr);
+                          }).whenComplete(() => Phoenix.rebirth(context));
                         },
                       ),
                     ),
