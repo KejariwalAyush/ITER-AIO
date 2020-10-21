@@ -5,6 +5,7 @@ All in one app for ITER students.
 
 ### 2nd Sem Results are OUT!
 
+Before Installing Apk Turn off Play Protect from Google Play Store
 ## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.1.0/ITER-AIO-v1.1.0.apk)
 ## [Download Page](https://github.com/KejariwalAyush/ITER-AIO/releases/latest)
 
