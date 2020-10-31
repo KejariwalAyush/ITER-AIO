@@ -15,8 +15,8 @@ All in one app for ITER students.
 - Video Lectures (Can Play video on 3rd Party Players e.g., MX Player, VLC, etc)
 - News & Notices about SOA & ITER
 - Bunk Planning
-- Academic Calender
-- Study Materials (Coming Soon)
+- Academic Calender (Coming Soon)
+- Study Materials 
 - Switch Themes & Dark Mode
 - Report a bug from within the App
 
