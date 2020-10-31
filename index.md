@@ -3,7 +3,7 @@
 ![Logo](https://github.com/KejariwalAyush/ITER-AIO/blob/master/iter_aio/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png?raw=true)
 All in one app for ITER students.
 
-### 2nd Sem Results are OUT!
+### Version 1.2.0 now Available Download Below
 
 Before Installing Apk Turn off Play Protect from Google Play Store
 ## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.2.0/ITER-AIO-v1.2.0.apk)
