@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return !isLoggedIn && !noInternet || attendData == null
+    return !isLoggedIn && !noInternet
         ? WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
@@ -153,6 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icon(
                       LineAwesomeIcons.lock,
                       size: 20,
+                      color: brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     onPressed: () => Navigator.push(
                         context,
@@ -164,6 +167,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   IconButton(
                     icon: new Icon(
                       Icons.circle_notifications,
+                      size: 20,
+                      color: brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     onPressed: () => Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Notices())),
@@ -451,281 +458,374 @@ class _MyHomePageState extends State<MyHomePage> {
                         bottomLeft: Radius.circular(25),
                         bottomRight: Radius.circular(25))),
               ),
-              body: isLoading || attendData == null
+              body: isLoading
                   ? Center(
                       child: Container(height: 200, child: loading()),
                     )
-                  : SingleChildScrollView(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 5),
-                              margin: EdgeInsets.all(5),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      height: 90,
+                  : attendData == null
+                      ? Center(
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 150,
+                                child: FlareActor(
+                                    "assets/animations/ITER-AIO.flr",
+                                    alignment: Alignment.center,
+                                    fit: BoxFit.contain,
+                                    animation: "hello"),
+                              ),
+                              Text(
+                                'Sorry, No Attendence Available Right Now,\nCome Back Later',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        )
+                      : attendData[0] == null
+                          ? Center(
+                              child: Container(
+                                  child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 150,
                                       child: FlareActor(
                                           "assets/animations/ITER-AIO.flr",
                                           alignment: Alignment.center,
                                           fit: BoxFit.contain,
                                           animation: "hello"),
                                     ),
-                                    // child: CircleAvatar(
-                                    //   child: Image.asset(
-                                    //     gender == 'M'
-                                    //         ? 'assets/logos/maleAvtar.png'
-                                    //         : 'assets/logos/femaleAvtar.png',
-                                    //     fit: BoxFit.cover,
-                                    //   ),
-                                    //   radius: 40,
-                                    //   backgroundColor: Colors.transparent,
-                                    // ),
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Hero(
-                                      tag: 'home animation',
-                                      child: InkWell(
-                                        onTap: resultload
-                                            ? () {
-                                                Fluttertoast.showToast(
-                                                  msg: "Getting Result!",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.BOTTOM,
-                                                  timeInSecForIosWeb: 2,
-                                                  backgroundColor:
-                                                      Colors.greenAccent,
-                                                  textColor: Colors.black,
-                                                  fontSize: 16.0,
-                                                );
-                                              }
-                                            : () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Result())),
-                                        child: RichText(
-                                          textAlign: TextAlign.end,
-                                          text: TextSpan(
-                                              text: '$name',
-                                              style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.light
-                                                    ? Colors.black87
-                                                    : Colors.white,
-                                              ),
-                                              children: [
-                                                TextSpan(
-                                                    text: '\nRegd. No.:$regdNo',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.light
-                                                          ? Colors.black54
-                                                          : Colors.white60,
-                                                    )),
-                                                TextSpan(
-                                                    text: '\nSemester: $sem',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.light
-                                                          ? Colors.black54
-                                                          : Colors.white60,
-                                                    )),
-                                                TextSpan(
-                                                    text: '\n$branch',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.light
-                                                          ? Colors.black54
-                                                          : Colors.white60,
-                                                    )),
-                                              ]),
-                                        ),
-                                      ),
+                                    Text(
+                                      'Sorry,\nNo Attendence Available Right Now,\nCome Back Later',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Avg Attendence: $avgAttend %',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      // color: Colors.black87
+                                    Text(
+                                        '\nUntil Then Check Other Things We Have'),
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                  Text(
-                                    'Avg Absent: $avgAbsent',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      // color: Colors.black87
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Column(
-                              children: <Widget>[
-                                for (var i in attendData['griddata'])
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                    ),
-                                    margin: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: colorDark,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: ExpansionTile(
-                                      initiallyExpanded: false,
-                                      leading: Image.asset(
-                                        subjectAvatar(i['subjectcode']),
-                                        width: 40,
-                                        alignment: Alignment.center,
-                                      ),
-                                      title: Text(
-                                        '${i['subject']}',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      trailing: Container(
-                                        padding: EdgeInsets.all(5),
-                                        margin: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          color: i['TotalAttandence'] > 90
-                                              ? Colors.green
-                                              : i['TotalAttandence'] > 80
-                                                  ? Colors.lightGreen
-                                                  : i['TotalAttandence'] > 75
-                                                      ? Colors.orangeAccent
-                                                      : Colors.redAccent,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Text(
-                                          '${i['TotalAttandence']} %',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
+                                    buildNaviDrawer(context),
+                                  ],
+                                ),
+                              )),
+                            )
+                          : SingleChildScrollView(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 5),
+                                      margin: EdgeInsets.all(5),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              height: 90,
+                                              child: FlareActor(
+                                                  "assets/animations/ITER-AIO.flr",
+                                                  alignment: Alignment.center,
+                                                  fit: BoxFit.contain,
+                                                  animation: "hello"),
+                                            ),
+                                            // child: CircleAvatar(
+                                            //   child: Image.asset(
+                                            //     gender == 'M'
+                                            //         ? 'assets/logos/maleAvtar.png'
+                                            //         : 'assets/logos/femaleAvtar.png',
+                                            //     fit: BoxFit.cover,
+                                            //   ),
+                                            //   radius: 40,
+                                            //   backgroundColor: Colors.transparent,
+                                            // ),
                                           ),
-                                        ),
-                                      ),
-                                      subtitle:
-                                          Text('Code: ${i['subjectcode']}'),
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              flex: 4,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                  top: 3.0,
-                                                  bottom: 3,
-                                                  left: 15,
+                                          Expanded(
+                                            flex: 3,
+                                            child: Hero(
+                                              tag: 'home animation',
+                                              child: InkWell(
+                                                onTap: resultload
+                                                    ? () {
+                                                        Fluttertoast.showToast(
+                                                          msg:
+                                                              "Getting Result!",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .BOTTOM,
+                                                          timeInSecForIosWeb: 2,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .greenAccent,
+                                                          textColor:
+                                                              Colors.black,
+                                                          fontSize: 16.0,
+                                                        );
+                                                      }
+                                                    : () => Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    Result())),
+                                                child: RichText(
+                                                  textAlign: TextAlign.end,
+                                                  text: TextSpan(
+                                                      text: '$name',
+                                                      style: TextStyle(
+                                                        fontSize: 25,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Theme.of(context)
+                                                                    .brightness ==
+                                                                Brightness.light
+                                                            ? Colors.black87
+                                                            : Colors.white,
+                                                      ),
+                                                      children: [
+                                                        TextSpan(
+                                                            text:
+                                                                '\nRegd. No.:$regdNo',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Theme.of(context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .light
+                                                                  ? Colors
+                                                                      .black54
+                                                                  : Colors
+                                                                      .white60,
+                                                            )),
+                                                        TextSpan(
+                                                            text:
+                                                                '\nSemester: $sem',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Theme.of(context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .light
+                                                                  ? Colors
+                                                                      .black54
+                                                                  : Colors
+                                                                      .white60,
+                                                            )),
+                                                        TextSpan(
+                                                            text: '\n$branch',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Theme.of(context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .light
+                                                                  ? Colors
+                                                                      .black54
+                                                                  : Colors
+                                                                      .white60,
+                                                            )),
+                                                      ]),
                                                 ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Avg Attendence: $avgAttend %',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              // color: Colors.black87
+                                            ),
+                                          ),
+                                          Text(
+                                            'Avg Absent: $avgAbsent',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              // color: Colors.black87
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        for (var i in attendData['griddata'])
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 5,
+                                            ),
+                                            margin: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: colorDark,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: ExpansionTile(
+                                              initiallyExpanded: false,
+                                              leading: Image.asset(
+                                                subjectAvatar(i['subjectcode']),
+                                                width: 40,
+                                                alignment: Alignment.center,
+                                              ),
+                                              title: Text(
+                                                '${i['subject']}',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              trailing: Container(
+                                                padding: EdgeInsets.all(5),
+                                                margin: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                  color: i['TotalAttandence'] >
+                                                          90
+                                                      ? Colors.green
+                                                      : i['TotalAttandence'] >
+                                                              80
+                                                          ? Colors.lightGreen
+                                                          : i['TotalAttandence'] >
+                                                                  75
+                                                              ? Colors
+                                                                  .orangeAccent
+                                                              : Colors
+                                                                  .redAccent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Text(
+                                                  '${i['TotalAttandence']} %',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              subtitle: Text(
+                                                  'Code: ${i['subjectcode']}'),
+                                              children: <Widget>[
+                                                Row(
                                                   children: <Widget>[
-                                                    Text(
-                                                      'Last Updated On: ${getTime(i['lastupdatedon'])}',
-                                                      textAlign:
-                                                          TextAlign.start,
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          top: 3.0,
+                                                          bottom: 3,
+                                                          left: 15,
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              'Last Updated On: ${getTime(i['lastupdatedon'])}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                            ),
+                                                            if (i['Latt'] !=
+                                                                '0 / 0')
+                                                              Text(
+                                                                'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .start,
+                                                              ),
+                                                            if (i['Patt'] !=
+                                                                '0 / 0')
+                                                              Text(
+                                                                'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .start,
+                                                              ),
+                                                            if (i['Tatt'] !=
+                                                                '0 / 0')
+                                                              Text(
+                                                                'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .start,
+                                                              ),
+                                                            Text(
+                                                              'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                            ),
+                                                            Text(
+                                                              'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
                                                     ),
-                                                    if (i['Latt'] != '0 / 0')
-                                                      Text(
-                                                        'Theory: \t\t\t${i['Latt']} (${getPercentage(i['Latt']).floor()}%)',
-                                                        textAlign:
-                                                            TextAlign.start,
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Image.asset(
+                                                        i['TotalAttandence'] >=
+                                                                90
+                                                            ? 'assets/logos/happy.gif'
+                                                            : i['TotalAttandence'] >
+                                                                    80
+                                                                ? 'assets/logos/low happy.gif'
+                                                                : i['TotalAttandence'] >
+                                                                        75
+                                                                    ? 'assets/logos/low sad.gif'
+                                                                    : 'assets/logos/sad.gif',
+                                                        fit: BoxFit.contain,
                                                       ),
-                                                    if (i['Patt'] != '0 / 0')
-                                                      Text(
-                                                        'Practical: \t\t\t${i['Patt']} (${getPercentage(i['Patt']).floor()}%)',
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    if (i['Tatt'] != '0 / 0')
-                                                      Text(
-                                                        'Tatt: \t\t\t${i['Tatt']} (${getPercentage(i['Tatt']).floor()}%)',
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                      ),
-                                                    Text(
-                                                      'Present: ${int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim())}',
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    ),
-                                                    Text(
-                                                      'Absent: ${(int.parse(i['Latt'].toString().split('/')[1].trim()) + int.parse(i['Patt'].toString().split('/')[1].trim()) + int.parse(i['Tatt'].toString().split('/')[1].trim())) - (int.parse(i['Latt'].toString().split('/')[0].trim()) + int.parse(i['Patt'].toString().split('/')[0].trim()) + int.parse(i['Tatt'].toString().split('/')[0].trim()))}',
-                                                      textAlign:
-                                                          TextAlign.start,
                                                     ),
                                                   ],
                                                 ),
-                                              ),
+                                                Text(
+                                                  bunklogic(i),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
                                             ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: Image.asset(
-                                                i['TotalAttandence'] >= 90
-                                                    ? 'assets/logos/happy.gif'
-                                                    : i['TotalAttandence'] > 80
-                                                        ? 'assets/logos/low happy.gif'
-                                                        : i['TotalAttandence'] >
-                                                                75
-                                                            ? 'assets/logos/low sad.gif'
-                                                            : 'assets/logos/sad.gif',
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          bunklogic(i),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                          ),
                                       ],
                                     ),
-                                  ),
-                              ],
+                                  ],
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
             ),
           );
   }
@@ -811,7 +911,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => MyHomePage()));
-        return null;
+        // return;
       },
     );
     if (serverTimeout) {
@@ -834,23 +934,26 @@ class _MyHomePageState extends State<MyHomePage> {
       await prefs.setString('info', infoResp.body);
       name = infoData["detail"][0]['name'];
       branch = infoData['detail'][0]['branchdesc'];
-      sem = attendData['griddata'][0]['stynumber'];
+      sem = infoData['detail'][0]['stynumber'];
       gender = infoData['detail'][0]['gender'];
       // print(gender);
       double totatt = 0.0;
       int cnt = 0, totAbs = 0;
-      for (var i in attendData['griddata']) {
-        totatt += i['TotalAttandence'];
-        totAbs += (int.parse(i['Latt'].toString().split('/')[1].trim()) +
-                int.parse(i['Patt'].toString().split('/')[1].trim()) +
-                int.parse(i['Tatt'].toString().split('/')[1].trim())) -
-            (int.parse(i['Latt'].toString().split('/')[0].trim()) +
-                int.parse(i['Patt'].toString().split('/')[0].trim()) +
-                int.parse(i['Tatt'].toString().split('/')[0].trim()));
-        cnt++;
+      if (attendData[0] != null) {
+        for (var i in attendData['griddata']) {
+          totatt += i['TotalAttandence'];
+          totAbs += (int.parse(i['Latt'].toString().split('/')[1].trim()) +
+                  int.parse(i['Patt'].toString().split('/')[1].trim()) +
+                  int.parse(i['Tatt'].toString().split('/')[1].trim())) -
+              (int.parse(i['Latt'].toString().split('/')[0].trim()) +
+                  int.parse(i['Patt'].toString().split('/')[0].trim()) +
+                  int.parse(i['Tatt'].toString().split('/')[0].trim()));
+          cnt++;
+        }
+
+        avgAttend = (totatt / cnt).round();
+        avgAbsent = totAbs ~/ cnt;
       }
-      avgAttend = (totatt / cnt).round();
-      avgAbsent = totAbs ~/ cnt;
       // print('$name - $sem');
       getResult();
       if (sem == 3 || sem == 5 || sem == 7)
@@ -1082,92 +1185,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget widgetDrawer(context) {
     return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            AppBar(
-              title: Text(
-                'ITER-AIO',
-                softWrap: true,
-              ),
-              elevation: 15,
-              centerTitle: true,
-              automaticallyImplyLeading: true,
-              leading: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () => Navigator.pop(context, false)),
+      child: Column(
+        children: <Widget>[
+          AppBar(
+            title: Text(
+              'ITER-AIO',
+              softWrap: true,
             ),
-            if (isLoggedIn || sem != null) Divider(),
-            if (isLoggedIn || sem != null)
-              ListTile(
-                leading: Icon(Icons.video_library),
-                title: Text('Lectures'),
-                onTap: isLoading
-                    ? null
-                    : !serverTimeout && noInternet
-                        ? () {
-                            Fluttertoast.showToast(
-                              msg: "No Internet!",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor: Colors.redAccent,
-                              textColor: Colors.white,
-                              fontSize: 16.0,
-                            );
-                          }
-                        : () => Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Courses())),
-              ),
-            if (isLoggedIn || sem != null) Divider(),
-            if (isLoggedIn || sem != null)
-              ListTile(
-                leading: Icon(Icons.assignment),
-                title: Text('Result'),
-                onTap: resultload
-                    ? () {
-                        Fluttertoast.showToast(
-                          msg: "Getting Result!",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.greenAccent,
-                          textColor: Colors.black,
-                          fontSize: 16.0,
-                        );
-                      }
-                    : () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Result())),
-              ),
-            Divider(),
+            elevation: 15,
+            centerTitle: true,
+            automaticallyImplyLeading: true,
+            leading: IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () => Navigator.pop(context, false)),
+          ),
+          buildNaviDrawer(context)
+        ],
+      ),
+    );
+  }
+
+  Widget buildNaviDrawer(context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          if (isLoggedIn || sem != null) Divider(),
+          if (isLoggedIn || sem != null)
             ListTile(
-              leading: Icon(LineAwesomeIcons.book),
-              title: Text('Study Materials'),
-              onTap: isLoading
-                  ? null
-                  : !serverTimeout && noInternet
-                      ? () {
-                          Fluttertoast.showToast(
-                            msg: "No Internet!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.redAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                      : () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => WebPageView(
-                                  'ITER Book Shelf',
-                                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'))),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.notifications_none),
-              title: Text('Notices & News'),
+              leading: Icon(Icons.video_library),
+              title: Text('Lectures'),
               onTap: isLoading
                   ? null
                   : !serverTimeout && noInternet
@@ -1183,94 +1229,156 @@ class _MyHomePageState extends State<MyHomePage> {
                           );
                         }
                       : () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Notices())),
+                          MaterialPageRoute(builder: (context) => Courses())),
             ),
-            if (isLoggedIn) Divider(),
-            if (isLoggedIn)
-              ListTile(
-                leading: Icon(Icons.airline_seat_individual_suite),
-                title: Text('Plan a Bunk'),
-                onTap: isLoading
-                    ? null
+          if (isLoggedIn || sem != null) Divider(),
+          if (isLoggedIn || sem != null)
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text('Result'),
+              onTap: resultload
+                  ? () {
+                      Fluttertoast.showToast(
+                        msg: "Getting Result!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.greenAccent,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                    }
+                  : () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Result())),
+            ),
+          Divider(),
+          ListTile(
+            leading: Icon(LineAwesomeIcons.book),
+            title: Text('Study Materials'),
+            onTap: isLoading
+                ? null
+                : !serverTimeout && noInternet
+                    ? () {
+                        Fluttertoast.showToast(
+                          msg: "No Internet!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.redAccent,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    : () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WebPageView('ITER Book Shelf',
+                                'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'))),
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.notifications_none),
+            title: Text('Notices & News'),
+            onTap: isLoading
+                ? null
+                : !serverTimeout && noInternet
+                    ? () {
+                        Fluttertoast.showToast(
+                          msg: "No Internet!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.redAccent,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
                     : () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PlanBunk())),
-              ),
-            Divider(),
+                        MaterialPageRoute(builder: (context) => Notices())),
+          ),
+          if (isLoggedIn) Divider(),
+          if (isLoggedIn)
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: Icon(Icons.airline_seat_individual_suite),
+              title: Text('Plan a Bunk'),
               onTap: isLoading
                   ? null
                   : () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Settings())),
+                      MaterialPageRoute(builder: (context) => PlanBunk())),
             ),
-            Divider(),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: isLoading
+                ? null
+                : () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Settings())),
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.info_outline),
+            title: Text('About Us'),
+            onTap: isLoading
+                ? null
+                : () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AboutUs())),
+          ),
+          if (isLoggedIn) Divider(),
+          if (isLoggedIn)
             ListTile(
-              leading: Icon(Icons.info_outline),
-              title: Text('About Us'),
-              onTap: isLoading
-                  ? null
-                  : () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AboutUs())),
-            ),
-            if (isLoggedIn) Divider(),
-            if (isLoggedIn)
-              ListTile(
-                  leading: Icon(Icons.power_settings_new),
-                  title: Text('Logout'),
-                  onTap: () => Alert(
-                        context: context,
-                        onWillPopActive: true,
-                        type: AlertType.warning,
-                        title: "Do you want to Logout?",
-                        buttons: [
-                          DialogButton(
-                            color: colorDark,
-                            child: Text(
-                              "Logout",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                attendData = null;
-                                resultData = null;
-                                name = null;
-                                sem = null;
-                                infoData = null;
-                                isLoggedIn = false;
-                                regdNo = null;
-                                password = null;
-                                _resetCredentials();
-                                Fluttertoast.showToast(
-                                  msg: "Logged out!",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor: Colors.blueGrey,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0,
-                                );
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MyHomePage()));
-                              });
-                            },
+                leading: Icon(Icons.power_settings_new),
+                title: Text('Logout'),
+                onTap: () => Alert(
+                      context: context,
+                      onWillPopActive: true,
+                      type: AlertType.warning,
+                      title: "Do you want to Logout?",
+                      buttons: [
+                        DialogButton(
+                          color: colorDark,
+                          child: Text(
+                            "Logout",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
-                          DialogButton(
-                            color: colorDark,
-                            child: Text(
-                              "Cancel",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            onPressed: () => Navigator.pop(context),
-                          )
-                        ],
-                      ).show()),
-          ],
-        ),
+                          onPressed: () {
+                            setState(() {
+                              attendData = null;
+                              resultData = null;
+                              name = null;
+                              sem = null;
+                              infoData = null;
+                              isLoggedIn = false;
+                              regdNo = null;
+                              password = null;
+                              _resetCredentials();
+                              Fluttertoast.showToast(
+                                msg: "Logged out!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor: Colors.blueGrey,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                              );
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyHomePage()));
+                            });
+                          },
+                        ),
+                        DialogButton(
+                          color: colorDark,
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        )
+                      ],
+                    ).show()),
+        ],
       ),
     );
   }

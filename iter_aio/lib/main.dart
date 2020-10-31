@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/important.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -267,6 +268,7 @@ class PushMessagingExample extends StatefulWidget {
 }
 
 class _PushMessagingExampleState extends State<PushMessagingExample> {
+  // ignore: unused_field
   String _homeScreenText = "Waiting for token...";
   // String _messageText = "Waiting for message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -280,6 +282,28 @@ class _PushMessagingExampleState extends State<PushMessagingExample> {
         //   _messageText = "Push Messaging message: $message";
         // });
         print("onMessage: $message");
+        Alert(
+                context: context,
+                title: message['notification']['title'],
+                type: AlertType.none,
+                onWillPopActive: true,
+                desc: message['notification']['body'])
+            .show();
+        // showDialog(
+        //   context: context,
+        //   builder: (context) => AlertDialog(
+        //     content: ListTile(
+        //       title: Text(message['notification']['title']),
+        //       subtitle: Text(message['notification']['body']),
+        //     ),
+        //     actions: <Widget>[
+        //       FlatButton(
+        //         child: Text('Ok'),
+        //         onPressed: () => Navigator.of(context).pop(),
+        //       ),
+        //     ],
+        //   ),
+        // );
       },
       onLaunch: (Map<String, dynamic> message) async {
         // setState(() {

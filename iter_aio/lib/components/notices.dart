@@ -256,11 +256,11 @@ class FetchNotice {
     // });
     final mainurl = 'https://www.soa.ac.in';
     var resp = await http.get(mainurl + '/general-notifications/');
-    print(mainurl + '/iter-student-notice/');
+    // print(mainurl + '/iter-student-notice/');
     if (resp.statusCode == 200) {
       var doc = parse(resp.body);
       var links = doc.querySelectorAll('main > section > section > article');
-      print(links.length);
+      // print(links.length);
       List<Map<String, dynamic>> linkMap = [];
       // print(linkMap);
       for (var link in links) {
