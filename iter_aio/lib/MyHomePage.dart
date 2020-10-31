@@ -25,6 +25,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 
+// import 'package:path/path.dart';
+// import 'package:path_provider/path_provider.dart' as syspath;
+
+// import 'download_update.dart';
+
 var attendData, infoData;
 var resultData, courseData, cgpaData;
 var name, branch, gender, avgAttend, avgAbsent, regdNo, password, themeStr;
@@ -132,8 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  var _cxt;
+
   @override
   Widget build(BuildContext context) {
+    _cxt = context;
     return !isLoggedIn && !noInternet
         ? WillPopScope(
             onWillPop: _onWillPop,
@@ -832,7 +840,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
-          context: context,
+          context: _cxt,
           builder: (context) => new AlertDialog(
             title: new Text('Are you sure?'),
             content: new Text('Do you want to exit the App'),
@@ -893,6 +901,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .post(info_url, headers: headers, body: jsonEncode(payload))
         .timeout(
       Duration(seconds: 15),
+      // ignore: missing_return
       onTimeout: () {
         Fluttertoast.showToast(
           msg: "Server Error: Timeout",
@@ -910,7 +919,7 @@ class _MyHomePageState extends State<MyHomePage> {
         });
 
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+            _cxt, MaterialPageRoute(builder: (context) => MyHomePage()));
         // return;
       },
     );
@@ -987,12 +996,20 @@ class _MyHomePageState extends State<MyHomePage> {
       print('server error');
       isLoggedIn = false;
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+          _cxt, MaterialPageRoute(builder: (context) => MyHomePage()));
     }
     if (isUpdateAvailable) {
       Alert(
-        context: context,
+        context: _cxt,
         type: AlertType.none,
+        style: AlertStyle(
+          descStyle: TextStyle(
+            color: brightness == Brightness.dark ? Colors.white : Colors.black,
+          ),
+          titleStyle: TextStyle(
+            color: brightness == Brightness.dark ? Colors.white : Colors.black,
+          ),
+        ),
         title: "UPDATE Available!",
         desc: "Version: $latestversion\n$updateText.",
         buttons: [
@@ -1001,7 +1018,11 @@ class _MyHomePageState extends State<MyHomePage> {
               "UPDATE",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => {_launchURL(updatelink)},
+            onPressed: () async {
+              _launchURL(updatelink);
+              // final appdir = await syspath.getApplicationDocumentsDirectory();
+              // await downloadFile(updatelink, filename: 'iteraio.apk');
+            },
             // onPressed: () => {},
             color: Color(0xFF333366),
           ),
@@ -1010,7 +1031,7 @@ class _MyHomePageState extends State<MyHomePage> {
               "Cancel",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(_cxt),
             color: Colors.blueGrey,
           )
         ],

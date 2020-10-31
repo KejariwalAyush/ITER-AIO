@@ -32,6 +32,9 @@ dependencies:
   package_info: ^0.4.3
   rflutter_alert: ^1.1.0
   shared_preferences: ^0.5.7+3
+  # Path
+  path_provider: ^1.6.22
+  path: ^1.7.0
   # Url Handler
   url_launcher: null
   webview_flutter: ^0.3.21
