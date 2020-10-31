@@ -6,7 +6,7 @@ All in one app for ITER students.
 ### 2nd Sem Results are OUT!
 
 Before Installing Apk Turn off Play Protect from Google Play Store
-## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.1.0/ITER-AIO-v1.1.0.apk)
+## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.2.0/ITER-AIO-v1.2.0.apk)
 ## [Download Page](https://github.com/KejariwalAyush/ITER-AIO/releases/latest)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/KejariwalAyush/ITER-AIO?style=plastic)
@@ -20,8 +20,8 @@ Before Installing Apk Turn off Play Protect from Google Play Store
 - Video Lectures (Can Play video on 3rd Party Players e.g., MX Player, VLC, etc)
 - News & Notices about SOA & ITER
 - Bunk Planning
-- Academic Calender
-- Study Materials (Coming Soon)
+- Academic Calender(Comming Soon!)
+- Study Materials
 - Switch Themes & Dark Mode
 - Report a bug from within the App
 
