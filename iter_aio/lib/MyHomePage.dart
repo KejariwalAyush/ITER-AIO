@@ -1317,8 +1317,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     : () => Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Notices())),
           ),
-          if (isLoggedIn) Divider(),
-          if (isLoggedIn)
+          if (isLoggedIn && (attendData[0] != null)) Divider(),
+          if (isLoggedIn && (attendData[0] != null))
             ListTile(
               leading: Icon(Icons.airline_seat_individual_suite),
               title: Text('Plan a Bunk'),
