@@ -174,7 +174,7 @@ class _MyAppState extends State<MyApp> {
       }
       var dec2 = jsonDecode(json.encode(linkMap2));
       updatelink = dec2[0]['title'];
-      print(updatelink);
+      // print(updatelink);
 
       if (version.compareTo(latestversion) != 0) {
         print('update available');
@@ -203,7 +203,7 @@ class _MyAppState extends State<MyApp> {
         );
         // Alert is in the getData fuction in homePage
       } else {
-        print('Up-to-Date');
+        // print('Up-to-Date');
         isUpdateAvailable = false;
       }
       setState(() {

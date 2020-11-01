@@ -14,7 +14,9 @@ import 'package:iteraio/components/notices.dart';
 import 'package:iteraio/components/planBunk.dart';
 import 'package:iteraio/components/result.dart';
 import 'package:html/parser.dart';
+import 'package:iteraio/components/result_page.dart';
 import 'package:iteraio/components/settings.dart';
+import 'package:iteraio/helper/result_fetch.dart';
 import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
@@ -44,6 +46,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+ResultFetch rf;
 var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -55,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     setState(() {
+      rf = ResultFetch(regdNo: regdNo, password: password);
       animationName = 'hello';
       _getCredentials();
       FetchNotice();
@@ -965,6 +969,9 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       // print('$name - $sem');
       getResult();
+      // ResultFetch rf = ResultFetch(regdNo: regdNo, password: password);
+      // await rf.getResult();
+      // .whenComplete(() => print('Result CGPA from Helper!!!!!'));
       if (sem == 3 || sem == 5 || sem == 7)
         getCourses(sem - 1);
       else
@@ -1257,20 +1264,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               leading: Icon(Icons.assignment),
               title: Text('Result'),
-              onTap: resultload
-                  ? () {
-                      Fluttertoast.showToast(
-                        msg: "Getting Result!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: Colors.greenAccent,
-                        textColor: Colors.black,
-                        fontSize: 16.0,
-                      );
-                    }
-                  : () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Result())),
+              onTap:
+                  // resultload
+                  //     ? () {
+                  //         Fluttertoast.showToast(
+                  //           msg: "Getting Result!",
+                  //           toastLength: Toast.LENGTH_SHORT,
+                  //           gravity: ToastGravity.BOTTOM,
+                  //           timeInSecForIosWeb: 2,
+                  //           backgroundColor: Colors.greenAccent,
+                  //           textColor: Colors.black,
+                  //           fontSize: 16.0,
+                  //         );
+                  //       }
+                  //     :
+                  () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ResultPage())),
             ),
           Divider(),
           ListTile(
