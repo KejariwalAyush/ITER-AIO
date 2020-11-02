@@ -390,7 +390,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   isLoading = true;
                                   _isLoggingIn = true;
                                   getData();
-                                  getResult();
                                   // isLoggedIn = true;
                                 });
                               },
@@ -968,10 +967,6 @@ class _MyHomePageState extends State<MyHomePage> {
         avgAbsent = totAbs ~/ cnt;
       }
       // print('$name - $sem');
-      getResult();
-      // ResultFetch rf = ResultFetch(regdNo: regdNo, password: password);
-      // await rf.getResult();
-      // .whenComplete(() => print('Result CGPA from Helper!!!!!'));
       if (sem == 3 || sem == 5 || sem == 7)
         getCourses(sem - 1);
       else
@@ -1053,54 +1048,6 @@ class _MyHomePageState extends State<MyHomePage> {
       throw 'Could not launch $url';
     }
     return;
-  }
-
-  getResult() async {
-    setState(() {
-      isLoading = true;
-      resultload = true;
-    });
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    resultData = List();
-    print('loading results...');
-    const cgpa_url = 'https://iterapi-web.herokuapp.com/cgpa/';
-    var cgpaPayload = {"user_id": "$regdNo", "password": "$password"};
-    const headers = {'Content-Type': 'application/json'};
-    var cgpaResp = await http.post(cgpa_url,
-        headers: headers, body: jsonEncode(cgpaPayload));
-    if (cgpaResp.statusCode == 200) {
-      cgpaData = '${cgpaResp.body}';
-      cgpaData = jsonDecode(cgpaData);
-    }
-    const result_url = 'https://iterapi-web.herokuapp.com/result/';
-    for (int i = sem; i >= 1; i--) {
-      var resultPayload = {
-        "user_id": "$regdNo",
-        "password": "$password",
-        "sem": i
-      };
-      const headers = {'Content-Type': 'application/json'};
-      var resultResp = await http.post(result_url,
-          headers: headers, body: jsonEncode(resultPayload));
-      if (resultResp.statusCode == 200) {
-        await resultData.add('${resultResp.body}');
-      }
-    }
-    print('Result Fetching Complete');
-    await prefs.setString('result', resultData.toString());
-    setState(() {
-      resultload = false;
-      isLoading = false;
-      Fluttertoast.showToast(
-        msg: "Results Fetched!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.greenAccent,
-        textColor: Colors.black,
-        fontSize: 16.0,
-      );
-    });
   }
 
   Future<void> getCourses(var semester) async {
@@ -1259,28 +1206,29 @@ class _MyHomePageState extends State<MyHomePage> {
                       : () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Courses())),
             ),
-          if (isLoggedIn || sem != null) Divider(),
-          if (isLoggedIn || sem != null)
-            ListTile(
-              leading: Icon(Icons.assignment),
-              title: Text('Result'),
-              onTap:
-                  // resultload
-                  //     ? () {
-                  //         Fluttertoast.showToast(
-                  //           msg: "Getting Result!",
-                  //           toastLength: Toast.LENGTH_SHORT,
-                  //           gravity: ToastGravity.BOTTOM,
-                  //           timeInSecForIosWeb: 2,
-                  //           backgroundColor: Colors.greenAccent,
-                  //           textColor: Colors.black,
-                  //           fontSize: 16.0,
-                  //         );
-                  //       }
-                  //     :
-                  () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ResultPage())),
-            ),
+          // if (isLoggedIn || sem != null)
+          Divider(),
+          // if (isLoggedIn || sem != null)
+          ListTile(
+            leading: Icon(Icons.assignment),
+            title: Text('Result'),
+            onTap:
+                // resultload
+                //     ? () {
+                //         Fluttertoast.showToast(
+                //           msg: "Getting Result!",
+                //           toastLength: Toast.LENGTH_SHORT,
+                //           gravity: ToastGravity.BOTTOM,
+                //           timeInSecForIosWeb: 2,
+                //           backgroundColor: Colors.greenAccent,
+                //           textColor: Colors.black,
+                //           fontSize: 16.0,
+                //         );
+                //       }
+                //     :
+                () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ResultPage())),
+          ),
           Divider(),
           ListTile(
             leading: Icon(LineAwesomeIcons.book),
@@ -1475,3 +1423,51 @@ class _MyHomePageState extends State<MyHomePage> {
 //     isLoading = false;
 //   });
 // }
+
+// getResult() async {
+//     setState(() {
+//       isLoading = true;
+//       resultload = true;
+//     });
+//     final SharedPreferences prefs = await SharedPreferences.getInstance();
+//     resultData = List();
+//     print('loading results...');
+//     const cgpa_url = 'https://iterapi-web.herokuapp.com/cgpa/';
+//     var cgpaPayload = {"user_id": "$regdNo", "password": "$password"};
+//     const headers = {'Content-Type': 'application/json'};
+//     var cgpaResp = await http.post(cgpa_url,
+//         headers: headers, body: jsonEncode(cgpaPayload));
+//     if (cgpaResp.statusCode == 200) {
+//       cgpaData = '${cgpaResp.body}';
+//       cgpaData = jsonDecode(cgpaData);
+//     }
+//     const result_url = 'https://iterapi-web.herokuapp.com/result/';
+//     for (int i = sem; i >= 1; i--) {
+//       var resultPayload = {
+//         "user_id": "$regdNo",
+//         "password": "$password",
+//         "sem": i
+//       };
+//       const headers = {'Content-Type': 'application/json'};
+//       var resultResp = await http.post(result_url,
+//           headers: headers, body: jsonEncode(resultPayload));
+//       if (resultResp.statusCode == 200) {
+//         await resultData.add('${resultResp.body}');
+//       }
+//     }
+//     print('Result Fetching Complete');
+//     await prefs.setString('result', resultData.toString());
+//     setState(() {
+//       resultload = false;
+//       isLoading = false;
+//       Fluttertoast.showToast(
+//         msg: "Results Fetched!",
+//         toastLength: Toast.LENGTH_SHORT,
+//         gravity: ToastGravity.BOTTOM,
+//         timeInSecForIosWeb: 2,
+//         backgroundColor: Colors.greenAccent,
+//         textColor: Colors.black,
+//         fontSize: 16.0,
+//       );
+//     });
+//   }
