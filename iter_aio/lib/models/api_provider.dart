@@ -8,7 +8,7 @@ class ApiProvider {
     baseUrl: 'http://136.233.14.3:8282/CampusPortalSOA',
     connectTimeout: 15000,
     receiveTimeout: 13000,
-    contentType: 'application/json',
+    // contentType: 'application/json',
   );
 
   static final ApiProvider _instance = ApiProvider._internal();
@@ -41,10 +41,10 @@ class ApiProvider {
       data: request,
     );
     print(response.statusCode);
-    print(response.statusMessage);
+    print(response.data.toString());
     //get cooking from response
     final cookies = response.headers.map['set-cookie'];
-    if (cookies.isNotEmpty) {
+    if (cookies != null) {
       final authToken =
           cookies[0]; //it depends on how your server sending cookie
       //save this authToken in local storage, and pass in further api calls.
@@ -55,6 +55,7 @@ class ApiProvider {
     }
 
     print(cookies);
+    return cookies;
     //print(response.headers.toString());
   }
 

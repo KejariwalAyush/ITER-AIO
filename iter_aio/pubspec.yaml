@@ -25,6 +25,7 @@ dependencies:
   fluttertoast: ^4.0.0
   html: null
   http: ^0.12.0+2
+  requests: ^3.0.1
   dio: ^3.0.10
   splashscreen: null
   line_awesome_icons: ^1.0.4+2

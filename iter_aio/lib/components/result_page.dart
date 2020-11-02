@@ -8,6 +8,7 @@ import 'package:iteraio/widgets/loading.dart';
 import '../MyHomePage.dart';
 
 class ResultPage extends StatefulWidget {
+  static const routeName = "result-page";
   @override
   _ResultPageState createState() => _ResultPageState();
 }
@@ -23,12 +24,14 @@ class _ResultPageState extends State<ResultPage> {
         title: Text('ITER AIO'),
         centerTitle: true,
         elevation: 15,
-        // actions: <Widget>[
-        //   // IconButton(
-        //   //   icon: new Icon(Icons.share),
-        //   //   onPressed: () {},
-        //   // ),
-        // ],
+        actions: <Widget>[
+          IconButton(
+            icon: new Icon(Icons.share),
+            onPressed: () {
+              rf.fetRes();
+            },
+          ),
+        ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
