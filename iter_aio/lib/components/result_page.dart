@@ -14,7 +14,6 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
-  // ResultFetch rf;
   List<CGPASemResult> finalRes = [];
 
   @override
@@ -24,14 +23,13 @@ class _ResultPageState extends State<ResultPage> {
         title: Text('ITER AIO'),
         centerTitle: true,
         elevation: 15,
-        actions: <Widget>[
-          IconButton(
-            icon: new Icon(Icons.share),
-            onPressed: () {
-              rf.fetRes();
-            },
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: new Icon(Icons.share),
+        //     onPressed: () {
+        //     },
+        //   ),
+        // ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),

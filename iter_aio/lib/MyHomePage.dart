@@ -16,7 +16,10 @@ import 'package:iteraio/components/result.dart';
 import 'package:html/parser.dart';
 import 'package:iteraio/components/result_page.dart';
 import 'package:iteraio/components/settings.dart';
+import 'package:iteraio/helper/bunk.dart';
+import 'package:iteraio/helper/profile_fetch.dart';
 import 'package:iteraio/helper/result_fetch.dart';
+import 'package:iteraio/helper/session.dart';
 import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
@@ -41,12 +44,16 @@ bool newNotification = false;
 var isLoading = false;
 var resultload = true;
 
+var cookie;
+final mainUrl = "http://136.233.14.3:8282/CampusPortalSOA";
+ResultFetch rf;
+ProfileFetch pi;
+
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-ResultFetch rf;
 var isLoggedIn = false, dataLoading = false;
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -58,14 +65,30 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     setState(() {
-      rf = ResultFetch(regdNo: regdNo, password: password);
       animationName = 'hello';
       _getCredentials();
+      _login(regdNo, password);
       FetchNotice();
       checkForNewNotification();
       // getCalender();
     });
     super.initState();
+  }
+
+  _login(String _regdNo, String _password) async {
+    final request = {
+      "username": _regdNo,
+      "password": _password,
+      "MemberType": "S"
+    };
+    var rawcookie =
+        await Session().login(mainUrl + '/login', jsonEncode(request));
+    setState(() {
+      cookie =
+          rawcookie.toString().substring(0, rawcookie.toString().indexOf(';'));
+      rf = ResultFetch();
+      pi = ProfileFetch();
+    });
   }
 
   _setCredentials() async {
@@ -373,6 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               onPressed: () {
                                 print('$regdNo : $password');
+                                _login(regdNo, password);
                                 _setCredentials();
                                 attendData = null;
                                 resultData = null;
@@ -821,7 +845,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   ],
                                                 ),
                                                 Text(
-                                                  bunklogic(i),
+                                                  Bunk().bunklogic(i),
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 16,
@@ -1092,60 +1116,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     courseData = linkMap;
-  }
-
-  String bunklogic(var i) {
-    var bunkText;
-    var absent = (int.parse(i['Latt'].toString().split('/')[1].trim()) +
-            int.parse(i['Patt'].toString().split('/')[1].trim()) +
-            int.parse(i['Tatt'].toString().split('/')[1].trim())) -
-        (int.parse(i['Latt'].toString().split('/')[0].trim()) +
-            int.parse(i['Patt'].toString().split('/')[0].trim()) +
-            int.parse(i['Tatt'].toString().split('/')[0].trim()));
-    var classes = int.parse(i['Latt'].toString().split('/')[1].trim()) +
-        int.parse(i['Patt'].toString().split('/')[1].trim()) +
-        int.parse(i['Tatt'].toString().split('/')[1].trim());
-    var present = classes - absent;
-    var totalPercentage = present / classes * 100;
-    var bunk = classes - (classes * 0.75).floor() - absent;
-
-    if (bunk > 0) {
-      bunkText = 'Bunk ' +
-          (classes - (classes * 0.75).floor() - absent).toString() +
-          ' more classes to get 75%';
-      if (totalPercentage < 80 && totalPercentage > 75)
-        bunkText = bunkText +
-            '\nAttend ' +
-            ((((classes * 0.8) - present) / 0.2).floor()).toString() +
-            ' more classes to get 80%';
-      if (totalPercentage > 80)
-        bunkText = bunkText +
-            '\nBunk ' +
-            (classes - (classes * 0.8).floor() - absent).toString() +
-            ' more classes to get 80%';
-      if (totalPercentage < 90 && totalPercentage > 80)
-        bunkText = bunkText +
-            '\nAttend ' +
-            ((((classes * 0.9) - present) / 0.1).floor()).toString() +
-            ' more classes to get 90%';
-      if (totalPercentage > 90)
-        bunkText = bunkText +
-            '\nBunk ' +
-            (classes - (classes * 0.85).floor() - absent).toString() +
-            ' more classes to get 85%';
-    } else {
-      bunk = (((classes * 0.75) - present) / 0.25).floor();
-      if (bunk != 0) {
-        bunkText = 'Attend ' + bunk.toString() + ' more classes for 75 %';
-        bunk = (((classes * 0.80) - present) / 0.2).floor();
-        bunkText =
-            bunkText + '\nAttend ' + bunk.toString() + ' more classes for 80 %';
-      } else {
-        bunk = (((classes * 0.80) - present) / 0.2).floor();
-        bunkText = 'Attend ' + bunk.toString() + ' more classes for 80 %';
-      }
-    }
-    return bunkText;
   }
 
   void checkForNewNotification() async {

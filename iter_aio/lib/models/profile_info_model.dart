@@ -20,12 +20,14 @@ class ProfileInfo {
   final int pincode;
   final String nationality;
   final String fathername;
+  final String sectioncode;
 
   ProfileInfo(
       {@required this.name,
       @required this.semester,
       @required this.regdno,
       this.image,
+      this.sectioncode,
       this.category,
       this.pincode,
       this.gender,
