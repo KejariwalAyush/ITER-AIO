@@ -46,25 +46,25 @@ class ProfileInfo {
 
   String toString() {
     var s = '''{
-      "Name": $name,
-      "semester": $semester,
-      "regdno": $regdno,
-      "image": ${image.path},
-      "imageUrl": $imageUrl,
-      "sectioncode": $sectioncode,
-      "category": $category,
-      "pincode": $pincode,
-      "gender": $gender,
-      "programdesc": $programdesc,
-      "branchdesc": $branchdesc,
-      "email": $email,
-      "dateofbirth": $dateofbirth,
-      "address": $address,
-      "state": $state,
-      "district": $district,
-      "cityname": $cityname,
-      "nationality": $nationality,
-      "fathername":$fathername}
+      "Name": "$name",
+      "semester": "$semester",
+      "regdno": "$regdno",
+      "image": "${image.path}",
+      "imageUrl": "$imageUrl",
+      "sectioncode": "$sectioncode",
+      "category": "$category",
+      "pincode": "$pincode",
+      "gender": "$gender",
+      "programdesc": "$programdesc",
+      "branchdesc": "$branchdesc",
+      "email": "$email",
+      "dateofbirth": "$dateofbirth",
+      "address": "$address",
+      "state": "$state",
+      "district": "$district",
+      "cityname": "$cityname",
+      "nationality": "$nationality",
+      "fathername": "$fathername"}
     ''';
     return s;
   }

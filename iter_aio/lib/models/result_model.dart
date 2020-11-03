@@ -16,12 +16,12 @@ class DetailedResult {
 
   String toString() {
     return '''{
-    "sem": $sem,
-    "subjectCode": $subjectCode,
-    "subjectName": $subjectName,
-    "subjectShortName": $subjectShortName,
-    "earnedCredit": $earnedCredit,
-    "grade": $grade}''';
+    "sem": "$sem",
+    "subjectCode": "$subjectCode",
+    "subjectName": "$subjectName",
+    "subjectShortName": "$subjectShortName",
+    "earnedCredit": "$earnedCredit",
+    "grade": "$grade"}''';
   }
 }
 
@@ -45,12 +45,12 @@ class CGPASemResult {
 
   String toString() {
     return '''{
-    "sem": $sem,
-    "sgpa": $sgpa,
-    "creditsearned": $creditEarned
-    "fail": $fail,
-    "underHold": $underHold,
-    "deactive": $deactive,
+    "sem": "$sem",
+    "sgpa": "$sgpa",
+    "creditsearned": "$creditEarned",
+    "fail": "$fail",
+    "underHold": "$underHold",
+    "deactive": "$deactive",
     "details": [${_detailsString()}]}''';
   }
 

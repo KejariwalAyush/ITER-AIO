@@ -24,14 +24,14 @@ class Lecture {
 
   String toString() {
     return '''{
-      "title": $title,
-      "id": $id,
-      "link1": $link1,
-      "link2": $link2,
-      "downloadLink": $downloadLink,
-      "size": $size,
-      "previewImgUrl": $previewImgUrl,
-      "imageUrl": $imageUrl
+      "title": "$title",
+      "id": "$id",
+      "link1": "$link1",
+      "link2": "$link2",
+      "downloadLink": "$downloadLink",
+      "size": "$size",
+      "previewImgUrl": "$previewImgUrl",
+      "imageUrl": "$imageUrl"
     }''';
   }
 }
@@ -50,9 +50,9 @@ class Subject {
 
   String toString() {
     return '''{
-      "name": $name,
-      "code": $code,
-      "link": $link,
+      "name": "$name",
+      "code": "$code",
+      "link": "$link",
       "lectures": [${_lecturesString()}]
     }''';
   }
@@ -72,7 +72,7 @@ class CourseLectures {
 
   String toString() {
     return '''{
-      "course": $course,
+      "course": "$course",
       "subjects": [${_subjectsString()}]
     }''';
   }
