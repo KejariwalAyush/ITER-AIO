@@ -9,12 +9,12 @@ import 'package:http/http.dart' as http;
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/components/about.dart';
-import 'package:iteraio/components/courses.dart';
 import 'package:iteraio/components/notices.dart';
-import 'package:iteraio/components/planBunk.dart';
-import 'package:iteraio/components/result.dart';
+import 'package:iteraio/helper/lectures_fetch.dart';
+import 'package:iteraio/pages/courses_page.dart';
+import 'package:iteraio/pages/planBunk.dart';
 import 'package:html/parser.dart';
-import 'package:iteraio/components/result_page.dart';
+import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/helper/bunk.dart';
 import 'package:iteraio/helper/profile_fetch.dart';
@@ -48,6 +48,7 @@ var cookie;
 final mainUrl = "http://136.233.14.3:8282/CampusPortalSOA";
 ResultFetch rf;
 ProfileFetch pi;
+LecturesFetch lf;
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -68,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
       animationName = 'hello';
       _getCredentials();
       _login(regdNo, password);
+      if (sem != null) lf = new LecturesFetch(semNo: sem);
       FetchNotice();
       checkForNewNotification();
       // getCalender();
@@ -86,8 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       cookie =
           rawcookie.toString().substring(0, rawcookie.toString().indexOf(';'));
+      print(cookie);
       rf = ResultFetch();
       pi = ProfileFetch();
+      lf = LecturesFetch(semNo: sem);
     });
   }
 
@@ -607,9 +611,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     : () => Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    Result())),
+                                                            builder: (context) =>
+                                                                ResultPage())),
                                                 child: RichText(
                                                   textAlign: TextAlign.end,
                                                   text: TextSpan(
@@ -1154,28 +1157,28 @@ class _MyHomePageState extends State<MyHomePage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (isLoggedIn || sem != null) Divider(),
-          if (isLoggedIn || sem != null)
-            ListTile(
-              leading: Icon(Icons.video_library),
-              title: Text('Lectures'),
-              onTap: isLoading
-                  ? null
-                  : !serverTimeout && noInternet
-                      ? () {
-                          Fluttertoast.showToast(
-                            msg: "No Internet!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: Colors.redAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                      : () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Courses())),
-            ),
+          // if (isLoggedIn || sem != null) Divider(),
+          // if (isLoggedIn || sem != null)
+          ListTile(
+            leading: Icon(Icons.video_library),
+            title: Text('Lectures'),
+            onTap: isLoading
+                ? null
+                : !serverTimeout && noInternet
+                    ? () {
+                        Fluttertoast.showToast(
+                          msg: "No Internet!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.redAccent,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    : () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CoursesPage())),
+          ),
           // if (isLoggedIn || sem != null)
           Divider(),
           // if (isLoggedIn || sem != null)

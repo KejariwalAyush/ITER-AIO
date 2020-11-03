@@ -69,6 +69,9 @@ class _ResultPageState extends State<ResultPage> {
                   if (!snapshot.hasData)
                     return Container(height: 200, child: loading());
                   else {
+                    if (snapshot.data == [])
+                      return Center(
+                          child: Text('Sorry No result available yet!'));
                     return Column(
                       children: [
                         for (var data in snapshot.data) _resultListTile(data),
