@@ -11,6 +11,8 @@ import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/components/about.dart';
 import 'package:iteraio/components/notices.dart';
 import 'package:iteraio/helper/lectures_fetch.dart';
+import 'package:iteraio/helper/login_fetch.dart';
+import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/pages/courses_page.dart';
 import 'package:iteraio/pages/planBunk.dart';
 import 'package:iteraio/pages/result_page.dart';
@@ -18,7 +20,6 @@ import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/helper/bunk.dart';
 import 'package:iteraio/helper/profile_fetch.dart';
 import 'package:iteraio/helper/result_fetch.dart';
-import 'package:iteraio/helper/session.dart';
 import 'package:iteraio/main.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
@@ -45,6 +46,7 @@ var resultload = true;
 
 var cookie;
 final mainUrl = "http://136.233.14.3:8282/CampusPortalSOA";
+LoginFetch loginFetch;
 ResultFetch rf;
 ProfileFetch pi;
 LecturesFetch lf;
@@ -77,17 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _login(String _regdNo, String _password) async {
-    final request = {
-      "username": _regdNo,
-      "password": _password,
-      "MemberType": "S"
-    };
-    var rawcookie =
-        await Session().login(mainUrl + '/login', jsonEncode(request));
+    loginFetch = LoginFetch(regdNo: _regdNo, password: _password);
+    LoginData ld = await loginFetch.getLogin();
     setState(() {
-      cookie =
-          rawcookie.toString().substring(0, rawcookie.toString().indexOf(';'));
-      print(cookie);
+      cookie = ld.cookie;
       rf = ResultFetch();
       pi = ProfileFetch();
       lf = LecturesFetch(semNo: sem);

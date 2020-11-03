@@ -9,7 +9,8 @@ class Session {
     headers['Content-Type'] = 'application/json';
     http.Response response = await http.post(url, body: data, headers: headers);
     // print(headers);
-    return response.headers['set-cookie'].toString();
+    return response;
+    // return response.headers['set-cookie'].toString();
   }
 
   Future<Map> post(String url, dynamic data, String cookie) async {
