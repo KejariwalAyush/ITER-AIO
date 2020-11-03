@@ -7,7 +7,7 @@ class Lecture {
   final String link2;
   final String downloadLink;
   final String size;
-  final String date;
+  final int date;
   final String previewImgUrl;
   final String imageUrl;
 

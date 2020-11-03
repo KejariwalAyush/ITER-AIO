@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/components/Icons.dart';
-import 'package:iteraio/components/lectures.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/components/videoPlayer.dart';
 import 'package:iteraio/main.dart';
 import 'package:iteraio/models/lectures_model.dart';
+import 'package:iteraio/pages/lectures_page.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -126,7 +126,7 @@ class _CoursesPageState extends State<CoursesPage> {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Lectures(j.name, j.link))),
+                      builder: (context) => LecturesPage(subject: j))),
             ),
         ],
       ),

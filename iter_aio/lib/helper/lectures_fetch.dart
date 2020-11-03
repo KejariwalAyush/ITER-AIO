@@ -115,7 +115,7 @@ class LecturesFetch {
             link2:
                 'https://m.box.com/${i['type']}/${i['id']}/${url.replaceAll('/', '%2F').replaceFirst(':', '%3A')}/preview/preview.mp4',
             size: (i['itemSize'] / (1024 * 1024)).round().toString(),
-            date: i['date'].toString(),
+            date: i['date'],
             imageUrl: i['thumbnailURLs']['large'],
             previewImgUrl: i['thumbnailURLs']['preview'],
           ));

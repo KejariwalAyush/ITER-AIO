@@ -13,7 +13,6 @@ import 'package:iteraio/components/notices.dart';
 import 'package:iteraio/helper/lectures_fetch.dart';
 import 'package:iteraio/pages/courses_page.dart';
 import 'package:iteraio/pages/planBunk.dart';
-import 'package:html/parser.dart';
 import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/helper/bunk.dart';
@@ -955,9 +954,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     if (serverTimeout) {
       try {
-        sem = jsonDecode(prefs.getString('attendence'))['griddata'][0]
-            ['stynumber'];
-        getCourses(sem);
+        setState(() {
+          sem = jsonDecode(prefs.getString('attendence'))['griddata'][0]
+              ['stynumber'];
+        });
+        // lf.getCourse(sem);
       } catch (e) {
         print(e);
       }
@@ -994,10 +995,6 @@ class _MyHomePageState extends State<MyHomePage> {
         avgAbsent = totAbs ~/ cnt;
       }
       // print('$name - $sem');
-      if (sem == 3 || sem == 5 || sem == 7)
-        getCourses(sem - 1);
-      else
-        getCourses(sem);
 
       Fluttertoast.showToast(
         msg: "Data Fetched Sucessful!",
@@ -1075,50 +1072,6 @@ class _MyHomePageState extends State<MyHomePage> {
       throw 'Could not launch $url';
     }
     return;
-  }
-
-  Future<void> getCourses(var semester) async {
-    List<Map<String, dynamic>> linkMap = [];
-    var response;
-    if (semester == 2)
-      response = await http.get("https://www.soa.ac.in/2nd-semester");
-    else if (semester == 4)
-      response = await http.get(
-          "https://www.soa.ac.in/btech-4th-semester-online-video-lectures");
-    else if (semester == 6)
-      response = await http.get(
-          "https://www.soa.ac.in/btech-6th-semester-online-video-lectures");
-    else
-      response = await http.get(
-          "https://www.soa.ac.in/btech-8th-semester-online-video-lectures");
-
-    if (response.statusCode == 200) {
-      var document = parse(response.body);
-      var links = document.getElementsByClassName('Index-page-content');
-      for (var link in links) {
-        linkMap.add({
-          'course': link
-              .getElementsByClassName('sqs-block html-block sqs-block-html')[0]
-              .text,
-          'subjects': [
-            for (int i = 0; i < link.querySelectorAll('p').length - 2; i += 3)
-              {
-                'subject': link.querySelectorAll('p')[i].text,
-                'subjectCode': link.querySelectorAll('p')[i + 1].text,
-                'link': link
-                    .querySelectorAll('p')[i + 2]
-                    .querySelector('a')
-                    .attributes['href'],
-                // 'lectures': await getLectures(link
-                //     .querySelectorAll('p')[i + 2]
-                //     .querySelector('a')
-                //     .attributes['href']),
-              }
-          ],
-        });
-      }
-    }
-    courseData = linkMap;
   }
 
   void checkForNewNotification() async {
@@ -1444,3 +1397,47 @@ class _MyHomePageState extends State<MyHomePage> {
 //       );
 //     });
 //   }
+
+// Future<void> getCourses(var semester) async {
+//   List<Map<String, dynamic>> linkMap = [];
+//   var response;
+//   if (semester == 2)
+//     response = await http.get("https://www.soa.ac.in/2nd-semester");
+//   else if (semester == 4)
+//     response = await http.get(
+//         "https://www.soa.ac.in/btech-4th-semester-online-video-lectures");
+//   else if (semester == 6)
+//     response = await http.get(
+//         "https://www.soa.ac.in/btech-6th-semester-online-video-lectures");
+//   else
+//     response = await http.get(
+//         "https://www.soa.ac.in/btech-8th-semester-online-video-lectures");
+
+//   if (response.statusCode == 200) {
+//     var document = parse(response.body);
+//     var links = document.getElementsByClassName('Index-page-content');
+//     for (var link in links) {
+//       linkMap.add({
+//         'course': link
+//             .getElementsByClassName('sqs-block html-block sqs-block-html')[0]
+//             .text,
+//         'subjects': [
+//           for (int i = 0; i < link.querySelectorAll('p').length - 2; i += 3)
+//             {
+//               'subject': link.querySelectorAll('p')[i].text,
+//               'subjectCode': link.querySelectorAll('p')[i + 1].text,
+//               'link': link
+//                   .querySelectorAll('p')[i + 2]
+//                   .querySelector('a')
+//                   .attributes['href'],
+//               // 'lectures': await getLectures(link
+//               //     .querySelectorAll('p')[i + 2]
+//               //     .querySelector('a')
+//               //     .attributes['href']),
+//             }
+//         ],
+//       });
+//     }
+//   }
+//   courseData = linkMap;
+// }
