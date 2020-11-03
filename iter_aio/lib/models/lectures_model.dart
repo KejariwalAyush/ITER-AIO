@@ -21,6 +21,19 @@ class Lecture {
       this.date,
       this.previewImgUrl,
       this.imageUrl});
+
+  String toString() {
+    return '''{
+      "title": $title,
+      "id": $id,
+      "link1": $link1,
+      "link2": $link2,
+      "downloadLink": $downloadLink,
+      "size": $size,
+      "previewImgUrl": $previewImgUrl,
+      "imageUrl": $imageUrl
+    }''';
+  }
 }
 
 class Subject {
@@ -34,6 +47,21 @@ class Subject {
   addLectures(List<Lecture> lecs) {
     this.lectures = lecs;
   }
+
+  String toString() {
+    return '''{
+      "name": $name,
+      "code": $code,
+      "link": $link,
+      "lectures": [${_lecturesString()}]
+    }''';
+  }
+
+  String _lecturesString() {
+    var s = '';
+    for (var i in lectures) s += i.toString() + ',';
+    return s.substring(0, s.lastIndexOf(','));
+  }
 }
 
 class CourseLectures {
@@ -41,4 +69,17 @@ class CourseLectures {
   final List<Subject> subjects;
 
   CourseLectures({@required this.course, @required this.subjects});
+
+  String toString() {
+    return '''{
+      "course": $course,
+      "subjects": [${_subjectsString()}]
+    }''';
+  }
+
+  String _subjectsString() {
+    var s = '';
+    for (var i in subjects) s += i.toString() + ',';
+    return s.substring(0, s.lastIndexOf(','));
+  }
 }

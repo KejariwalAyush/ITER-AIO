@@ -13,6 +13,16 @@ class DetailedResult {
       this.subjectName,
       this.subjectShortName,
       this.grade});
+
+  String toString() {
+    return '''{
+    "sem": $sem,
+    "subjectCode": $subjectCode,
+    "subjectName": $subjectName,
+    "subjectShortName": $subjectShortName,
+    "earnedCredit": $earnedCredit,
+    "grade": $grade}''';
+  }
 }
 
 class CGPASemResult {
@@ -32,4 +42,21 @@ class CGPASemResult {
       this.underHold,
       this.deactive,
       this.details});
+
+  String toString() {
+    return '''{
+    "sem": $sem,
+    "sgpa": $sgpa,
+    "creditsearned": $creditEarned
+    "fail": $fail,
+    "underHold": $underHold,
+    "deactive": $deactive,
+    "details": [${_detailsString()}]}''';
+  }
+
+  String _detailsString() {
+    var s = '';
+    for (var i in details) s += i.toString() + ',';
+    return s.substring(0, s.lastIndexOf(','));
+  }
 }

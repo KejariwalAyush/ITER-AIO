@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 class ProfileInfo {
   final String name;
   final File image;
+  final String imageUrl;
   final String category;
   final int semester;
   final String gender;
@@ -27,6 +28,7 @@ class ProfileInfo {
       @required this.semester,
       @required this.regdno,
       this.image,
+      this.imageUrl,
       this.sectioncode,
       this.category,
       this.pincode,
@@ -41,4 +43,29 @@ class ProfileInfo {
       this.cityname,
       this.nationality,
       this.fathername});
+
+  String toString() {
+    var s = '''{
+      "Name": $name,
+      "semester": $semester,
+      "regdno": $regdno,
+      "image": ${image.path},
+      "imageUrl": $imageUrl,
+      "sectioncode": $sectioncode,
+      "category": $category,
+      "pincode": $pincode,
+      "gender": $gender,
+      "programdesc": $programdesc,
+      "branchdesc": $branchdesc,
+      "email": $email,
+      "dateofbirth": $dateofbirth,
+      "address": $address,
+      "state": $state,
+      "district": $district,
+      "cityname": $cityname,
+      "nationality": $nationality,
+      "fathername":$fathername}
+    ''';
+    return s;
+  }
 }
