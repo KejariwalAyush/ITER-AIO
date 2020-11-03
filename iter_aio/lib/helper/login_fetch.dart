@@ -34,12 +34,14 @@ class LoginFetch {
     };
     http.Response resp =
         await Session().login(mainUrl + '/login', jsonEncode(request));
-    var _cookie = resp.headers['set-cookie'].toString();
-    _cookie = _cookie.toString().substring(0, _cookie.toString().indexOf(';'));
-    var _body = jsonDecode(resp.body);
-    _loginData = LoginData(regdNo, password, _cookie, _body["message"],
-        _body["status"], _body["name"]);
-
+    if (resp.statusCode == 200) {
+      var _cookie = resp.headers['set-cookie'].toString();
+      _cookie =
+          _cookie.toString().substring(0, _cookie.toString().indexOf(';'));
+      var _body = jsonDecode(resp.body);
+      _loginData = LoginData(regdNo, password, _cookie, _body["message"],
+          _body["status"], _body["name"]);
+    }
     return _loginData;
   }
 }

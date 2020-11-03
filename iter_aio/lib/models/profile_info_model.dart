@@ -49,7 +49,7 @@ class ProfileInfo {
       "Name": "$name",
       "semester": "$semester",
       "regdno": "$regdno",
-      "image": "${image.path}",
+      "image": "${image == null ? null : image.path}",
       "imageUrl": "$imageUrl",
       "sectioncode": "$sectioncode",
       "category": "$category",

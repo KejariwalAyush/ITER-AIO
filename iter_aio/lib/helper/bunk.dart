@@ -1,15 +1,32 @@
 class Bunk {
   String bunklogic(var i) {
+    int latttot, patttot, tatttot, lattpr, pattpr, tattpr;
+    print(i['Latt']);
+    if (i['Latt'] != 'Not Applicable') {
+      latttot = int.parse(i['Latt'].toString().split('/')[1].trim());
+      lattpr = int.parse(i['Latt'].toString().split('/')[0].trim());
+    } else {
+      latttot = 0;
+      lattpr = 0;
+    }
+    if (i['Patt'] != 'Not Applicable') {
+      patttot = int.parse(i['Patt'].toString().split('/')[1].trim());
+      pattpr = int.parse(i['Patt'].toString().split('/')[0].trim());
+    } else {
+      patttot = 0;
+      pattpr = 0;
+    }
+    if (i['Tatt'] != 'Not Applicable') {
+      tatttot = int.parse(i['Tatt'].toString().split('/')[1].trim());
+      tattpr = int.parse(i['Tatt'].toString().split('/')[0].trim());
+    } else {
+      tatttot = 0;
+      tattpr = 0;
+    }
+
     var bunkText;
-    var absent = (int.parse(i['Latt'].toString().split('/')[1].trim()) +
-            int.parse(i['Patt'].toString().split('/')[1].trim()) +
-            int.parse(i['Tatt'].toString().split('/')[1].trim())) -
-        (int.parse(i['Latt'].toString().split('/')[0].trim()) +
-            int.parse(i['Patt'].toString().split('/')[0].trim()) +
-            int.parse(i['Tatt'].toString().split('/')[0].trim()));
-    var classes = int.parse(i['Latt'].toString().split('/')[1].trim()) +
-        int.parse(i['Patt'].toString().split('/')[1].trim()) +
-        int.parse(i['Tatt'].toString().split('/')[1].trim());
+    var absent = (latttot + patttot + tatttot) - (lattpr + pattpr + tattpr);
+    var classes = (latttot + patttot + tatttot);
     var present = classes - absent;
     var totalPercentage = present / classes * 100;
     var bunk = classes - (classes * 0.75).floor() - absent;
@@ -55,15 +72,31 @@ class Bunk {
 
   String planBunkLogic(var i, {var eclasses, var ebunk, var epercent}) {
     var bunkText;
-    var absent = (int.parse(i['Latt'].toString().split('/')[1].trim()) +
-            int.parse(i['Patt'].toString().split('/')[1].trim()) +
-            int.parse(i['Tatt'].toString().split('/')[1].trim())) -
-        (int.parse(i['Latt'].toString().split('/')[0].trim()) +
-            int.parse(i['Patt'].toString().split('/')[0].trim()) +
-            int.parse(i['Tatt'].toString().split('/')[0].trim()));
-    var classes = int.parse(i['Latt'].toString().split('/')[1].trim()) +
-        int.parse(i['Patt'].toString().split('/')[1].trim()) +
-        int.parse(i['Tatt'].toString().split('/')[1].trim());
+    int latttot, patttot, tatttot, lattpr, pattpr, tattpr;
+    if (i['Latt'] != 'Not Applicable') {
+      latttot = int.parse(i['Latt'].toString().split('/')[1].trim());
+      lattpr = int.parse(i['Latt'].toString().split('/')[0].trim());
+    } else {
+      latttot = 0;
+      lattpr = 0;
+    }
+    if (i['Patt'] != 'Not Applicable') {
+      patttot = int.parse(i['Patt'].toString().split('/')[1].trim());
+      pattpr = int.parse(i['Patt'].toString().split('/')[0].trim());
+    } else {
+      patttot = 0;
+      pattpr = 0;
+    }
+    if (i['Tatt'] != 'Not Applicable') {
+      tatttot = int.parse(i['Tatt'].toString().split('/')[1].trim());
+      tattpr = int.parse(i['Tatt'].toString().split('/')[0].trim());
+    } else {
+      tatttot = 0;
+      tattpr = 0;
+    }
+
+    var absent = (latttot + patttot + tatttot) - (lattpr + pattpr + tattpr);
+    var classes = (latttot + patttot + tatttot);
 
     if (eclasses != null) {
       classes = classes + eclasses;
@@ -141,3 +174,13 @@ class Bunk {
     return bunkText;
   }
 }
+
+// var absent = (int.parse(i['Latt'].toString().split('/')[1].trim()) +
+//         int.parse(i['Patt'].toString().split('/')[1].trim()) +
+//         int.parse(i['Tatt'].toString().split('/')[1].trim())) -
+//     (int.parse(i['Latt'].toString().split('/')[0].trim()) +
+//         int.parse(i['Patt'].toString().split('/')[0].trim()) +
+//         int.parse(i['Tatt'].toString().split('/')[0].trim()));
+// var classes = int.parse(i['Latt'].toString().split('/')[1].trim()) +
+//     int.parse(i['Patt'].toString().split('/')[1].trim()) +
+//     int.parse(i['Tatt'].toString().split('/')[1].trim());

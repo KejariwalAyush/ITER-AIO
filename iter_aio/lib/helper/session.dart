@@ -9,14 +9,20 @@ class Session {
     headers['Content-Type'] = 'application/json';
     http.Response response = await http.post(url, body: data, headers: headers);
     // print(headers);
-    return response;
-    // return response.headers['set-cookie'].toString();
+    if (response.statusCode == 200)
+      return response;
+    else
+      return null;
   }
 
   Future<Map> post(String url, dynamic data, String cookie) async {
     http.Response response = await http.post(url,
         body: data,
         headers: {'Content-Type': 'application/json', 'Cookie': cookie});
-    return json.decode(response.body);
+
+    if (response.statusCode == 200)
+      return json.decode(response.body);
+    else
+      return null;
   }
 }
