@@ -26,3 +26,4 @@ class Session {
       return null;
   }
 }
+// "Access-Control-Allow-Origin": "*", // Required for CORS support to work

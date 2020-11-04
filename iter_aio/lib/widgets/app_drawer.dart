@@ -3,6 +3,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/notices.dart';
 import 'package:iteraio/helper/update_fetch.dart';
 import 'package:iteraio/pages/aboutus_page.dart';
@@ -67,6 +68,13 @@ class CustomAppDrawer {
     return SingleChildScrollView(
       child: Column(
         children: [
+          if (MediaQuery.of(context).size.width > 700)
+            ListTile(
+              leading: Icon(Icons.hail),
+              title: Text('Attendance'),
+              onTap: () => Navigator.pushReplacementNamed(
+                  context, AttendancePage.routeName),
+            ),
           if (isUpdateAvailable && isMobile)
             ListTile(
               tileColor: Colors.orangeAccent,
@@ -150,6 +158,123 @@ class CustomAppDrawer {
               leading: Icon(Icons.info_outline),
               title: Text('About Us'),
               onTap: () => Navigator.pushNamed(context, AboutUs.routeName),
+            ),
+          if (slogout && !noInternet) Divider(),
+          if (slogout && !noInternet)
+            ListTile(
+                leading: Icon(Icons.power_settings_new),
+                title: Text('Logout'),
+                onTap: () => Alert(
+                      context: context,
+                      onWillPopActive: true,
+                      type: AlertType.warning,
+                      title: "Do you want to Logout?",
+                      buttons: [
+                        DialogButton(
+                          color: colorDark,
+                          child: Text(
+                            "Logout",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage(
+                                          logout: true,
+                                        )));
+                          },
+                        ),
+                        DialogButton(
+                          color: colorDark,
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        )
+                      ],
+                    ).show()),
+          if (srestart) Divider(),
+          if (srestart)
+            ListTile(
+                leading: Icon(LineAwesomeIcons.refresh),
+                title: Text('Restart App'),
+                onTap: () => Phoenix.rebirth(context)),
+        ],
+      ),
+    );
+  }
+
+  Widget buildLargeNaviDrawer(context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          if (MediaQuery.of(context).size.width > 700)
+            ListTile(
+              leading: Icon(Icons.hail),
+              title: Text('Attendance'),
+              onTap: () => Navigator.pushReplacementNamed(
+                  context, AttendancePage.routeName),
+            ),
+          if (slectures && !noInternet && isMobile) Divider(),
+          if (slectures && !noInternet && isMobile)
+            ListTile(
+                leading: Icon(Icons.video_library),
+                title: Text('Lectures'),
+                onTap: () => Navigator.pushReplacementNamed(
+                    context, CoursesPage.routeName)),
+          if (sresult && !noInternet) Divider(),
+          if (sresult && !noInternet)
+            ListTile(
+              leading: Icon(Icons.assignment),
+              title: Text('Result'),
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, ResultPage.routeName),
+            ),
+          if (snotices) Divider(),
+          if (snotices)
+            ListTile(
+              leading: Icon(Icons.notifications_none),
+              title: Text('Notices & News'),
+              onTap: noInternet
+                  ? () {
+                      Fluttertoast.showToast(
+                        msg: "No Internet!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.redAccent,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
+                    }
+                  : () => Navigator.pushReplacementNamed(
+                      context, Notices.routeName),
+            ),
+          if (sbunk) Divider(),
+          if (sbunk)
+            ListTile(
+              leading: Icon(Icons.airline_seat_individual_suite),
+              title: Text('Plan a Bunk'),
+              onTap: () => Navigator.restorablePopAndPushNamed(
+                  context, PlanBunk.routeName),
+            ),
+          if (ssettings) Divider(),
+          if (ssettings)
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () => Navigator.pushReplacementNamed(
+                  context, SettingsPage.routeName),
+            ),
+          if (saboutUs) Divider(),
+          if (saboutUs)
+            ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text('About Us'),
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, AboutUs.routeName),
             ),
           if (slogout && !noInternet) Divider(),
           if (slogout && !noInternet)

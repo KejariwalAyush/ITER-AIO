@@ -8,6 +8,7 @@ import 'package:iteraio/models/attendance_info.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
+import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/on_pop.dart';
 
 class AttendancePage extends StatefulWidget {
@@ -29,12 +30,14 @@ class _AttendancePageState extends State<AttendancePage> {
           title: Text('ITER AIO'),
           centerTitle: true,
           elevation: 15,
-          leading: Builder(
-            builder: (context) => IconButton(
-              icon: new Icon(Icons.apps),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
-          ),
+          leading: MediaQuery.of(context).size.width > 700
+              ? SizedBox()
+              : Builder(
+                  builder: (context) => IconButton(
+                    icon: new Icon(Icons.apps),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
+                ),
           actions: <Widget>[
             Stack(
               children: [
@@ -78,58 +81,71 @@ class _AttendancePageState extends State<AttendancePage> {
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25))),
         ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(15),
-                  margin: EdgeInsets.all(5),
-                  child: buildHeader(context),
-                ),
-                FutureBuilder<AttendanceInfo>(
-                  future: af.getAttendance(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData)
-                      // return Container(height: 200, child: loading());
-                      return buildNoAttendenceScreen(context);
-                    else {
-                      if (snapshot.data.attendAvailable == false)
-                        return buildNoAttendenceScreen(context);
-                      else
-                        return Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Avg Attendence: ${snapshot.data.avgAttPer} %',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (MediaQuery.of(context).size.width > 700)
+              LargeAppDrawer().largeDrawer(context),
+            Expanded(
+              flex: 2,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(15),
+                        margin: EdgeInsets.all(5),
+                        child: buildHeader(context),
+                      ),
+                      FutureBuilder<AttendanceInfo>(
+                        future: af.getAttendance(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            // return Container(height: 200, child: loading());
+                            return buildNoAttendenceScreen(context);
+                          else {
+                            if (snapshot.data.attendAvailable == false)
+                              return buildNoAttendenceScreen(context);
+                            else
+                              return Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        'Avg Attendence: ${snapshot.data.avgAttPer} %',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Avg Absent: ${snapshot.data.avgAbsPer}',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Text(
-                                  'Avg Absent: ${snapshot.data.avgAbsPer}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            for (var data in snapshot.data.data)
-                              _attandenceExpansionTile(data),
-                          ],
-                        );
-                    }
-                  },
+                                  for (var data in snapshot.data.data)
+                                    _attandenceExpansionTile(data),
+                                ],
+                              );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -222,17 +238,17 @@ class _AttendancePageState extends State<AttendancePage> {
                       ),
                       if (sat.lattper != 0 && sat.latt != 'Not Applicable')
                         Text(
-                          'Lab: \t\t\t${sat.latt} (${sat.lattper}%)',
+                          'Lecture: ${sat.latt} (${sat.lattper}%)',
                           textAlign: TextAlign.start,
                         ),
                       if (sat.patt != '0 / 0' && sat.patt != 'Not Applicable')
                         Text(
-                          'Practical: \t\t\t${sat.patt} (${sat.pattper}%)',
+                          'Practical: ${sat.patt} (${sat.pattper}%)',
                           textAlign: TextAlign.start,
                         ),
                       if (sat.tatt != '0 / 0' && sat.tatt != 'Not Applicable')
                         Text(
-                          'Theory: \t\t\t${sat.tatt} (${sat.tattper}%)',
+                          'Theory: ${sat.tatt} (${sat.tattper}%)',
                           textAlign: TextAlign.start,
                         ),
                       Text(
@@ -308,7 +324,7 @@ class _AttendancePageState extends State<AttendancePage> {
             // width: 100,
             child: FlareActor("assets/animations/ITER-AIO.flr",
                 alignment: Alignment.center,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 animation: "hello"),
           ),
         ),

@@ -1,5 +1,6 @@
 import 'dart:io' show InternetAddress, Platform, SocketException;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -7,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/push_msg.dart';
+import 'package:iteraio/components/splash_screen.dart';
 import 'package:iteraio/helper/update_fetch.dart';
 import 'package:iteraio/important.dart';
 import 'package:iteraio/pages/aboutus_page.dart';
@@ -23,7 +25,7 @@ import 'package:package_info/package_info.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 void main() {
-  runApp(Phoenix(child: MyApp()));
+  kIsWeb ? runApp(MyApp()) : runApp(Phoenix(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -61,6 +63,9 @@ class _MyAppState extends State<MyApp> {
       _getCredentials();
       UpdateFetch().fetchupdate(context);
     });
+
+    isMobile =
+        kIsWeb || Platform.isWindows || Platform.isWindows ? false : true;
     super.initState();
   }
 
@@ -91,11 +96,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    isMobile = Platform.isWindows || Platform.isWindows ? false : true;
-    if (Platform.isAndroid || Platform.isIOS)
+    if (!kIsWeb)
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    if (kIsWeb)
+      return OverlaySupport(child: buildMaterialWebApp());
+    else if (Platform.isAndroid || Platform.isIOS)
       return OverlaySupport(
         child: Wiredash(
           projectId: wiredash_project_id,
@@ -127,6 +134,34 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/',
       routes: {
         '/': (context) => PushMessagingExample(),
+        '${LoginPage.routeName}': (context) => LoginPage(),
+        '${AttendancePage.routeName}': (context) => AttendancePage(),
+        '${CoursesPage.routeName}': (context) => CoursesPage(),
+        '${ResultPage.routeName}': (context) => ResultPage(),
+        '${Notices.routeName}': (context) => Notices(),
+        '${PlanBunk.routeName}': (context) => PlanBunk(),
+        '${AboutUs.routeName}': (context) => AboutUs(),
+        '${SettingsPage.routeName}': (context) => SettingsPage(),
+      },
+      // themeMode: ThemeMode.system,
+      theme: ThemeData(
+        primarySwatch: themeLight,
+        // visualDensity: VisualDensity.adaptivePlatformDensity,
+        brightness: brightness,
+        appBarTheme: AppBarTheme(color: themeDark),
+      ),
+      debugShowCheckedModeBanner: false,
+      // home: PushMessagingExample(),
+    );
+  }
+
+  MaterialApp buildMaterialWebApp() {
+    return MaterialApp(
+      navigatorKey: _navigatorKey,
+      title: 'ITER-AIO',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Splash(),
         '${LoginPage.routeName}': (context) => LoginPage(),
         '${AttendancePage.routeName}': (context) => AttendancePage(),
         '${CoursesPage.routeName}': (context) => CoursesPage(),

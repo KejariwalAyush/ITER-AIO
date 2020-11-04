@@ -6,6 +6,7 @@ import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/models/result_model.dart';
 import 'package:iteraio/pages/attendance_page.dart';
+import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 
 class ResultPage extends StatefulWidget {
@@ -24,6 +25,12 @@ class _ResultPageState extends State<ResultPage> {
         title: Text('ITER AIO'),
         centerTitle: true,
         elevation: 15,
+        leading: MediaQuery.of(context).size.width > 700
+            ? SizedBox()
+            : IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
         // actions: <Widget>[
         //   IconButton(
         //     icon: new Icon(Icons.share),
@@ -36,54 +43,66 @@ class _ResultPageState extends State<ResultPage> {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(15),
-                margin: EdgeInsets.all(5),
-                child: buildHeader(context),
-              ),
-              // if (rf.finalResult != null)
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (MediaQuery.of(context).size.width > 700)
+            LargeAppDrawer().largeDrawer(context),
+          Expanded(
+            flex: 2,
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      margin: EdgeInsets.all(5),
+                      child: buildHeader(context),
+                    ),
+                    // if (rf.finalResult != null)
 
-              FutureBuilder(
-                  future: _getcgpa(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData)
-                      return SizedBox();
-                    else
-                      return Text(
-                        'CGPA : ' + snapshot.data.toString(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          // color: Colors.black87
-                        ),
-                      );
-                  }),
-              FutureBuilder<List<CGPASemResult>>(
-                future: rf.getResult(),
-                builder: (context, snapshot) {
-                  // (context as Element).markNeedsBuild();
-                  if (!snapshot.hasData)
-                    return Container(height: 200, child: loading());
-                  else {
-                    if (snapshot.data == [])
-                      return Center(
-                          child: Text('Sorry No result available yet!'));
-                    return Column(
-                      children: [
-                        for (var data in snapshot.data) _resultListTile(data),
-                      ],
-                    );
-                  }
-                },
+                    FutureBuilder(
+                        future: _getcgpa(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return SizedBox();
+                          else
+                            return Text(
+                              'CGPA : ' + snapshot.data.toString(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                // color: Colors.black87
+                              ),
+                            );
+                        }),
+                    FutureBuilder<List<CGPASemResult>>(
+                      future: rf.getResult(),
+                      builder: (context, snapshot) {
+                        // (context as Element).markNeedsBuild();
+                        if (!snapshot.hasData)
+                          return Container(height: 200, child: loading());
+                        else {
+                          if (snapshot.data == [])
+                            return Center(
+                                child: Text('Sorry No result available yet!'));
+                          return Column(
+                            children: [
+                              for (var data in snapshot.data)
+                                _resultListTile(data),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -154,7 +173,7 @@ class _ResultPageState extends State<ResultPage> {
             // width: 100,
             child: FlareActor("assets/animations/ITER-AIO.flr",
                 alignment: Alignment.center,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 animation: "hello"),
           ),
         ),

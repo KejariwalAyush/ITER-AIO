@@ -24,7 +24,7 @@ dependencies:
   flutter_markdown: ^0.4.2
   fluttertoast: ^4.0.0
   html: null
-  http: ^0.12.0+2
+  http: ^0.12.2
   splashscreen: null
   line_awesome_icons: ^1.0.4+2
   # Alert Dialog / Update
