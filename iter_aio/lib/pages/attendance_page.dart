@@ -1,19 +1,14 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
-import 'package:iteraio/components/about.dart';
 import 'package:iteraio/components/notices.dart';
-import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/models/attendance_info.dart';
-import 'package:iteraio/pages/courses_page.dart';
-import 'package:iteraio/pages/planBunk.dart';
+import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/pages/result_page.dart';
-import 'package:iteraio/widgets/WebPageView.dart';
+import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/loading.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-import '../MyHomePage.dart';
 
 class AttendancePage extends StatefulWidget {
   static const routeName = "attendance-page";
@@ -25,25 +20,8 @@ class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            AppBar(
-              title: Text(
-                'ITER-AIO',
-                softWrap: true,
-              ),
-              elevation: 15,
-              centerTitle: true,
-              automaticallyImplyLeading: true,
-              leading: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () => Navigator.pop(context, false)),
-            ),
-            buildNaviDrawer(context)
-          ],
-        ),
-      ),
+      drawer: CustomAppDrawer(sresult: true, sbunk: true, slogout: true)
+          .widgetDrawer(context),
       appBar: AppBar(
         title: Text('ITER AIO'),
         centerTitle: true,
@@ -64,31 +42,31 @@ class _AttendancePageState extends State<AttendancePage> {
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Notices())),
               ),
-              newNotification
-                  ? new Positioned(
-                      right: 11,
-                      top: 11,
-                      child: new Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: new BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 14,
-                          minHeight: 14,
-                        ),
-                        child: Text(
-                          ' ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    )
-                  : new Container()
+              // newNotification
+              //     ? new Positioned(
+              //         right: 11,
+              //         top: 11,
+              //         child: new Container(
+              //           padding: EdgeInsets.all(2),
+              //           decoration: new BoxDecoration(
+              //             color: Colors.red,
+              //             borderRadius: BorderRadius.circular(6),
+              //           ),
+              //           constraints: BoxConstraints(
+              //             minWidth: 14,
+              //             minHeight: 14,
+              //           ),
+              //           child: Text(
+              //             ' ',
+              //             style: TextStyle(
+              //               color: Colors.white,
+              //               fontSize: 8,
+              //             ),
+              //             textAlign: TextAlign.center,
+              //           ),
+              //         ),
+              //       )
+              //     : new Container()
             ],
           ),
         ],
@@ -110,37 +88,20 @@ class _AttendancePageState extends State<AttendancePage> {
               FutureBuilder<AttendanceInfo>(
                 future: af.getAttendance(),
                 builder: (context, snapshot) {
-                  // (context as Element).markNeedsBuild();
                   if (!snapshot.hasData)
-                    return Container(height: 200, child: loading());
+                    return FutureBuilder(
+                      future: Future.delayed(Duration(seconds: 20))
+                          .timeout(Duration(seconds: 10)),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData)
+                          return Container(height: 200, child: loading());
+                        else
+                          return buildNoAttendenceScreen(context);
+                      },
+                    );
                   else {
-                    if (snapshot.data.data == null)
-                      return Container(
-                          child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 150,
-                              child: FlareActor(
-                                  "assets/animations/ITER-AIO.flr",
-                                  alignment: Alignment.center,
-                                  fit: BoxFit.contain,
-                                  animation: "hello"),
-                            ),
-                            Text(
-                              'Sorry,\nNo Attendence Available Right Now,\nCome Back Later',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            Text('\nUntil Then Check Other Things We Have'),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            buildNaviDrawer(context),
-                          ],
-                        ),
-                      ));
+                    // if (!snapshot.data.attendAvailable)
+                    //   return buildNoAttendenceScreen(context);
                     return Column(
                       children: [
                         Row(
@@ -175,6 +136,33 @@ class _AttendancePageState extends State<AttendancePage> {
         ),
       ),
     );
+  }
+
+  Container buildNoAttendenceScreen(BuildContext context) {
+    return Container(
+        child: SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            height: 150,
+            child: FlareActor("assets/animations/ITER-AIO.flr",
+                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                animation: "hello"),
+          ),
+          Text(
+            'Sorry,\nNo Attendence Available Right Now,\nCome Back Later',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          Text('\nUntil Then Check Other Things We Have'),
+          SizedBox(
+            height: 10,
+          ),
+          CustomAppDrawer(sresult: true).buildNaviDrawer(context),
+        ],
+      ),
+    ));
   }
 
   Widget _attandenceExpansionTile(SubjectAttendance sat) {
@@ -316,108 +304,53 @@ class _AttendancePageState extends State<AttendancePage> {
                   MaterialPageRoute(
                     builder: (context) => ResultPage(),
                   )),
-              child: RichText(
-                textAlign: TextAlign.end,
-                text: TextSpan(
-                    text: '$name',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black87
-                          : Colors.white,
-                    ),
-                    children: [
-                      TextSpan(
-                          text: '\nRegd. No.:$regdNo',
+              child: FutureBuilder<ProfileInfo>(
+                future: pi.getProfile(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Text('Wating for info!');
+                  else
+                    return RichText(
+                      textAlign: TextAlign.end,
+                      text: TextSpan(
+                          text: snapshot.data.name,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                             color:
                                 Theme.of(context).brightness == Brightness.light
-                                    ? Colors.black54
-                                    : Colors.white60,
-                          )),
-                      TextSpan(
-                          text: '\nSemester: $sem',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? Colors.black54
-                                    : Colors.white60,
-                          )),
-                    ]),
+                                    ? Colors.black87
+                                    : Colors.white,
+                          ),
+                          children: [
+                            TextSpan(
+                                text: '\nRegd. No.:${snapshot.data.regdno}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.black54
+                                      : Colors.white60,
+                                )),
+                            TextSpan(
+                                text:
+                                    '\nSemester: ${snapshot.data.semester}\n' +
+                                        snapshot.data.sectioncode,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.black54
+                                      : Colors.white60,
+                                )),
+                          ]),
+                    );
+                },
               ),
             ),
           ),
         )
       ],
-    );
-  }
-
-  Widget buildNaviDrawer(context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          // if (isLoggedIn || sem != null) Divider(),
-          // if (isLoggedIn || sem != null)
-          ListTile(
-            leading: Icon(Icons.video_library),
-            title: Text('Lectures'),
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CoursesPage())),
-          ),
-          if (isLoggedIn || sem != null) Divider(),
-          if (isLoggedIn || sem != null)
-            ListTile(
-              leading: Icon(Icons.assignment),
-              title: Text('Result'),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ResultPage())),
-            ),
-          Divider(),
-          ListTile(
-            leading: Icon(LineAwesomeIcons.book),
-            title: Text('Study Materials'),
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WebPageView('ITER Book Shelf',
-                        'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'))),
-          ),
-          if (isLoggedIn &&
-              (attendData != null ? attendData[0] != null : false))
-            Divider(),
-          if (isLoggedIn &&
-              (attendData != null ? attendData[0] != null : false))
-            ListTile(
-              leading: Icon(Icons.airline_seat_individual_suite),
-              title: Text('Plan a Bunk'),
-              onTap: isLoading
-                  ? null
-                  : () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PlanBunk())),
-            ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: isLoading
-                ? null
-                : () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Settings())),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('About Us'),
-            onTap: isLoading
-                ? null
-                : () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AboutUs())),
-          ),
-        ],
-      ),
     );
   }
 }

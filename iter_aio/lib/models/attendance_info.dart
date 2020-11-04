@@ -35,8 +35,10 @@ class AttendanceInfo {
   final List<SubjectAttendance> data;
   final double avgAttPer;
   final int avgAbsPer;
+  final bool attendAvailable;
 
-  AttendanceInfo({this.data, this.avgAbsPer, this.avgAttPer});
+  AttendanceInfo(
+      {this.attendAvailable, this.data, this.avgAbsPer, this.avgAttPer});
 }
 
 // "stynumber": 3,

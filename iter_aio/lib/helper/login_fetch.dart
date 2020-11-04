@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:iteraio/MyHomePage.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/helper/session.dart';
 

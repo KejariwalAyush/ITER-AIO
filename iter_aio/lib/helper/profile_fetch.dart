@@ -1,6 +1,6 @@
 import 'dart:convert';
-
-import 'package:iteraio/MyHomePage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/helper/session.dart';
 
@@ -13,10 +13,15 @@ class ProfileFetch {
 
   void _saveFinalProfile() async {
     finalProfile = await _fetchProfile() as ProfileInfo;
-    name = pi.finalProfile.name;
-    branch = pi.finalProfile.branchdesc;
-    sem = pi.finalProfile.semester;
-    gender = pi.finalProfile.gender;
+
+    try {
+      name = pi.finalProfile.name;
+      branch = pi.finalProfile.branchdesc;
+      sem = pi.finalProfile.semester;
+      gender = pi.finalProfile.gender;
+    } on Exception catch (e) {
+      debugPrint('Exception: $e');
+    }
   }
 
   Future<ProfileInfo> getProfile() async {

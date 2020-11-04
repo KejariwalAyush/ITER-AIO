@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:iteraio/main.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
 import 'package:iteraio/widgets/ReportBugs.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Utilities/Theme.dart';
-import 'package:iteraio/main.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';

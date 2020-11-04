@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:iteraio/MyHomePage.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/helper/bunk.dart';
 import 'package:iteraio/helper/session.dart';
 import 'package:iteraio/models/attendance_info.dart';
@@ -42,8 +42,10 @@ class AttendanceFetch {
           avgAttPer: _avgAttendence(body),
           avgAbsPer: _avgAbsent(body),
         );
-      }
-    }
+      } else
+        return AttendanceInfo(attendAvailable: false);
+    } else
+      return AttendanceInfo(attendAvailable: false);
 
     return _attendanceInfo;
   }

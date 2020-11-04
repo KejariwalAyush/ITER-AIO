@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/Utilities/Theme.dart';
-import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/components/videoPlayer.dart';
-import 'package:iteraio/main.dart';
 import 'package:iteraio/models/lectures_model.dart';
 import 'package:iteraio/pages/lectures_page.dart';
 import 'package:iteraio/widgets/loading.dart';

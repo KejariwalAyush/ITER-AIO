@@ -1,43 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
-import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Utilities/Theme.dart';
+import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/components/push_msg.dart';
 import 'package:iteraio/important.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:splashscreen/splashscreen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 import 'package:package_info/package_info.dart';
+// import 'package:iteraio/MyHomePage.dart';
 
 import 'package:overlay_support/overlay_support.dart';
 
 void main() {
   runApp(Phoenix(child: MyApp()));
 }
-
-var appStarted = true;
-bool noInternet = false;
-bool serverTimeout = false;
-Brightness brightness = Brightness.dark;
-
-String appName = 'ITER-AIO';
-String packageName;
-String version = '1.0';
-String buildNumber;
-String updatelink;
-String latestversion;
-bool isUpdateAvailable = false;
-var updateText = "New Update is Here!";
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -78,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future _getThingsOnStartup() async {
-    await Future.delayed(Duration(seconds: 0));
+    // await Future.delayed(Duration(seconds: 0));
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       appName = packageInfo.appName;
@@ -94,6 +78,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       getTheme(themeStr);
     });
+    sem = prefs.getInt('sem');
     regdNo = prefs.getString('regd');
     password = prefs.getString('password');
     brightness = prefs.getBool('isbright') != null && prefs.getBool('isbright')
@@ -132,6 +117,7 @@ class _MyAppState extends State<MyApp> {
             appBarTheme: AppBarTheme(color: themeDark),
           ),
           debugShowCheckedModeBanner: false,
+
           home: PushMessagingExample(),
         ),
       ),
@@ -139,9 +125,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   fetchupdate(BuildContext context) async {
-    setState(() {
-      isLoading = true;
-    });
+    // setState(() {
+    //   isLoading = true;
+    // });
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     appName = packageInfo.appName;
@@ -206,9 +192,9 @@ class _MyAppState extends State<MyApp> {
         // print('Up-to-Date');
         isUpdateAvailable = false;
       }
-      setState(() {
-        isLoading = false;
-      });
+      // setState(() {
+      //   isLoading = false;
+      // });
     } else {
       throw Exception('Failed to load');
     }
@@ -221,133 +207,5 @@ class _MyAppState extends State<MyApp> {
       throw 'Could not launch $url';
     }
     return;
-  }
-}
-
-class Splash extends StatelessWidget {
-  const Splash({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SplashScreen(
-      seconds: 1,
-      //isLoading?sec:1,
-      navigateAfterSeconds: new MyHomePage(),
-      title: new Text(
-        'ITER AIO\n\nAn all-in-one app for ITER',
-        textAlign: TextAlign.center,
-        style: new TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 25.0,
-          color: Colors.white70,
-        ),
-      ),
-      backgroundColor: Colors.black87,
-      styleTextUnderTheLoader: new TextStyle(),
-      photoSize: 100.0,
-      image: Image.asset(
-        'assets/logos/codexLogo.png',
-        alignment: Alignment.center,
-        fit: BoxFit.contain,
-      ),
-      loaderColor: Colors.white,
-      loadingText: Text(
-        'LOADING...',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 16, color: Colors.white60),
-      ),
-    );
-  }
-}
-
-class PushMessagingExample extends StatefulWidget {
-  @override
-  _PushMessagingExampleState createState() => _PushMessagingExampleState();
-}
-
-class _PushMessagingExampleState extends State<PushMessagingExample> {
-  // ignore: unused_field
-  String _homeScreenText = "Waiting for token...";
-  // String _messageText = "Waiting for message...";
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-  @override
-  void initState() {
-    super.initState();
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        // setState(() {
-        //   _messageText = "Push Messaging message: $message";
-        // });
-        print("onMessage: $message");
-        Alert(
-                context: context,
-                title: message['notification']['title'],
-                type: AlertType.none,
-                onWillPopActive: true,
-                desc: message['notification']['body'])
-            .show();
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => AlertDialog(
-        //     content: ListTile(
-        //       title: Text(message['notification']['title']),
-        //       subtitle: Text(message['notification']['body']),
-        //     ),
-        //     actions: <Widget>[
-        //       FlatButton(
-        //         child: Text('Ok'),
-        //         onPressed: () => Navigator.of(context).pop(),
-        //       ),
-        //     ],
-        //   ),
-        // );
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        // setState(() {
-        //   _messageText = "Push Messaging message: $message";
-        // });
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        // setState(() {
-        //   _messageText = "Push Messaging message: $message";
-        // });
-        print("onResume: $message");
-      },
-    );
-    //  _firebaseMessaging.requestNotificationPermissions(
-    //      const IosNotificationSettings(sound: true, badge: true, alert: true));
-    //  _firebaseMessaging.onIosSettingsRegistered
-    //      .listen((IosNotificationSettings settings) {
-    //    print("Settings registered: $settings");
-    //  });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      setState(() {
-        _homeScreenText = "Push Messaging token: $token";
-      });
-      print(_homeScreenText);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Splash();
-  }
-}
-
-class Flare extends StatefulWidget {
-  @override
-  _FlareState createState() => _FlareState();
-}
-
-class _FlareState extends State<Flare> {
-  @override
-  Widget build(BuildContext context) {
-    return new FlareActor("assets/animations/ITER-AIO.flr",
-        alignment: Alignment.center, fit: BoxFit.contain, animation: "entry");
   }
 }

@@ -1,11 +1,10 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/models/result_model.dart';
 import 'package:iteraio/widgets/loading.dart';
-
-import '../MyHomePage.dart';
 
 class ResultPage extends StatefulWidget {
   static const routeName = "result-page";

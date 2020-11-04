@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:iteraio/Utilities/Theme.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/loading.dart';
-import 'package:iteraio/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
