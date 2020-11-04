@@ -1,22 +1,25 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:html/parser.dart';
-import 'package:http/http.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/push_msg.dart';
+import 'package:iteraio/helper/update_fetch.dart';
 import 'package:iteraio/important.dart';
+import 'package:iteraio/pages/aboutus_page.dart';
+import 'package:iteraio/pages/attendance_page.dart';
+import 'package:iteraio/pages/courses_page.dart';
+import 'package:iteraio/pages/login_page.dart';
+import 'package:iteraio/pages/notices.dart';
+import 'package:iteraio/pages/planBunk.dart';
+import 'package:iteraio/pages/result_page.dart';
+import 'package:iteraio/pages/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 import 'package:package_info/package_info.dart';
-// import 'package:iteraio/MyHomePage.dart';
-
 import 'package:overlay_support/overlay_support.dart';
 
 void main() {
@@ -56,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     });
     setState(() {
       _getCredentials();
-      fetchupdate(context);
+      UpdateFetch().fetchupdate(context);
     });
     super.initState();
   }
@@ -109,6 +112,18 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           navigatorKey: _navigatorKey,
           title: 'ITER-AIO',
+          initialRoute: '/',
+          routes: {
+            '/': (context) => PushMessagingExample(),
+            '/${LoginPage.routeName}': (context) => LoginPage(),
+            '/${AttendancePage.routeName}': (context) => AttendancePage(),
+            '/${CoursesPage.routeName}': (context) => CoursesPage(),
+            '/${ResultPage.routeName}': (context) => ResultPage(),
+            '/${Notices.routeName}': (context) => Notices(),
+            '/${PlanBunk.routeName}': (context) => PlanBunk(),
+            '/${AboutUs.routeName}': (context) => AboutUs(),
+            '/${SettingsPage.routeName}': (context) => SettingsPage(),
+          },
           // themeMode: ThemeMode.system,
           theme: ThemeData(
             primarySwatch: themeLight,
@@ -122,90 +137,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  fetchupdate(BuildContext context) async {
-    // setState(() {
-    //   isLoading = true;
-    // });
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-    appName = packageInfo.appName;
-    packageName = packageInfo.packageName;
-    version = packageInfo.version;
-    buildNumber = packageInfo.buildNumber;
-
-    final Response response =
-        await get('https://github.com/KejariwalAyush/ITER-AIO/releases/latest');
-    if (response.statusCode == 200) {
-      var document = parse(response.body);
-      updateText = document.querySelector('div.markdown-body').text;
-      // print(updateText);
-      List links = document.querySelectorAll('div > ul > li > a > span ');
-      List<Map<String, String>> linkMap = [];
-      for (var link in links) {
-        linkMap.add({
-          'title': link.text,
-        });
-      }
-      var dec = jsonDecode(json.encode(linkMap));
-      latestversion = dec[6]['title'];
-
-      List links2 = document.querySelectorAll('details > div > div > div > a');
-      List<Map<String, String>> linkMap2 = [];
-      for (var link in links2) {
-        linkMap2.add({
-          'title': 'https://github.com' + link.attributes['href'],
-        });
-      }
-      var dec2 = jsonDecode(json.encode(linkMap2));
-      updatelink = dec2[0]['title'];
-      // print(updatelink);
-
-      if (version.compareTo(latestversion) != 0) {
-        print('update available');
-        isUpdateAvailable = true;
-        showSimpleNotification(
-          Text(
-            "Update available version: $latestversion",
-            style: TextStyle(color: Colors.white),
-          ),
-          background: Colors.black,
-          autoDismiss: false,
-          leading: Icon(
-            Icons.upgrade_rounded,
-            color: Colors.white,
-          ),
-          slideDismiss: true,
-          position: NotificationPosition.bottom,
-          trailing: Builder(builder: (context) {
-            return FlatButton(
-                textColor: Colors.yellow,
-                onPressed: () => {
-                      _launchURL(updatelink),
-                    },
-                child: Text('UPDATE'));
-          }),
-        );
-        // Alert is in the getData fuction in homePage
-      } else {
-        // print('Up-to-Date');
-        isUpdateAvailable = false;
-      }
-      // setState(() {
-      //   isLoading = false;
-      // });
-    } else {
-      throw Exception('Failed to load');
-    }
-  }
-
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-    return;
   }
 }

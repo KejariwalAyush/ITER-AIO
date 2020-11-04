@@ -55,12 +55,14 @@ class _PlanBunkState extends State<PlanBunk> {
                       resText = null;
                       dropdownValue = newValue;
                       for (var i in af.finalAttendance.data) {
-                        subject = i.subject;
-                        subatt = i.totAtt;
-                        subjectCode = i.subjectCode;
-                        classes = i.present + i.absent;
-                        absent = i.absent;
-                        subdata = i.rawData;
+                        if (i.subject == dropdownValue) {
+                          subject = i.subject;
+                          subatt = i.totAtt;
+                          subjectCode = i.subjectCode;
+                          classes = i.present + i.absent;
+                          absent = i.absent;
+                          subdata = i.rawData;
+                        }
                       }
                     });
                   },

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
-import 'package:iteraio/components/notices.dart';
+import 'package:iteraio/pages/notices.dart';
 import 'package:iteraio/models/attendance_info.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/pages/result_page.dart';
@@ -42,8 +42,8 @@ class _AttendancePageState extends State<AttendancePage> {
                   icon: new Icon(
                     Icons.notifications,
                   ),
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Notices())),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, Notices.routeName),
                 ),
                 // newNotification
                 //     ? new Positioned(
@@ -95,34 +95,35 @@ class _AttendancePageState extends State<AttendancePage> {
                       // return Container(height: 200, child: loading());
                       return buildNoAttendenceScreen(context);
                     else {
-                      // if (!snapshot.data.attendAvailable)
-                      //   return buildNoAttendenceScreen(context);
-                      return Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Avg Attendence: ${snapshot.data.avgAttPer} %',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                      if (snapshot.data.attendAvailable == false)
+                        return buildNoAttendenceScreen(context);
+                      else
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Avg Attendence: ${snapshot.data.avgAttPer} %',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Avg Absent: ${snapshot.data.avgAbsPer}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  'Avg Absent: ${snapshot.data.avgAbsPer}',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          for (var data in snapshot.data.data)
-                            _attandenceExpansionTile(data),
-                        ],
-                      );
+                              ],
+                            ),
+                            for (var data in snapshot.data.data)
+                              _attandenceExpansionTile(data),
+                          ],
+                        );
                     }
                   },
                 ),
@@ -216,7 +217,7 @@ class _AttendancePageState extends State<AttendancePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Last Updated On: ${sat.lastUpdatedOn.hour}',
+                        'Last Updated On: ${_getLastUpdatedOn(sat.lastUpdatedOn)}',
                         textAlign: TextAlign.start,
                       ),
                       if (sat.lattper != 0 && sat.latt != 'Not Applicable')
@@ -274,6 +275,27 @@ class _AttendancePageState extends State<AttendancePage> {
         ],
       ),
     );
+  }
+
+  String _getLastUpdatedOn(DateTime time) {
+    // String x;
+    // print(initTime);
+    // if (initTime != null) {
+    //   var td = time.difference(initTime);
+    //   if (td.inSeconds > 60) {
+    //     if (td.inMinutes > 60) {
+    //         if (td.inHours > 24)
+    //           x = td.inDays.toString() + ' days ago';
+    //         else
+    //           x = td.inHours.toString() + ' hours ago';
+    //     } else
+    //       x = td.inMinutes.toString() + ' mins ago';
+    //   } else
+    //     x = td.inSeconds.toString() + ' secs ago';
+    //   return x;
+    // } else
+
+    return '${time.hour > 12 ? time.hour - 12 : time.hour}:${time.minute} ${time.hour > 12 ? 'PM' : 'AM'} ${time.day}/${time.month}';
   }
 
   Row buildHeader(BuildContext context) {

@@ -38,3 +38,4 @@ String gender;
 int sem;
 String themeStr;
 bool isLoggedIn;
+DateTime initTime;

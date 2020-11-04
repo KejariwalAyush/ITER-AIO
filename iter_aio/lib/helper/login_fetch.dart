@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/models/login_model.dart';
@@ -14,7 +15,11 @@ class LoginFetch {
   }
 
   void _saveFinalLogin() async {
-    finalLogin = await _fetchLogin() as LoginData;
+    try {
+      finalLogin = await _fetchLogin() as LoginData;
+    } on Exception catch (e) {
+      debugPrint('$e');
+    }
   }
 
   Future<LoginData> getLogin() async {

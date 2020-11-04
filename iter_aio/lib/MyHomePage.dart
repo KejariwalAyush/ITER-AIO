@@ -8,7 +8,7 @@
 // import 'package:iteraio/Utilities/Theme.dart';
 // import 'package:iteraio/Utilities/global_var.dart';
 // import 'package:iteraio/components/about.dart';
-// import 'package:iteraio/components/notices.dart';
+// import 'package:iteraio/pages/notices.dart';
 // import 'package:iteraio/helper/attendance_fetch.dart';
 // import 'package:iteraio/helper/lectures_fetch.dart';
 // import 'package:iteraio/helper/login_fetch.dart';

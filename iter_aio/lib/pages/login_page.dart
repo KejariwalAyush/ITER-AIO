@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
-import 'package:iteraio/components/notices.dart';
+import 'package:iteraio/pages/notices.dart';
 import 'package:iteraio/helper/attendance_fetch.dart';
 import 'package:iteraio/helper/lectures_fetch.dart';
 import 'package:iteraio/helper/login_fetch.dart';
 import 'package:iteraio/helper/profile_fetch.dart';
 import 'package:iteraio/helper/result_fetch.dart';
+import 'package:iteraio/helper/update_fetch.dart';
 import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
@@ -35,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
     if (widget.logout) logout();
     _getCredentials();
     _login(regdNo, password);
@@ -51,8 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     LoginData ld = await loginFetch.getLogin();
     if (ld.status == "success")
       setState(() {
-        Future.delayed(Duration(seconds: 15))
-            .whenComplete(() => _setCredentials());
+        _setCredentials();
         // _setCredentials();
         _isLoggingIn = true;
         isLoggedIn = true;
@@ -233,6 +234,10 @@ class _LoginPageState extends State<LoginPage> {
                   onChanged: (String str) {
                     setState(() {
                       regdNo = str;
+                    });
+                  },
+                  onEditingComplete: () {
+                    setState(() {
                       animationName = 'ok';
                     });
                   },
@@ -394,6 +399,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _setCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setBool('open', true);
     await prefs.setString('regd', regdNo);
     await prefs.setString('password', password);
     await prefs.setInt('sem', pi.finalProfile.semester);
@@ -403,6 +409,10 @@ class _LoginPageState extends State<LoginPage> {
   _getCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      if (prefs.getString('initTime') != null) {
+        initTime = DateTime.parse(prefs.getString('initTime'));
+        print('time: ' + prefs.getString('initTime'));
+      }
       brightness =
           prefs.getBool('isbright') != null && prefs.getBool('isbright')
               ? Brightness.light

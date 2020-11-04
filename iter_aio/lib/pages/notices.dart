@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Notices extends StatefulWidget {
+  static const routeName = "notices-page";
   @override
   _NoticesState createState() => _NoticesState();
 }
