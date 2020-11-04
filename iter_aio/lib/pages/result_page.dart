@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
+import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/models/result_model.dart';
+import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/widgets/loading.dart';
 
 class ResultPage extends StatefulWidget {
@@ -158,42 +160,53 @@ class _ResultPageState extends State<ResultPage> {
         ),
         Expanded(
           flex: 3,
-          child: Hero(
-            tag: 'home animation',
-            child: InkWell(
-              onTap: () => Navigator.pop(context, false),
-              child: RichText(
-                textAlign: TextAlign.end,
-                text: TextSpan(
-                    text: '$name',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black87
-                          : Colors.white,
-                    ),
-                    children: [
-                      TextSpan(
-                          text: '\nRegd. No.:$regdNo',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
+          child: InkWell(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AttendancePage(),
+                )),
+            child: FutureBuilder<ProfileInfo>(
+              future: pi.getProfile(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Text('Wating for info!');
+                else
+                  return RichText(
+                    textAlign: TextAlign.end,
+                    text: TextSpan(
+                        text: snapshot.data.name,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                        ),
+                        children: [
+                          TextSpan(
+                              text: '\nRegd. No.:${snapshot.data.regdno}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
                                     ? Colors.black54
                                     : Colors.white60,
-                          )),
-                      TextSpan(
-                          text: '\nSemester: $sem',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
+                              )),
+                          TextSpan(
+                              text: '\nSemester: ${snapshot.data.semester}\n' +
+                                  snapshot.data.sectioncode,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
                                     ? Colors.black54
                                     : Colors.white60,
-                          )),
-                    ]),
-              ),
+                              )),
+                        ]),
+                  );
+              },
             ),
           ),
         )

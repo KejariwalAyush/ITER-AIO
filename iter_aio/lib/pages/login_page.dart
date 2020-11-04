@@ -20,7 +20,7 @@ import 'package:wiredash/wiredash.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "login-page";
-  bool logout;
+  final bool logout;
 
   LoginPage({Key key, this.logout = false}) : super(key: key);
   @override
@@ -51,7 +51,9 @@ class _LoginPageState extends State<LoginPage> {
     LoginData ld = await loginFetch.getLogin();
     if (ld.status == "success")
       setState(() {
-        _setCredentials();
+        Future.delayed(Duration(seconds: 15))
+            .whenComplete(() => _setCredentials());
+        // _setCredentials();
         _isLoggingIn = true;
         isLoggedIn = true;
         cookie = ld.cookie;
@@ -69,7 +71,6 @@ class _LoginPageState extends State<LoginPage> {
 
   logout() {
     setState(() {
-      widget.logout = false;
       name = null;
       sem = null;
       isLoggedIn = false;
@@ -90,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: OnPop().onWillPop,
+      onWillPop: OnPop(context: context).onWillPop,
       child: Scaffold(
         drawer: CustomAppDrawer().widgetDrawer(context),
         appBar: AppBar(
@@ -151,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        floatingActionButton: !_isLoggingIn && !isLoading
+        floatingActionButton: !_isLoggingIn
             ? SizedBox()
             : FloatingActionButton(
                 onPressed: () {
@@ -171,7 +172,6 @@ class _LoginPageState extends State<LoginPage> {
                 tooltip: 'Cancel Login',
                 child: Icon(
                   LineAwesomeIcons.close,
-                  // size: 35,
                   color:
                       brightness == Brightness.dark || themeDark == themeDark1
                           ? Colors.white
@@ -183,10 +183,8 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.all(10),
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
-              // shrinkWrap: true,
-              // padding: EdgeInsets.only(left: 24.0, right: 24.0),
               children: <Widget>[
                 SizedBox(
                   height: 25,
@@ -321,7 +319,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
 
                 /// Login button
@@ -329,49 +327,57 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: regdNo != null && password != null && _isLoggingIn
                       ? Center(child: CircularProgressIndicator())
-                      : RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          onPressed: () async {
-                            print('$regdNo : $password');
-                            await _login(regdNo, password);
-                            setState(() {
-                              animationName = 'openEyes';
-                              Future.delayed(Duration(seconds: 1))
-                                  .whenComplete(() {
-                                setState(() {
-                                  animationName = 'hello';
+                      : Container(
+                          width: double.maxFinite,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            onPressed: () async {
+                              print('$regdNo : $password');
+                              await _login(regdNo, password);
+                              setState(() {
+                                animationName = 'openEyes';
+                                Future.delayed(Duration(seconds: 1))
+                                    .whenComplete(() {
+                                  setState(() {
+                                    animationName = 'hello';
+                                  });
                                 });
                               });
-                            });
-                            _setCredentials();
-                            if (loginFetch.finalLogin.status == 'success') {
-                              isLoading = true;
-                              _isLoggingIn = true;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AttendancePage(),
-                                  ));
-                            } else
-                              Fluttertoast.showToast(
-                                msg: loginFetch.finalLogin.message,
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 2,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                              );
-                          },
-                          padding: EdgeInsets.all(12),
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? themeLight
-                                  : themeDark,
-                          child: Text('Log In',
-                              style: TextStyle(color: Colors.white)),
+                              Future.delayed(Duration(seconds: 15))
+                                  .whenComplete(() => _setCredentials());
+                              try {
+                                if (loginFetch.finalLogin.status == 'success') {
+                                  isLoading = true;
+                                  _isLoggingIn = true;
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AttendancePage(),
+                                      ));
+                                } else
+                                  Fluttertoast.showToast(
+                                    msg: loginFetch.finalLogin.message,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 2,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0,
+                                  );
+                              } on Exception catch (e) {
+                                debugPrint('$e');
+                              }
+                            },
+                            padding: EdgeInsets.all(12),
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? themeLight
+                                    : themeDark,
+                            child: Text('Log In',
+                                style: TextStyle(color: Colors.white)),
+                          ),
                         ),
                 ),
               ],
@@ -386,7 +392,7 @@ class _LoginPageState extends State<LoginPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('regd', regdNo);
     await prefs.setString('password', password);
-    await prefs.setInt('sem', sem);
+    await prefs.setInt('sem', pi.finalProfile.semester);
     await prefs.setString('theme', themeStr);
   }
 

@@ -55,6 +55,7 @@ class AttendanceFetch {
     for (var item in body['griddata']) {
       String _bunkText = Bunk().bunklogic(item);
       sa.add(SubjectAttendance(
+          rawData: item,
           sem: item['stynumber'],
           present: _getPresent(item),
           absent: _getAbsent(item),

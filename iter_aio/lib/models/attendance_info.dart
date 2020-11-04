@@ -1,4 +1,5 @@
 class SubjectAttendance {
+  final rawData;
   final String bunkText;
   final int sem;
   final double totAtt;
@@ -16,6 +17,7 @@ class SubjectAttendance {
 
   SubjectAttendance(
       {this.sem,
+      this.rawData,
       this.bunkText,
       this.present,
       this.absent,
@@ -29,6 +31,26 @@ class SubjectAttendance {
       this.subject,
       this.subjectCode,
       this.lastUpdatedOn});
+
+  String toString() {
+    return '''{
+      "rawData": "$rawData",
+      "sem": "$sem",
+      "bunkText": "${bunkText.toString()}", 
+      "present": "$present", 
+      "absent": "$absent", 
+      "totAtt": "$totAtt", 
+      "latt": "$latt", 
+      "patt": "$patt", 
+      "tatt": "$tatt", 
+      "lattper": "$lattper", 
+      "pattper": "$pattper", 
+      "tattper": "$tattper", 
+      "subject": "$subject", 
+      "subjectCode": "$subjectCode", 
+      "lastUpdatedOn": "$lastUpdatedOn"
+    }''';
+  }
 }
 
 class AttendanceInfo {
@@ -39,13 +61,18 @@ class AttendanceInfo {
 
   AttendanceInfo(
       {this.attendAvailable, this.data, this.avgAbsPer, this.avgAttPer});
-}
 
-// "stynumber": 3,
-//             "TotalAttandence": 100.0,
-//             "Latt": "Not Applicable",
-//             "Patt": "12 / 12",
-//             "subject": "Computer Science Workshop 1",
-//             "Tatt": "0 / 0",
-//             "subjectcode": "CSE2141",
-//             "lastupdatedon": "03/11/2020 10:09 PM"
+  String toString() {
+    return '''{
+      "data": [${_getSubjectAtt()}],
+      "avgAttPer": "$avgAttPer",
+      "avgAbsPer": "$avgAbsPer",
+      "attendAvailable": "$attendAvailable"}''';
+  }
+
+  String _getSubjectAtt() {
+    String st;
+    for (var i in data) st += i.toString() + ',';
+    return st.substring(0, st.lastIndexOf(','));
+  }
+}

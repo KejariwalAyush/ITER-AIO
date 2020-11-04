@@ -1,7 +1,7 @@
 class Bunk {
   String bunklogic(var i) {
     int latttot, patttot, tatttot, lattpr, pattpr, tattpr;
-    print(i['Latt']);
+    // print(i['Latt']);
     if (i['Latt'] != 'Not Applicable') {
       latttot = int.parse(i['Latt'].toString().split('/')[1].trim());
       lattpr = int.parse(i['Latt'].toString().split('/')[0].trim());

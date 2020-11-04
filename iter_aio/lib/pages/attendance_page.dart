@@ -9,6 +9,7 @@ import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/loading.dart';
+import 'package:iteraio/widgets/on_pop.dart';
 
 class AttendancePage extends StatefulWidget {
   static const routeName = "attendance-page";
@@ -19,119 +20,122 @@ class AttendancePage extends StatefulWidget {
 class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: CustomAppDrawer(sresult: true, sbunk: true, slogout: true)
-          .widgetDrawer(context),
-      appBar: AppBar(
-        title: Text('ITER AIO'),
-        centerTitle: true,
-        elevation: 15,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: new Icon(Icons.apps),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+    return WillPopScope(
+      onWillPop: OnPop(context: context).onWillPop,
+      child: Scaffold(
+        drawer: CustomAppDrawer(sresult: true, sbunk: true, slogout: true)
+            .widgetDrawer(context),
+        appBar: AppBar(
+          title: Text('ITER AIO'),
+          centerTitle: true,
+          elevation: 15,
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: new Icon(Icons.apps),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
           ),
-        ),
-        actions: <Widget>[
-          Stack(
-            children: [
-              IconButton(
-                icon: new Icon(
-                  Icons.notifications,
+          actions: <Widget>[
+            Stack(
+              children: [
+                IconButton(
+                  icon: new Icon(
+                    Icons.notifications,
+                  ),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Notices())),
                 ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Notices())),
-              ),
-              // newNotification
-              //     ? new Positioned(
-              //         right: 11,
-              //         top: 11,
-              //         child: new Container(
-              //           padding: EdgeInsets.all(2),
-              //           decoration: new BoxDecoration(
-              //             color: Colors.red,
-              //             borderRadius: BorderRadius.circular(6),
-              //           ),
-              //           constraints: BoxConstraints(
-              //             minWidth: 14,
-              //             minHeight: 14,
-              //           ),
-              //           child: Text(
-              //             ' ',
-              //             style: TextStyle(
-              //               color: Colors.white,
-              //               fontSize: 8,
-              //             ),
-              //             textAlign: TextAlign.center,
-              //           ),
-              //         ),
-              //       )
-              //     : new Container()
-            ],
-          ),
-        ],
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(15),
-                margin: EdgeInsets.all(5),
-                child: buildHeader(context),
-              ),
-              FutureBuilder<AttendanceInfo>(
-                future: af.getAttendance(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return FutureBuilder(
-                      future: Future.delayed(Duration(seconds: 20))
-                          .timeout(Duration(seconds: 10)),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData)
-                          return Container(height: 200, child: loading());
-                        else
-                          return buildNoAttendenceScreen(context);
-                      },
-                    );
-                  else {
-                    // if (!snapshot.data.attendAvailable)
-                    //   return buildNoAttendenceScreen(context);
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Avg Attendence: ${snapshot.data.avgAttPer} %',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                // newNotification
+                //     ? new Positioned(
+                //         right: 11,
+                //         top: 11,
+                //         child: new Container(
+                //           padding: EdgeInsets.all(2),
+                //           decoration: new BoxDecoration(
+                //             color: Colors.red,
+                //             borderRadius: BorderRadius.circular(6),
+                //           ),
+                //           constraints: BoxConstraints(
+                //             minWidth: 14,
+                //             minHeight: 14,
+                //           ),
+                //           child: Text(
+                //             ' ',
+                //             style: TextStyle(
+                //               color: Colors.white,
+                //               fontSize: 8,
+                //             ),
+                //             textAlign: TextAlign.center,
+                //           ),
+                //         ),
+                //       )
+                //     : new Container()
+              ],
+            ),
+          ],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25))),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(15),
+                  margin: EdgeInsets.all(5),
+                  child: buildHeader(context),
+                ),
+                FutureBuilder<AttendanceInfo>(
+                  future: af.getAttendance(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData)
+                      return FutureBuilder(
+                        future: Future.delayed(Duration(seconds: 20))
+                            .timeout(Duration(seconds: 10)),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData)
+                            return Container(height: 200, child: loading());
+                          else
+                            return buildNoAttendenceScreen(context);
+                        },
+                      );
+                    else {
+                      // if (!snapshot.data.attendAvailable)
+                      //   return buildNoAttendenceScreen(context);
+                      return Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'Avg Attendence: ${snapshot.data.avgAttPer} %',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Avg Absent: ${snapshot.data.avgAbsPer}',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                              Text(
+                                'Avg Absent: ${snapshot.data.avgAbsPer}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        for (var data in snapshot.data.data)
-                          _attandenceExpansionTile(data),
-                      ],
-                    );
-                  }
-                },
-              ),
-            ],
+                            ],
+                          ),
+                          for (var data in snapshot.data.data)
+                            _attandenceExpansionTile(data),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -296,57 +300,53 @@ class _AttendancePageState extends State<AttendancePage> {
         ),
         Expanded(
           flex: 3,
-          child: Hero(
-            tag: 'home animation',
-            child: InkWell(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResultPage(),
-                  )),
-              child: FutureBuilder<ProfileInfo>(
-                future: pi.getProfile(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return Text('Wating for info!');
-                  else
-                    return RichText(
-                      textAlign: TextAlign.end,
-                      text: TextSpan(
-                          text: snapshot.data.name,
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? Colors.black87
-                                    : Colors.white,
-                          ),
-                          children: [
-                            TextSpan(
-                                text: '\nRegd. No.:${snapshot.data.regdno}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.black54
-                                      : Colors.white60,
-                                )),
-                            TextSpan(
-                                text:
-                                    '\nSemester: ${snapshot.data.semester}\n' +
-                                        snapshot.data.sectioncode,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.black54
-                                      : Colors.white60,
-                                )),
-                          ]),
-                    );
-                },
-              ),
+          child: InkWell(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultPage(),
+                )),
+            child: FutureBuilder<ProfileInfo>(
+              future: pi.getProfile(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Text('Wating for info!');
+                else
+                  return RichText(
+                    textAlign: TextAlign.end,
+                    text: TextSpan(
+                        text: snapshot.data.name,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Colors.black87
+                                  : Colors.white,
+                        ),
+                        children: [
+                          TextSpan(
+                              text: '\nRegd. No.:${snapshot.data.regdno}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black54
+                                    : Colors.white60,
+                              )),
+                          TextSpan(
+                              text: '\nSemester: ${snapshot.data.semester}\n' +
+                                  snapshot.data.sectioncode,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black54
+                                    : Colors.white60,
+                              )),
+                        ]),
+                  );
+              },
             ),
           ),
         )

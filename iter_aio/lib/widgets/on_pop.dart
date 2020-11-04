@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 class OnPop {
-  Future<bool> onWillPop({@required BuildContext context}) async {
+  final BuildContext context;
+  OnPop({@required this.context});
+  Future<bool> onWillPop() async {
     return (await showDialog(
           context: context,
           builder: (context) => new AlertDialog(

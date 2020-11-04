@@ -6,7 +6,7 @@ import 'package:iteraio/components/notices.dart';
 import 'package:iteraio/components/settings.dart';
 import 'package:iteraio/pages/courses_page.dart';
 import 'package:iteraio/pages/login_page.dart';
-// import 'package:iteraio/pages/planBunk.dart';
+import 'package:iteraio/pages/planBunk.dart';
 import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -115,14 +115,14 @@ class CustomAppDrawer {
                 : () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Notices())),
           ),
-          // if (sbunk) Divider(),
-          // if (sbunk)
-          //   ListTile(
-          //     leading: Icon(Icons.airline_seat_individual_suite),
-          //     title: Text('Plan a Bunk'),
-          //     onTap: () => Navigator.push(
-          //         context, MaterialPageRoute(builder: (context) => PlanBunk())),
-          //   ),
+          if (sbunk) Divider(),
+          if (sbunk)
+            ListTile(
+              leading: Icon(Icons.airline_seat_individual_suite),
+              title: Text('Plan a Bunk'),
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => PlanBunk())),
+            ),
           if (ssettings) Divider(),
           if (ssettings)
             ListTile(
@@ -157,26 +157,6 @@ class CustomAppDrawer {
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
                           onPressed: () {
-                            // setState(() {
-                            //   attendData = null;
-                            //   resultData = null;
-                            //   name = null;
-                            //   sem = null;
-                            //   infoData = null;
-                            //   isLoggedIn = false;
-                            //   regdNo = null;
-                            //   password = null;
-                            //   _resetCredentials();
-                            //   Fluttertoast.showToast(
-                            //     msg: "Logged out!",
-                            //     toastLength: Toast.LENGTH_SHORT,
-                            //     gravity: ToastGravity.BOTTOM,
-                            //     timeInSecForIosWeb: 2,
-                            //     backgroundColor: Colors.blueGrey,
-                            //     textColor: Colors.white,
-                            //     fontSize: 16.0,
-                            //   );
-                            // });
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
