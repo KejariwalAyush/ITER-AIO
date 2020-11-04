@@ -8,7 +8,7 @@ import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/helper/bunk.dart';
 
 class PlanBunk extends StatefulWidget {
-  static const routeName = "plan-bunk";
+  static const routeName = "/plan-bunk";
   @override
   _PlanBunkState createState() => _PlanBunkState();
 }

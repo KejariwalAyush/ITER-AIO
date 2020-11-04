@@ -10,7 +10,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CoursesPage extends StatefulWidget {
-  static const routeName = "course-page";
+  static const routeName = "/course-page";
   @override
   _CoursesPageState createState() => _CoursesPageState();
 }

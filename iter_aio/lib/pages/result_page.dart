@@ -9,7 +9,7 @@ import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/widgets/loading.dart';
 
 class ResultPage extends StatefulWidget {
-  static const routeName = "result-page";
+  static const routeName = "/result-page";
   @override
   _ResultPageState createState() => _ResultPageState();
 }

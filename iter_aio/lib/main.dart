@@ -115,14 +115,14 @@ class _MyAppState extends State<MyApp> {
           initialRoute: '/',
           routes: {
             '/': (context) => PushMessagingExample(),
-            '/${LoginPage.routeName}': (context) => LoginPage(),
-            '/${AttendancePage.routeName}': (context) => AttendancePage(),
-            '/${CoursesPage.routeName}': (context) => CoursesPage(),
-            '/${ResultPage.routeName}': (context) => ResultPage(),
-            '/${Notices.routeName}': (context) => Notices(),
-            '/${PlanBunk.routeName}': (context) => PlanBunk(),
-            '/${AboutUs.routeName}': (context) => AboutUs(),
-            '/${SettingsPage.routeName}': (context) => SettingsPage(),
+            '${LoginPage.routeName}': (context) => LoginPage(),
+            '${AttendancePage.routeName}': (context) => AttendancePage(),
+            '${CoursesPage.routeName}': (context) => CoursesPage(),
+            '${ResultPage.routeName}': (context) => ResultPage(),
+            '${Notices.routeName}': (context) => Notices(),
+            '${PlanBunk.routeName}': (context) => PlanBunk(),
+            '${AboutUs.routeName}': (context) => AboutUs(),
+            '${SettingsPage.routeName}': (context) => SettingsPage(),
           },
           // themeMode: ThemeMode.system,
           theme: ThemeData(
@@ -133,7 +133,7 @@ class _MyAppState extends State<MyApp> {
           ),
           debugShowCheckedModeBanner: false,
 
-          home: PushMessagingExample(),
+          // home: PushMessagingExample(),
         ),
       ),
     );

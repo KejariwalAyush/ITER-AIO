@@ -20,7 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 
 class LoginPage extends StatefulWidget {
-  static const routeName = "login-page";
+  static const routeName = "/login-page";
   final bool logout;
 
   LoginPage({Key key, this.logout = false}) : super(key: key);
@@ -227,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                 /// Regd No. Input
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  // textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.continueAction,
                   autofocus: false,
                   initialValue: regdNo,
                   cursorColor: themeDark,
@@ -279,7 +279,7 @@ class _LoginPageState extends State<LoginPage> {
                       flex: 7,
                       child: TextFormField(
                         keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.go,
                         autofocus: false,
                         initialValue: password,
                         cursorColor: themeDark,

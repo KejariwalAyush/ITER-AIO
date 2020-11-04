@@ -11,7 +11,7 @@ import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/on_pop.dart';
 
 class AttendancePage extends StatefulWidget {
-  static const routeName = "attendance-page";
+  static const routeName = "/attendance-page";
   @override
   _AttendancePageState createState() => _AttendancePageState();
 }

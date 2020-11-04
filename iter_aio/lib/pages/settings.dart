@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 
 class SettingsPage extends StatefulWidget {
-  static const routeName = "settings-page";
+  static const routeName = "/settings-page";
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }

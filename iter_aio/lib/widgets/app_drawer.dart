@@ -93,7 +93,7 @@ class CustomAppDrawer {
             ListTile(
               leading: Icon(LineAwesomeIcons.book),
               title: Text('Study Materials'),
-              onTap: !noInternet
+              onTap: noInternet
                   ? () {
                       Fluttertoast.showToast(
                         msg: "No Internet!",
@@ -116,7 +116,7 @@ class CustomAppDrawer {
             ListTile(
               leading: Icon(Icons.notifications_none),
               title: Text('Notices & News'),
-              onTap: !noInternet
+              onTap: noInternet
                   ? () {
                       Fluttertoast.showToast(
                         msg: "No Internet!",

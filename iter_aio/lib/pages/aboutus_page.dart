@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 
 class AboutUs extends StatefulWidget {
-  static const routeName = "aboutus-page";
+  static const routeName = "/aboutus-page";
   @override
   _AboutUsState createState() => _AboutUsState();
 }
