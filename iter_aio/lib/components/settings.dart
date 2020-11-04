@@ -79,17 +79,17 @@ class _SettingsState extends State<Settings> {
               SizedBox(
                 height: 8,
               ),
-              Theme.of(context).brightness == Brightness.light
-                  ? Text(
-                      'Dark theme gets into action when \nSystem wide Dark Mode is Active & vise versa',
-                      style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    )
-                  : Text(
-                      'Light theme gets into action when \nSystem wide Light Mode is Active & vise versa',
-                      style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
+              // Theme.of(context).brightness == Brightness.light
+              //     ? Text(
+              //         'Dark theme gets into action when \nSystem wide Dark Mode is Active & vise versa',
+              //         style: TextStyle(fontSize: 10),
+              //         textAlign: TextAlign.center,
+              //       )
+              //     : Text(
+              //         'Light theme gets into action when \nSystem wide Light Mode is Active & vise versa',
+              //         style: TextStyle(fontSize: 10),
+              //         textAlign: TextAlign.center,
+              //       ),
               SizedBox(
                 height: 8,
               ),

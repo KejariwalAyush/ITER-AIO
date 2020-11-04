@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
     return WillPopScope(
       onWillPop: OnPop(context: context).onWillPop,
       child: Scaffold(
-        drawer: CustomAppDrawer().widgetDrawer(context),
+        drawer: CustomAppDrawer(srestart: true).widgetDrawer(context),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -281,6 +281,10 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: (String str) {
                           setState(() {
                             password = str;
+                          });
+                        },
+                        onEditingComplete: () {
+                          setState(() {
                             animationName = 'openEyes';
                           });
                         },

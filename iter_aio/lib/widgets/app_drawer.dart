@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/Utilities/Theme.dart';
-import 'package:iteraio/components/about.dart';
 import 'package:iteraio/components/notices.dart';
 import 'package:iteraio/components/settings.dart';
+import 'package:iteraio/pages/aboutus_page.dart';
 import 'package:iteraio/pages/courses_page.dart';
 import 'package:iteraio/pages/login_page.dart';
 import 'package:iteraio/pages/planBunk.dart';
@@ -22,6 +23,8 @@ class CustomAppDrawer {
   final bool saboutUs;
   final bool slogout;
   final bool sbunk;
+  final bool srestart;
+
   CustomAppDrawer(
       {this.noInternet = false,
       this.sbunk = false,
@@ -31,6 +34,7 @@ class CustomAppDrawer {
       this.snotices = true,
       this.ssettings = true,
       this.saboutUs = true,
+      this.srestart = false,
       this.slogout = false});
 
   Widget widgetDrawer(context) {
@@ -175,6 +179,12 @@ class CustomAppDrawer {
                         )
                       ],
                     ).show()),
+          if (srestart) Divider(),
+          if (srestart)
+            ListTile(
+                leading: Icon(LineAwesomeIcons.refresh),
+                title: Text('Restart App'),
+                onTap: () => Phoenix.rebirth(context)),
         ],
       ),
     );

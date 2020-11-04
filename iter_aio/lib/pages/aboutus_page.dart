@@ -7,8 +7,8 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wiredash/wiredash.dart';
 
-// ignore: must_be_immutable
 class AboutUs extends StatefulWidget {
+  static const routeName = "aboutus-page";
   @override
   _AboutUsState createState() => _AboutUsState();
 }
@@ -140,6 +140,9 @@ class _AboutUsState extends State<AboutUs> {
                     text: 'Source Code : ',
                     style: TextStyle(
                       fontSize: 14,
+                      color: brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     children: <TextSpan>[
                       TextSpan(
@@ -163,6 +166,9 @@ class _AboutUsState extends State<AboutUs> {
                     text: 'Version ',
                     style: TextStyle(
                       fontSize: 14,
+                      color: brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                     children: <TextSpan>[
                       TextSpan(

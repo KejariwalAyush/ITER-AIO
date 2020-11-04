@@ -8,7 +8,6 @@ import 'package:iteraio/models/attendance_info.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
-import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/widgets/on_pop.dart';
 
 class AttendancePage extends StatefulWidget {
@@ -23,7 +22,8 @@ class _AttendancePageState extends State<AttendancePage> {
     return WillPopScope(
       onWillPop: OnPop(context: context).onWillPop,
       child: Scaffold(
-        drawer: CustomAppDrawer(sresult: true, sbunk: true, slogout: true)
+        drawer: CustomAppDrawer(
+                sresult: true, sbunk: true, slogout: true, srestart: true)
             .widgetDrawer(context),
         appBar: AppBar(
           title: Text('ITER AIO'),
