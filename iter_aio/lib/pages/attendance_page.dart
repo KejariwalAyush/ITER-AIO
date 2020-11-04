@@ -92,16 +92,8 @@ class _AttendancePageState extends State<AttendancePage> {
                   future: af.getAttendance(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData)
-                      return FutureBuilder(
-                        future: Future.delayed(Duration(seconds: 20))
-                            .timeout(Duration(seconds: 10)),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData)
-                            return Container(height: 200, child: loading());
-                          else
-                            return buildNoAttendenceScreen(context);
-                        },
-                      );
+                      // return Container(height: 200, child: loading());
+                      return buildNoAttendenceScreen(context);
                     else {
                       // if (!snapshot.data.attendAvailable)
                       //   return buildNoAttendenceScreen(context);
@@ -155,7 +147,7 @@ class _AttendancePageState extends State<AttendancePage> {
                 animation: "hello"),
           ),
           Text(
-            'Sorry,\nNo Attendence Available Right Now,\nCome Back Later',
+            'Oops,\nNo Attendence,\nCome Back Later',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),

@@ -186,7 +186,7 @@ class _PlanBunkState extends State<PlanBunk> {
                                       //     borderRadius: BorderRadius.circular(32.0)),
                                     ),
                                     onSubmitted: (value) {
-                                      print(value);
+                                      // print(value);
                                       setState(() {
                                         resText = Bunk().planBunkLogic(
                                             jsonDecode(jsonEncode(subdata)),
@@ -194,7 +194,7 @@ class _PlanBunkState extends State<PlanBunk> {
                                         // resText =
                                         //     Bunk().planBunkLogic(subdata, ebunk: int.parse(value));
                                       });
-                                      print(resText);
+                                      // print(resText);
                                     },
                                   ),
                                 ),
@@ -225,13 +225,13 @@ class _PlanBunkState extends State<PlanBunk> {
                                       //     borderRadius: BorderRadius.circular(32.0)),
                                     ),
                                     onSubmitted: (value) {
-                                      print(value);
+                                      // print(value);
                                       setState(() {
                                         resText = Bunk().planBunkLogic(
                                             jsonDecode(jsonEncode(subdata)),
                                             ebunk: int.parse(value));
                                       });
-                                      print(resText);
+                                      // print(resText);
                                     },
                                   ),
                                 ),
@@ -261,7 +261,7 @@ class _PlanBunkState extends State<PlanBunk> {
                                       //     borderRadius: BorderRadius.circular(32.0)),
                                     ),
                                     onSubmitted: (value) {
-                                      print(value);
+                                      // print(value);
                                       setState(() {
                                         // print(Bunk().planBunkLogic(subdata,
                                         //     epercent: double.parse(value)));
