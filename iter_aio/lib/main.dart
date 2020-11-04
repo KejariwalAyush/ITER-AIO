@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' show InternetAddress, Platform, SocketException;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -94,48 +94,57 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    return OverlaySupport(
-      child: Wiredash(
-        projectId: wiredash_project_id,
-        secret: wiredash_api_secret,
-        navigatorKey: _navigatorKey,
-        options: WiredashOptionsData(
-          showDebugFloatingEntryPoint: false,
-        ),
-        theme: WiredashThemeData(
-          brightness: brightness,
-          primaryColor: themeDark,
-          secondaryColor: themeDark,
-          backgroundColor: colorDark,
-          //primaryBackgroundColor: colorDark
-        ),
-        child: MaterialApp(
+    isMobile = Platform.isWindows || Platform.isWindows ? false : true;
+    if (Platform.isAndroid || Platform.isIOS)
+      return OverlaySupport(
+        child: Wiredash(
+          projectId: wiredash_project_id,
+          secret: wiredash_api_secret,
           navigatorKey: _navigatorKey,
-          title: 'ITER-AIO',
-          initialRoute: '/',
-          routes: {
-            '/': (context) => PushMessagingExample(),
-            '${LoginPage.routeName}': (context) => LoginPage(),
-            '${AttendancePage.routeName}': (context) => AttendancePage(),
-            '${CoursesPage.routeName}': (context) => CoursesPage(),
-            '${ResultPage.routeName}': (context) => ResultPage(),
-            '${Notices.routeName}': (context) => Notices(),
-            '${PlanBunk.routeName}': (context) => PlanBunk(),
-            '${AboutUs.routeName}': (context) => AboutUs(),
-            '${SettingsPage.routeName}': (context) => SettingsPage(),
-          },
-          // themeMode: ThemeMode.system,
-          theme: ThemeData(
-            primarySwatch: themeLight,
-            // visualDensity: VisualDensity.adaptivePlatformDensity,
-            brightness: brightness,
-            appBarTheme: AppBarTheme(color: themeDark),
+          options: WiredashOptionsData(
+            showDebugFloatingEntryPoint: false,
           ),
-          debugShowCheckedModeBanner: false,
-
-          // home: PushMessagingExample(),
+          theme: WiredashThemeData(
+            brightness: brightness,
+            primaryColor: themeDark,
+            secondaryColor: themeDark,
+            backgroundColor: colorDark,
+            //primaryBackgroundColor: colorDark
+          ),
+          child: buildMaterialApp(),
         ),
+      );
+    else if (Platform.isWindows || Platform.isFuchsia || Platform.isMacOS)
+      return buildMaterialApp();
+    else
+      return OverlaySupport(child: buildMaterialApp());
+  }
+
+  MaterialApp buildMaterialApp() {
+    return MaterialApp(
+      navigatorKey: _navigatorKey,
+      title: 'ITER-AIO',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => PushMessagingExample(),
+        '${LoginPage.routeName}': (context) => LoginPage(),
+        '${AttendancePage.routeName}': (context) => AttendancePage(),
+        '${CoursesPage.routeName}': (context) => CoursesPage(),
+        '${ResultPage.routeName}': (context) => ResultPage(),
+        '${Notices.routeName}': (context) => Notices(),
+        '${PlanBunk.routeName}': (context) => PlanBunk(),
+        '${AboutUs.routeName}': (context) => AboutUs(),
+        '${SettingsPage.routeName}': (context) => SettingsPage(),
+      },
+      // themeMode: ThemeMode.system,
+      theme: ThemeData(
+        primarySwatch: themeLight,
+        // visualDensity: VisualDensity.adaptivePlatformDensity,
+        brightness: brightness,
+        appBarTheme: AppBarTheme(color: themeDark),
       ),
+      debugShowCheckedModeBanner: false,
+      // home: PushMessagingExample(),
     );
   }
 }

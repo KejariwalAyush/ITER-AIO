@@ -131,28 +131,31 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
-        bottomSheet: InkWell(
-          onTap: () => Wiredash.of(context).show(),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  LineAwesomeIcons.bug,
+        bottomSheet: !isMobile
+            ? SizedBox()
+            : InkWell(
+                onTap: () => Wiredash.of(context).show(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        LineAwesomeIcons.bug,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Report a Bug',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Report a Bug',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
         floatingActionButton: !_isLoggingIn
             ? SizedBox()
             : FloatingActionButton(

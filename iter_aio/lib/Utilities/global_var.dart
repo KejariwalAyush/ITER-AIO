@@ -9,6 +9,7 @@ var appStarted = true;
 bool noInternet = false;
 bool serverTimeout = false;
 Brightness brightness = Brightness.dark;
+bool isMobile;
 
 /// for Update
 String appName = 'ITER-AIO';

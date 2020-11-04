@@ -67,15 +67,15 @@ class CustomAppDrawer {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (isUpdateAvailable)
+          if (isUpdateAvailable && isMobile)
             ListTile(
               tileColor: Colors.orangeAccent,
               leading: Icon(Icons.upgrade_rounded),
               title: Text('Update Available!'),
               onTap: () => UpdateFetch().showUpdateDialog(context),
             ),
-          if (slectures && !noInternet) Divider(),
-          if (slectures && !noInternet)
+          if (slectures && !noInternet && isMobile) Divider(),
+          if (slectures && !noInternet && isMobile)
             ListTile(
                 leading: Icon(Icons.video_library),
                 title: Text('Lectures'),
@@ -88,8 +88,8 @@ class CustomAppDrawer {
               title: Text('Result'),
               onTap: () => Navigator.pushNamed(context, ResultPage.routeName),
             ),
-          if (sstudyMaterial) Divider(),
-          if (sstudyMaterial)
+          if (sstudyMaterial && isMobile) Divider(),
+          if (sstudyMaterial && isMobile)
             ListTile(
               leading: Icon(LineAwesomeIcons.book),
               title: Text('Study Materials'),
