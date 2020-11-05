@@ -3,10 +3,12 @@
 ![Logo](https://github.com/KejariwalAyush/ITER-AIO/blob/master/iter_aio/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png?raw=true)
 All in one app for ITER students.
 
-### Version 1.2.0 now Available Download Below
+### Version 1.3.0 now Available Download Below
 
-Before Installing Apk Turn off Play Protect from Google Play Store
-## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.2.0/ITER-AIO-v1.2.0.apk)
+- Avoid opening the link with *Chrome* may face some downloading issue.
+- Before Installing Apk Turn off Play Protect from Google Play Store 
+
+## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.2.0/ITER-AIO-v1.3.0.apk)
 ## [Download Page](https://github.com/KejariwalAyush/ITER-AIO/releases/latest)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/KejariwalAyush/ITER-AIO?style=plastic)
@@ -17,7 +19,6 @@ Before Installing Apk Turn off Play Protect from Google Play Store
 
 - Attendence
 - Results
-- Video Lectures (Can Play video on 3rd Party Players e.g., MX Player, VLC, etc)
 - News & Notices about SOA & ITER
 - Bunk Planning
 - Academic Calender(Comming Soon!)
