@@ -89,6 +89,18 @@ class _AboutUsState extends State<AboutUs> {
                   SizedBox(
                     height: 10,
                   ),
+                  if (isMobile)
+                    RaisedButton.icon(
+                      icon: Icon(Icons.computer),
+                      elevation: 30,
+                      label: Text(
+                        'Now Available for Windows as well!',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.clip,
+                      ),
+                      onPressed: () => _launchURL(
+                          'https://github.com/KejariwalAyush/ITER-AIO/blob/master/README.md'),
+                    ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,

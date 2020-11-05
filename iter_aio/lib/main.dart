@@ -5,6 +5,7 @@ import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/Utilities/Theme.dart';
@@ -41,6 +42,8 @@ class _MyAppState extends State<MyApp> {
   // ignore: unused_field
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseInAppMessaging fiam = FirebaseInAppMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -64,15 +67,23 @@ class _MyAppState extends State<MyApp> {
           fontSize: 16.0,
         );
       }
+      isUpdateAvailable = await UpdateFetch().fetchupdate(context);
     });
     setState(() {
       _getCredentials();
-      UpdateFetch().fetchupdate(context);
     });
 
     isMobile =
         kIsWeb || Platform.isWindows || Platform.isWindows ? false : true;
     super.initState();
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('flutter_devs');
+    var initializationSettingsIOs = IOSInitializationSettings();
+    var initSetttings = InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOs);
+
+    flutterLocalNotificationsPlugin.initialize(initSetttings,
+        onSelectNotification: onSelectNotification);
   }
 
   Future _getThingsOnStartup() async {
@@ -189,4 +200,28 @@ class _MyAppState extends State<MyApp> {
       // home: PushMessagingExample(),
     );
   }
+
+  // ignore: missing_return
+  Future onSelectNotification(String payload) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return LoginPage();
+    }));
+  }
 }
+
+// class NewScreen extends StatelessWidget {
+//   final String payload;
+
+//   NewScreen({
+//     @required this.payload,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(payload),
+//       ),
+//     );
+//   }
+// }

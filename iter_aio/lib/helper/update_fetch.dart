@@ -52,7 +52,7 @@ class UpdateFetch {
     ).show();
   }
 
-  fetchupdate(BuildContext context) async {
+  Future<bool> fetchupdate(BuildContext context) async {
     // setState(() {
     //   isLoading = true;
     // });
@@ -115,11 +115,14 @@ class UpdateFetch {
                 child: Text('UPDATE'));
           }),
         );
+        showUpdateDialog(context);
         // Alert is in the getData fuction in homePage
       } else {
         // print('Up-to-Date');
         isUpdateAvailable = false;
       }
+      return isUpdateAvailable;
+
       // setState(() {
       //   isLoading = false;
       // });

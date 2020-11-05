@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
+import 'package:iteraio/helper/update_fetch.dart';
 import 'package:iteraio/pages/notices.dart';
 import 'package:iteraio/models/attendance_info.dart';
 import 'package:iteraio/models/profile_info_model.dart';
@@ -19,6 +20,12 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
+  @override
+  void initState() {
+    if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -319,11 +326,15 @@ class _AttendancePageState extends State<AttendancePage> {
             x.subjectCode, [x.classes.toString(), x.lastUpdatedOn.toString()]);
       }
     }
+    // var notify = Notify();
+    // notify.showNotification;
 
     if (!attUpdate) if (prefs.getStringList(x.subjectCode) != null) {
       var dt = DateTime.parse(prefs.getStringList(x.subjectCode)[1]);
-      if (dt != null) print(dt.toString());
-      diff = dt.difference(DateTime.now());
+      // if (dt != null) print(dt.toString());
+      // print('now:' + time.toString());
+      diff = DateTime.now().difference(dt);
+      // print(diff.inSeconds);
     }
 
     if (diff != null && !diff.isNegative) {
@@ -336,10 +347,10 @@ class _AttendancePageState extends State<AttendancePage> {
         } else
           td = diff.inMinutes.toString() + ' mins ago';
       } else
-        td = 'Just Now';
+        td = 'Few secs ago';
     } else
-      td =
-          '${time.hour > 12 ? time.hour - 12 : time.hour}:${time.minute} ${time.hour > 12 ? 'PM' : 'AM'} ${time.day}/${time.month}';
+      td = 'Just Now';
+    // '${time.hour > 12 ? time.hour - 12 : time.hour}:${time.minute} ${time.hour > 12 ? 'PM' : 'AM'} ${time.day}/${time.month}';
     // print(td);
     return td;
   }

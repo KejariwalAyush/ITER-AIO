@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iteraio/helper/attendance_fetch.dart';
 import 'package:iteraio/helper/lectures_fetch.dart';
 import 'package:iteraio/helper/login_fetch.dart';
@@ -40,3 +41,6 @@ int sem;
 String themeStr;
 bool isLoggedIn;
 DateTime initTime;
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
