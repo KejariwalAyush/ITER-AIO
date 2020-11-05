@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
         af = AttendanceFetch();
         rf = ResultFetch();
         pi = ProfileFetch();
-        lf = LecturesFetch(semNo: sem);
+        // lf = LecturesFetch(semNo: sem);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -405,7 +405,7 @@ class _LoginPageState extends State<LoginPage> {
     // await prefs.setBool('open', true);
     await prefs.setString('regd', regdNo);
     await prefs.setString('password', password);
-    await prefs.setInt('sem', pi.finalProfile.semester);
+    // await prefs.setInt('sem', pi.finalProfile.semester);
     await prefs.setString('theme', themeStr);
   }
 
@@ -422,7 +422,7 @@ class _LoginPageState extends State<LoginPage> {
               : Brightness.dark;
       if (prefs.getString('theme') != null) themeStr = prefs.getString('theme');
       if (prefs.getString('regd') != null) regdNo = prefs.getString('regd');
-      if (prefs.getInt('sem') != null) sem = prefs.getInt('sem');
+      // if (prefs.getInt('sem') != null) sem = prefs.getInt('sem');
       if (prefs.getString('password') != null)
         password = prefs.getString('password');
       // if (noInternet) {

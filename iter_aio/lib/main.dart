@@ -1,5 +1,7 @@
 import 'dart:io' show InternetAddress, Platform, SocketException;
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,9 +38,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseInAppMessaging fiam = FirebaseInAppMessaging();
 
   @override
   void initState() {
+    fiam.setAutomaticDataCollectionEnabled(true);
     _getThingsOnStartup().then((value) async {
       try {
         final result = await InternetAddress.lookup('google.com');
