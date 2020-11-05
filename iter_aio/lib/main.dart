@@ -38,6 +38,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
+  // ignore: unused_field
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseInAppMessaging fiam = FirebaseInAppMessaging();
 
@@ -75,6 +76,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future _getThingsOnStartup() async {
+    UpdateFetch().fetchupdate(context);
     // await Future.delayed(Duration(seconds: 0));
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {

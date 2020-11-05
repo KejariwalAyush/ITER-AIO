@@ -6,8 +6,13 @@ class LoginData {
   String status;
   String name;
 
-  LoginData(this.regdNo, this.password, this.cookie, this.message, this.status,
-      this.name);
+  LoginData(
+      {this.regdNo,
+      this.password,
+      this.cookie,
+      this.message,
+      this.status,
+      this.name});
 
   void addCredentials(String regd, String pass) {
     this.regdNo = regd;

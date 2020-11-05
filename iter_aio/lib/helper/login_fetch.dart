@@ -44,8 +44,13 @@ class LoginFetch {
       _cookie =
           _cookie.toString().substring(0, _cookie.toString().indexOf(';'));
       var _body = jsonDecode(resp.body);
-      _loginData = LoginData(regdNo, password, _cookie, _body["message"],
-          _body["status"], _body["name"]);
+      _loginData = LoginData(
+          regdNo: regdNo,
+          password: password,
+          cookie: _cookie,
+          message: _body["message"],
+          status: _body["status"],
+          name: _body["name"]);
     }
     return _loginData;
   }

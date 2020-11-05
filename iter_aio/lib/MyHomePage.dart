@@ -1,3 +1,44 @@
+// if (isUpdateAvailable) {
+//       Alert(
+//         context: _cxt,
+//         type: AlertType.none,
+//         style: AlertStyle(
+//           descStyle: TextStyle(
+//             color: brightness == Brightness.dark ? Colors.white : Colors.black,
+//           ),
+//           titleStyle: TextStyle(
+//             color: brightness == Brightness.dark ? Colors.white : Colors.black,
+//           ),
+//         ),
+//         title: "UPDATE Available!",
+//         desc: "Version: $latestversion\n$updateText.",
+//         buttons: [
+//           DialogButton(
+//             child: Text(
+//               "UPDATE",
+//               style: TextStyle(color: Colors.white, fontSize: 20),
+//             ),
+//             onPressed: () async {
+//               _launchURL(updatelink);
+//               // final appdir = await syspath.getApplicationDocumentsDirectory();
+//               // await downloadFile(updatelink, filename: 'iteraio.apk');
+//             },
+//             // onPressed: () => {},
+//             color: Color(0xFF333366),
+//           ),
+//           DialogButton(
+//             child: Text(
+//               "Cancel",
+//               style: TextStyle(color: Colors.white, fontSize: 20),
+//             ),
+//             onPressed: () => Navigator.pop(_cxt),
+//             color: Colors.blueGrey,
+//           )
+//         ],
+//       ).show();
+//     }
+//   }
+
 // import 'dart:convert';
 // import 'dart:io';
 
