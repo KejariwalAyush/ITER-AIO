@@ -2,7 +2,14 @@
 
 ![Logo](https://github.com/KejariwalAyush/ITER-AIO/blob/master/iter_aio/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png?raw=true)
 All in one app for ITER students.
+Do leave a star in you like this Project 🌟🌟🌟🌟🌟
+
 [Download From Here!](https://github.com/KejariwalAyush/ITER-AIO/releases)
+
+## Windows App is now Released!
+
+Clone this repo or download zip and you unzip [iter_aio.zip]() and run iter_aio.exe;
+Enjoy your App!
 
 ![GitHub top language](https://img.shields.io/github/languages/top/KejariwalAyush/ITER-AIO?style=plastic)
 ![Android](https://img.shields.io/badge/Android-FLUTTER-blue) ![enter image description here](https://img.shields.io/badge/IOS-FLUTTER-brightgreen)
@@ -12,11 +19,10 @@ All in one app for ITER students.
 
 - Attendence
 - Results
-- Video Lectures (Can Play video on 3rd Party Players e.g., MX Player, VLC, etc)
 - News & Notices about SOA & ITER
 - Bunk Planning
 - Academic Calender (Coming Soon)
-- Study Materials 
+- Study Materials
 - Switch Themes & Dark Mode
 - Report a bug from within the App
 
