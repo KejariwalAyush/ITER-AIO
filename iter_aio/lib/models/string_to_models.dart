@@ -13,7 +13,8 @@ class StringToModel {
 
   AttendanceInfo attendanceInfo(var data) {
     AttendanceInfo _ai;
-    var x = jsonDecode(data.toString());
+    var x = jsonDecode(json.encode(data.toString()));
+    print(x);
     _ai = new AttendanceInfo(
         attendAvailable: x['attendAvailable'] == "true",
         avgAbsPer: int.parse(x['avgAbsPer']),
@@ -24,10 +25,11 @@ class StringToModel {
 
   SubjectAttendance subjectAttendance(var data) {
     SubjectAttendance _sa;
-    var x = jsonDecode(data.toString());
+    var x = jsonDecode(json.encode(data.toString()));
     _sa = new SubjectAttendance(
       absent: int.parse(x['absent']),
       bunkText: x['bunkText'],
+      classes: x['classes'],
       latt: x['latt'],
       lattper: double.parse(x['lattper']),
       patt: x['patt'],
@@ -47,7 +49,7 @@ class StringToModel {
 
   CGPASemResult cgpaSemResult(var data) {
     CGPASemResult _csr;
-    var x = jsonDecode(data.toString());
+    var x = jsonDecode(json.encode(data.toString()));
     _csr = new CGPASemResult(
       sem: int.parse(x['sem']),
       creditEarned: int.parse(x['creditEarned']),
@@ -62,7 +64,7 @@ class StringToModel {
 
   DetailedResult detailedResult(var data) {
     DetailedResult _dr;
-    var x = jsonDecode(data);
+    var x = jsonDecode(json.encode(data.toString()));
     _dr = new DetailedResult(
         sem: int.parse(x['sem']),
         earnedCredit: int.parse(x['earnedCredit']),
@@ -75,7 +77,7 @@ class StringToModel {
 
   ProfileInfo profileInfo(var data) {
     ProfileInfo _pi;
-    var x = jsonDecode(data);
+    var x = jsonDecode(json.encode(data.toString()));
     _pi = new ProfileInfo(
         name: x['name'],
         semester: int.parse(x['semester']),
@@ -102,7 +104,7 @@ class StringToModel {
 
   LoginData loginData(var data) {
     LoginData _ld;
-    var x = jsonDecode(data);
+    var x = jsonDecode(json.encode(data.toString()));
     _ld = new LoginData(
       name: x['name'],
       message: x['message'],

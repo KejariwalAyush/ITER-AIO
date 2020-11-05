@@ -10,6 +10,7 @@ import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/on_pop.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendancePage extends StatefulWidget {
   static const routeName = "/attendance-page";
@@ -103,7 +104,8 @@ class _AttendancePageState extends State<AttendancePage> {
                         future: af.getAttendance(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData)
-                            // return Container(height: 200, child: loading());
+                            // return af.requestSucess()
+                            //     ? Container(height: 200, child: loading())
                             return buildNoAttendenceScreen(context);
                           else {
                             if (snapshot.data.attendAvailable == false)
@@ -232,10 +234,17 @@ class _AttendancePageState extends State<AttendancePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Last Updated On: ${_getLastUpdatedOn(sat.lastUpdatedOn)}',
-                        textAlign: TextAlign.start,
-                      ),
+                      FutureBuilder<String>(
+                          future: _getLastUpdatedOn(sat.lastUpdatedOn, sat),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData)
+                              return SizedBox();
+                            else
+                              return Text(
+                                'Last Updated On: ${snapshot.data}',
+                                textAlign: TextAlign.start,
+                              );
+                          }),
                       if (sat.lattper != 0 && sat.latt != 'Not Applicable')
                         Text(
                           'Lecture: ${sat.latt} (${sat.lattper}%)',
@@ -293,25 +302,46 @@ class _AttendancePageState extends State<AttendancePage> {
     );
   }
 
-  String _getLastUpdatedOn(DateTime time) {
-    // String x;
-    // print(initTime);
-    // if (initTime != null) {
-    //   var td = time.difference(initTime);
-    //   if (td.inSeconds > 60) {
-    //     if (td.inMinutes > 60) {
-    //         if (td.inHours > 24)
-    //           x = td.inDays.toString() + ' days ago';
-    //         else
-    //           x = td.inHours.toString() + ' hours ago';
-    //     } else
-    //       x = td.inMinutes.toString() + ' mins ago';
-    //   } else
-    //     x = td.inSeconds.toString() + ' secs ago';
-    //   return x;
-    // } else
+  Future<String> _getLastUpdatedOn(DateTime time, SubjectAttendance x) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String td;
+    Duration diff;
+    bool attUpdate = false;
+    if (prefs.getStringList(x.subjectCode) != null) {
+      var osa = prefs.getStringList(x.subjectCode);
 
-    return '${time.hour > 12 ? time.hour - 12 : time.hour}:${time.minute} ${time.hour > 12 ? 'PM' : 'AM'} ${time.day}/${time.month}';
+      if (int.parse(osa[0]) > x.classes) {
+        setState(() {
+          attUpdate = true;
+        });
+        print('attendance Updated');
+        await prefs.setStringList(
+            x.subjectCode, [x.classes.toString(), x.lastUpdatedOn.toString()]);
+      }
+    }
+
+    if (!attUpdate) if (prefs.getStringList(x.subjectCode) != null) {
+      var dt = DateTime.parse(prefs.getStringList(x.subjectCode)[1]);
+      if (dt != null) print(dt.toString());
+      diff = dt.difference(DateTime.now());
+    }
+
+    if (diff != null && !diff.isNegative) {
+      if (diff.inSeconds > 60) {
+        if (diff.inMinutes > 60) {
+          if (diff.inHours > 24)
+            td = diff.inDays.toString() + ' days ago';
+          else
+            td = diff.inHours.toString() + ' hours ago';
+        } else
+          td = diff.inMinutes.toString() + ' mins ago';
+      } else
+        td = 'Just Now';
+    } else
+      td =
+          '${time.hour > 12 ? time.hour - 12 : time.hour}:${time.minute} ${time.hour > 12 ? 'PM' : 'AM'} ${time.day}/${time.month}';
+    // print(td);
+    return td;
   }
 
   Row buildHeader(BuildContext context) {

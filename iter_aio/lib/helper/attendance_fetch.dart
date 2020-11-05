@@ -4,6 +4,7 @@ import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/helper/bunk.dart';
 import 'package:iteraio/helper/session.dart';
 import 'package:iteraio/models/attendance_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendanceFetch {
   AttendanceInfo finalAttendance;
@@ -59,6 +60,7 @@ class AttendanceFetch {
           sem: item['stynumber'],
           present: _getPresent(item),
           absent: _getAbsent(item),
+          classes: _getAbsent(item) + _getPresent(item),
           lattper: item['Latt'] == 'Not Applicable'
               ? 0.0
               : _getPercentage(item['Latt']),
@@ -76,8 +78,18 @@ class AttendanceFetch {
           totAtt: item['TotalAttandence'],
           bunkText: _bunkText,
           lastUpdatedOn: _getDateTime(item['lastupdatedon'])));
+      _setPref(
+          item['subjectcode'],
+          _getDateTime(item['lastupdatedon']).toString(),
+          (_getAbsent(item) + _getPresent(item)).toString());
     }
     return sa.toList();
+  }
+
+  Future<void> _setPref(String subjectcode, String time, String classes) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getStringList(subjectcode) == null)
+      await prefs.setStringList('$subjectcode', [classes, time]);
   }
 
   DateTime _getDateTime(String x) {

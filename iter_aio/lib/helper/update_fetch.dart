@@ -137,3 +137,11 @@ class UpdateFetch {
     return;
   }
 }
+// //   if (diff == 0)
+// //     return 'Just Now';
+// //   else if (diff > 0 && diff < 61)
+// //     return '$diff min ago';
+// //   else if (diff < 1440 && diff > 60)
+// //     return '${dt.difference(DateTime.now()).inHours} hours ago';
+// //   else
+// //     return '${dt.difference(DateTime.now()).inDays} days ago';

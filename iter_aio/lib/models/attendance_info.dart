@@ -12,6 +12,7 @@ class SubjectAttendance {
   final String subject;
   final int present;
   final int absent;
+  final int classes;
   final String subjectCode;
   final DateTime lastUpdatedOn;
 
@@ -19,6 +20,7 @@ class SubjectAttendance {
       {this.sem,
       this.rawData,
       this.bunkText,
+      this.classes,
       this.present,
       this.absent,
       this.totAtt,
@@ -37,6 +39,7 @@ class SubjectAttendance {
       "rawData": "$rawData",
       "sem": "$sem",
       "bunkText": "${bunkText.toString()}", 
+      "classes": "$classes",
       "present": "$present", 
       "absent": "$absent", 
       "totAtt": "$totAtt", 
