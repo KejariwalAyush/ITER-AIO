@@ -230,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                 /// Regd No. Input
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.continueAction,
+                  textInputAction: TextInputAction.none,
                   autofocus: false,
                   initialValue: regdNo,
                   cursorColor: themeDark,

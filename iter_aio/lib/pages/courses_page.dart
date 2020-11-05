@@ -5,6 +5,7 @@ import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/components/videoPlayer.dart';
 import 'package:iteraio/models/lectures_model.dart';
 import 'package:iteraio/pages/lectures_page.dart';
+import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,6 +43,12 @@ class _CoursesPageState extends State<CoursesPage> {
         title: Text('ITER AIO - Lectures'),
         centerTitle: true,
         elevation: 15,
+        leading: MediaQuery.of(context).size.width > 700
+            ? SizedBox()
+            : IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
@@ -49,41 +56,52 @@ class _CoursesPageState extends State<CoursesPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: buildFloatingButton(),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            if (!showLectures)
-              Center(
-                child: Text(
-                  'Semester: $sem',
-                  style: TextStyle(fontSize: 15),
-                ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (MediaQuery.of(context).size.width > 700)
+            LargeAppDrawer().largeDrawer(context),
+          Expanded(
+            flex: 2,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (!showLectures)
+                    Center(
+                      child: Text(
+                        'Semester: $sem',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  FutureBuilder(
+                      future: lf.getCourse(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return Center(
+                            child: Container(height: 200, child: loading()),
+                          );
+                        else
+                          return Column(
+                            children: [
+                              for (var data in snapshot.data)
+                                _buildCourseTile(context, data),
+                            ],
+                          );
+                      }),
+                ],
               ),
-            SizedBox(
-              height: 10,
             ),
-            FutureBuilder(
-                future: lf.getCourse(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return Center(
-                      child: Container(height: 200, child: loading()),
-                    );
-                  else
-                    return Column(
-                      children: [
-                        for (var data in snapshot.data)
-                          _buildCourseTile(context, data),
-                      ],
-                    );
-                }),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

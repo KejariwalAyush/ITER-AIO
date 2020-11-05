@@ -15,6 +15,7 @@ import 'package:iteraio/pages/settings.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomAppDrawer {
   final bool noInternet;
@@ -31,7 +32,7 @@ class CustomAppDrawer {
   CustomAppDrawer(
       {this.noInternet = false,
       this.sbunk = false,
-      this.slectures = true,
+      this.slectures = false,
       this.sresult = false,
       this.sstudyMaterial = true,
       this.snotices = true,
@@ -82,8 +83,8 @@ class CustomAppDrawer {
               title: Text('Update Available!'),
               onTap: () => UpdateFetch().showUpdateDialog(context),
             ),
-          if (slectures && !noInternet && isMobile) Divider(),
-          if (slectures && !noInternet && isMobile)
+          if (slectures && !noInternet) Divider(),
+          if (slectures && !noInternet)
             ListTile(
                 leading: Icon(Icons.video_library),
                 title: Text('Lectures'),
@@ -96,8 +97,8 @@ class CustomAppDrawer {
               title: Text('Result'),
               onTap: () => Navigator.pushNamed(context, ResultPage.routeName),
             ),
-          if (sstudyMaterial && isMobile) Divider(),
-          if (sstudyMaterial && isMobile)
+          if (sstudyMaterial) Divider(),
+          if (sstudyMaterial)
             ListTile(
               leading: Icon(LineAwesomeIcons.book),
               title: Text('Study Materials'),
@@ -113,11 +114,15 @@ class CustomAppDrawer {
                         fontSize: 16.0,
                       );
                     }
-                  : () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => WebPageView('ITER Book Shelf',
-                              'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'))),
+                  : !isMobile
+                      ? () => _launchURL(
+                          'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing')
+                      : () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WebPageView(
+                                  'ITER Book Shelf',
+                                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'))),
             ),
           if (snotices) Divider(),
           if (snotices)
@@ -217,8 +222,8 @@ class CustomAppDrawer {
               onTap: () => Navigator.pushReplacementNamed(
                   context, AttendancePage.routeName),
             ),
-          if (slectures && !noInternet && isMobile) Divider(),
-          if (slectures && !noInternet && isMobile)
+          if (slectures && !noInternet) Divider(),
+          if (slectures && !noInternet)
             ListTile(
                 leading: Icon(Icons.video_library),
                 title: Text('Lectures'),
@@ -251,6 +256,14 @@ class CustomAppDrawer {
                     }
                   : () => Navigator.pushReplacementNamed(
                       context, Notices.routeName),
+            ),
+          if (sstudyMaterial) Divider(),
+          if (sstudyMaterial)
+            ListTile(
+              leading: Icon(LineAwesomeIcons.book),
+              title: Text('Study Materials'),
+              onTap: () => _launchURL(
+                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'),
             ),
           if (sbunk) Divider(),
           if (sbunk)
@@ -321,5 +334,14 @@ class CustomAppDrawer {
         ],
       ),
     );
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+    return;
   }
 }

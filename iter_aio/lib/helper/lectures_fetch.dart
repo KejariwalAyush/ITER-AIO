@@ -49,9 +49,12 @@ class LecturesFetch {
     else if (semNo == 6 || semNo == 5)
       response = await http.get(
           "https://www.soa.ac.in/btech-6th-semester-online-video-lectures");
-    else
+    else if (semNo == 7 || semNo == 8)
       response = await http.get(
           "https://www.soa.ac.in/btech-8th-semester-online-video-lectures");
+    else
+      response = await http.get(
+          "https://www.soa.ac.in/btech-4th-semester-online-video-lectures");
 
     if (response.statusCode == 200) {
       var document = parse(response.body);
