@@ -8,6 +8,7 @@ import 'package:iteraio/models/result_model.dart';
 import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 
 class ResultPage extends StatefulWidget {
   static const routeName = "/result-page";
@@ -17,6 +18,8 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   List<CGPASemResult> finalRes = [];
+  GlobalKey previewContainer = new GlobalKey();
+  int originalSize = 1500;
 
   @override
   Widget build(BuildContext context) {
@@ -31,78 +34,91 @@ class _ResultPageState extends State<ResultPage> {
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
               ),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: new Icon(Icons.share),
-        //     onPressed: () {
-        //     },
-        //   ),
-        // ],
+        actions: <Widget>[
+          if (isMobile)
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: IconButton(
+                icon: new Icon(Icons.share),
+                onPressed: () => ShareFilesAndScreenshotWidgets().shareScreenshot(
+                    previewContainer,
+                    originalSize,
+                    "MyResult",
+                    "MyResult.png",
+                    "image/png",
+                    text: "Download ITER-AIO from here http://tiny.cc/iteraio"),
+              ),
+            ),
+        ],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (MediaQuery.of(context).size.width > 700)
-            LargeAppDrawer().largeDrawer(context),
-          Expanded(
-            flex: 2,
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.all(5),
-                      child: buildHeader(context),
-                    ),
-                    // if (rf.finalResult != null)
+      body: RepaintBoundary(
+        key: previewContainer,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (MediaQuery.of(context).size.width > 700)
+              LargeAppDrawer().largeDrawer(context),
+            Expanded(
+              flex: 2,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(15),
+                        margin: EdgeInsets.all(5),
+                        child: buildHeader(context),
+                      ),
+                      // if (rf.finalResult != null)
 
-                    FutureBuilder(
-                        future: _getcgpa(),
+                      FutureBuilder(
+                          future: _getcgpa(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData)
+                              return SizedBox();
+                            else
+                              return Text(
+                                'CGPA : ' + snapshot.data.toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  // color: Colors.black87
+                                ),
+                              );
+                          }),
+                      FutureBuilder<List<CGPASemResult>>(
+                        future: rf.getResult(),
                         builder: (context, snapshot) {
+                          // (context as Element).markNeedsBuild();
                           if (!snapshot.hasData)
-                            return SizedBox();
-                          else
-                            return Text(
-                              'CGPA : ' + snapshot.data.toString(),
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                // color: Colors.black87
-                              ),
+                            return Container(height: 200, child: loading());
+                          else {
+                            if (snapshot.data == [])
+                              return Center(
+                                  child:
+                                      Text('Sorry No result available yet!'));
+                            return Column(
+                              children: [
+                                for (var data in snapshot.data)
+                                  _resultListTile(data),
+                              ],
                             );
-                        }),
-                    FutureBuilder<List<CGPASemResult>>(
-                      future: rf.getResult(),
-                      builder: (context, snapshot) {
-                        // (context as Element).markNeedsBuild();
-                        if (!snapshot.hasData)
-                          return Container(height: 200, child: loading());
-                        else {
-                          if (snapshot.data == [])
-                            return Center(
-                                child: Text('Sorry No result available yet!'));
-                          return Column(
-                            children: [
-                              for (var data in snapshot.data)
-                                _resultListTile(data),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -14,6 +14,7 @@ import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/widgets/on_pop.dart';
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendancePage extends StatefulWidget {
@@ -23,12 +24,21 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
+  GlobalKey previewContainer = new GlobalKey();
+  int originalSize = 800;
+  var _profile, _attendance;
   Widget load = Container(height: 200, child: loading());
   @override
   void initState() {
     Timer(Duration(seconds: 15), () {
       setState(() {
         load = buildNoAttendenceScreen(context);
+      });
+    });
+    Timer(Duration(milliseconds: 500), () {
+      setState(() {
+        _profile = pi.getProfile();
+        _attendance = af.getAttendance();
       });
     });
     if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
@@ -56,6 +66,19 @@ class _AttendancePageState extends State<AttendancePage> {
                   ),
                 ),
           actions: <Widget>[
+            if (isMobile)
+              IconButton(
+                icon: new Icon(
+                  Icons.share,
+                ),
+                onPressed: () => ShareFilesAndScreenshotWidgets().shareScreenshot(
+                    previewContainer,
+                    originalSize,
+                    "MyAttendance",
+                    "Attendance.png",
+                    "image/png",
+                    text: "Download ITER-AIO from here http://tiny.cc/iteraio"),
+              ),
             Stack(
               children: [
                 IconButton(
@@ -98,70 +121,73 @@ class _AttendancePageState extends State<AttendancePage> {
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25))),
         ),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (MediaQuery.of(context).size.width > 700)
-              LargeAppDrawer().largeDrawer(context),
-            Expanded(
-              flex: 2,
-              child: SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(15),
-                        margin: EdgeInsets.all(5),
-                        child: buildHeader(context),
-                      ),
-                      FutureBuilder<AttendanceInfo>(
-                        future: af.getAttendance(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData)
-                            return load;
-                          else {
-                            if (snapshot.data.attendAvailable == false)
-                              return buildNoAttendenceScreen(context);
-                            else
-                              return Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        'Avg Attendence: ${snapshot.data.avgAttPer} %',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
+        body: RepaintBoundary(
+          key: previewContainer,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (MediaQuery.of(context).size.width > 700)
+                LargeAppDrawer().largeDrawer(context),
+              Expanded(
+                flex: 2,
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(15),
+                          margin: EdgeInsets.all(5),
+                          child: buildHeader(context),
+                        ),
+                        FutureBuilder<AttendanceInfo>(
+                          future: _attendance,
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData)
+                              return load;
+                            else {
+                              if (snapshot.data.attendAvailable == false)
+                                return buildNoAttendenceScreen(context);
+                              else
+                                return Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Avg Attendence: ${snapshot.data.avgAttPer} %',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        'Avg Absent: ${snapshot.data.avgAbsPer}',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
+                                        Text(
+                                          'Avg Absent: ${snapshot.data.avgAbsPer}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  for (var data in snapshot.data.data)
-                                    _attandenceExpansionTile(data),
-                                ],
-                              );
-                          }
-                        },
-                      ),
-                    ],
+                                      ],
+                                    ),
+                                    for (var data in snapshot.data.data)
+                                      _attandenceExpansionTile(data),
+                                  ],
+                                );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -320,6 +346,7 @@ class _AttendancePageState extends State<AttendancePage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String td;
     Duration diff;
+
     bool attUpdate = false;
     if (prefs.getStringList(x.subjectCode) != null) {
       var osa = prefs.getStringList(x.subjectCode);
@@ -387,7 +414,7 @@ class _AttendancePageState extends State<AttendancePage> {
                   builder: (context) => ResultPage(),
                 )),
             child: FutureBuilder<ProfileInfo>(
-              future: pi.getProfile(),
+              future: _profile,
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
                   return Text('Wating for info!');
