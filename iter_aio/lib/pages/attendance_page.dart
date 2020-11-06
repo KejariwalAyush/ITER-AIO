@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
@@ -10,6 +12,7 @@ import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
+import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/widgets/on_pop.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,8 +23,14 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
+  Widget load = Container(height: 200, child: loading());
   @override
   void initState() {
+    Timer(Duration(seconds: 15), () {
+      setState(() {
+        load = buildNoAttendenceScreen(context);
+      });
+    });
     if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
     super.initState();
   }
@@ -111,9 +120,7 @@ class _AttendancePageState extends State<AttendancePage> {
                         future: af.getAttendance(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData)
-                            // return af.requestSucess()
-                            //     ? Container(height: 200, child: loading())
-                            return buildNoAttendenceScreen(context);
+                            return load;
                           else {
                             if (snapshot.data.attendAvailable == false)
                               return buildNoAttendenceScreen(context);
@@ -340,9 +347,11 @@ class _AttendancePageState extends State<AttendancePage> {
     if (diff != null && !diff.isNegative) {
       if (diff.inSeconds > 60) {
         if (diff.inMinutes > 60) {
-          if (diff.inHours > 24)
-            td = diff.inDays.toString() + ' days ago';
-          else
+          if (diff.inHours > 24) {
+            td = diff.inHours > 48
+                ? diff.inDays.toString() + ' days ago'
+                : 'Yesterday';
+          } else
             td = diff.inHours.toString() + ' hours ago';
         } else
           td = diff.inMinutes.toString() + ' mins ago';

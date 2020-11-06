@@ -11,8 +11,13 @@ import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/push_msg.dart';
 import 'package:iteraio/components/splash_screen.dart';
+import 'package:iteraio/helper/attendance_fetch.dart';
+import 'package:iteraio/helper/login_fetch.dart';
+import 'package:iteraio/helper/profile_fetch.dart';
+import 'package:iteraio/helper/result_fetch.dart';
 import 'package:iteraio/helper/update_fetch.dart';
 import 'package:iteraio/important.dart';
+import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/pages/aboutus_page.dart';
 import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/courses_page.dart';
@@ -102,12 +107,14 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       getTheme(themeStr);
     });
+    isLoggedIn = prefs.getBool('isLoggedIn');
     sem = prefs.getInt('sem');
     regdNo = prefs.getString('regd');
     password = prefs.getString('password');
     brightness = prefs.getBool('isbright') != null && prefs.getBool('isbright')
         ? Brightness.light
         : Brightness.dark;
+    _login(regdNo, password);
   }
 
   @override
@@ -205,21 +212,23 @@ class _MyAppState extends State<MyApp> {
       return LoginPage();
     }));
   }
+
+  _login(String _regdNo, String _password) async {
+    // setState(() {
+    //   isLoading = true;
+    // });
+    loginFetch = LoginFetch(regdNo: _regdNo, password: _password);
+    LoginData ld = await loginFetch.getLogin();
+    if (ld.status == "success")
+      setState(() {
+        // _setCredentials();
+        // _setCredentials();
+        // _isLoggingIn = true;
+        isLoggedIn = true;
+        cookie = ld.cookie;
+        af = AttendanceFetch();
+        rf = ResultFetch();
+        pi = ProfileFetch();
+      });
+  }
 }
-
-// class NewScreen extends StatelessWidget {
-//   final String payload;
-
-//   NewScreen({
-//     @required this.payload,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(payload),
-//       ),
-//     );
-//   }
-// }

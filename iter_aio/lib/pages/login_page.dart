@@ -231,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                 /// Regd No. Input
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.none,
+                  // textInputAction: TextInputAction.none,
                   autofocus: false,
                   initialValue: regdNo,
                   cursorColor: themeDark,
@@ -283,7 +283,7 @@ class _LoginPageState extends State<LoginPage> {
                       flex: 7,
                       child: TextFormField(
                         keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.go,
+                        textInputAction: TextInputAction.done,
                         autofocus: false,
                         initialValue: password,
                         cursorColor: themeDark,
@@ -406,6 +406,7 @@ class _LoginPageState extends State<LoginPage> {
     // await prefs.setBool('open', true);
     await prefs.setString('regd', regdNo);
     await prefs.setString('password', password);
+    await prefs.setBool('isLoggedIn', isLoggedIn);
     // await prefs.setInt('sem', pi.finalProfile.semester);
     await prefs.setString('theme', themeStr);
   }
@@ -445,6 +446,7 @@ class _LoginPageState extends State<LoginPage> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('regd');
     prefs.remove('password');
+    prefs.remove('isLoggedIn');
     prefs.remove('sem');
   }
 }

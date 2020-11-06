@@ -9,6 +9,8 @@ import 'package:iteraio/helper/result_fetch.dart';
 var appStarted = true;
 bool noInternet = false;
 bool serverTimeout = false;
+bool isLoggedIn = false;
+
 Brightness brightness = Brightness.dark;
 bool isMobile;
 
@@ -39,7 +41,6 @@ String branch;
 String gender;
 int sem;
 String themeStr;
-bool isLoggedIn;
 DateTime initTime;
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/login_page.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -12,7 +14,11 @@ class Splash extends StatelessWidget {
     return SplashScreen(
       seconds: 1,
       //isLoading?sec:1,
-      navigateAfterSeconds: new LoginPage(),
+      navigateAfterSeconds: isLoggedIn != null
+          ? isLoggedIn
+              ? new AttendancePage()
+              : new LoginPage()
+          : new LoginPage(),
       title: new Text(
         'ITER AIO\n\nAn all-in-one app for ITER',
         textAlign: TextAlign.center,
