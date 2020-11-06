@@ -47,13 +47,13 @@ class ProfileInfo {
   String toString() {
     var s = '''{
       "Name": "$name",
-      "semester": "$semester",
+      "semester": $semester,
       "regdno": "$regdno",
       "image": "${image == null ? null : image.path}",
       "imageUrl": "$imageUrl",
       "sectioncode": "$sectioncode",
       "category": "$category",
-      "pincode": "$pincode",
+      "pincode": $pincode,
       "gender": "$gender",
       "programdesc": "$programdesc",
       "branchdesc": "$branchdesc",

@@ -31,7 +31,8 @@ class Lecture {
       "downloadLink": "$downloadLink",
       "size": "$size",
       "previewImgUrl": "$previewImgUrl",
-      "imageUrl": "$imageUrl"
+      "imageUrl": "$imageUrl",
+      "date": $date
     }''';
   }
 }

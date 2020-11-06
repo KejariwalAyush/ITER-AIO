@@ -1,5 +1,5 @@
 class SubjectAttendance {
-  final rawData;
+  final String rawData;
   final String bunkText;
   final int sem;
   final double totAtt;
@@ -37,21 +37,21 @@ class SubjectAttendance {
   String toString() {
     return '''{
       "rawData": "$rawData",
-      "sem": "$sem",
-      "bunkText": "${bunkText.toString()}", 
-      "classes": "$classes",
-      "present": "$present", 
-      "absent": "$absent", 
-      "totAtt": "$totAtt", 
+      "sem": $sem,
+      "bunkText": "${bunkText.toString().replaceAll('\n', ', ')}", 
+      "classes": $classes,
+      "present": $present, 
+      "absent": $absent, 
+      "totAtt": $totAtt, 
       "latt": "$latt", 
       "patt": "$patt", 
       "tatt": "$tatt", 
-      "lattper": "$lattper", 
-      "pattper": "$pattper", 
-      "tattper": "$tattper", 
+      "lattper": $lattper, 
+      "pattper": $pattper, 
+      "tattper": $tattper, 
       "subject": "$subject", 
       "subjectCode": "$subjectCode", 
-      "lastUpdatedOn": "$lastUpdatedOn"
+      "lastUpdatedOn": "${lastUpdatedOn.toString()}"
     }''';
   }
 }
@@ -68,9 +68,9 @@ class AttendanceInfo {
   String toString() {
     return '''{
       "data": [${_getSubjectAtt()}],
-      "avgAttPer": "$avgAttPer",
-      "avgAbsPer": "$avgAbsPer",
-      "attendAvailable": "$attendAvailable"}''';
+      "avgAttPer": $avgAttPer,
+      "avgAbsPer": $avgAbsPer,
+      "attendAvailable": $attendAvailable}''';
   }
 
   String _getSubjectAtt() {

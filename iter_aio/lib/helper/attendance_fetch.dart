@@ -56,18 +56,18 @@ class AttendanceFetch {
     for (var item in body['griddata']) {
       String _bunkText = Bunk().bunklogic(item);
       sa.add(SubjectAttendance(
-          rawData: item,
+          rawData: item.toString(),
           sem: item['stynumber'],
           present: _getPresent(item),
           absent: _getAbsent(item),
           classes: _getAbsent(item) + _getPresent(item),
-          lattper: item['Latt'] == 'Not Applicable'
+          lattper: item['Latt'] == 'Not Applicable' || item['Latt'] == '0 / 0'
               ? 0.0
               : _getPercentage(item['Latt']),
-          pattper: item['Patt'] == 'Not Applicable'
+          pattper: item['Patt'] == 'Not Applicable' || item['Patt'] == '0 / 0'
               ? 0.0
               : _getPercentage(item['Patt']),
-          tattper: item['Tatt'] == 'Not Applicable'
+          tattper: item['Tatt'] == 'Not Applicable' || item['Tatt'] == '0 / 0'
               ? 0.0
               : _getPercentage(item['Tatt']),
           latt: item['Latt'] == 'Not Applicable' ? '0/0' : item['Latt'],
@@ -106,9 +106,11 @@ class AttendanceFetch {
   }
 
   double _getPercentage(String x) {
-    return (int.parse(x.split('/')[0].trim()) /
+    var d = (int.parse(x.split('/')[0].trim()) /
         int.parse(x.split('/')[1].trim()) *
         100);
+    // print(d);
+    return d == double.nan ? 0.0 : d;
   }
 
   int _getPresent(var i) {
