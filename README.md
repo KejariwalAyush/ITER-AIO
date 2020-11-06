@@ -8,8 +8,10 @@ Do leave a star in you like this Project 🌟🌟🌟🌟🌟
 
 ## Windows App is now Released!
 
-Clone this repo or download zip and you unzip [iter_aio.zip]() and run iter_aio.exe;
-Enjoy your App!
+- Clone this repo or download zip
+- You unzip [iter_aio.zip](https://github.com/KejariwalAyush/ITER-AIO/blob/master/iter_aio.zip) and run iter_aio.exe 
+- Note: do not remove other files app may misbehave 
+- Enjoy your App!
 
 ![GitHub top language](https://img.shields.io/github/languages/top/KejariwalAyush/ITER-AIO?style=plastic)
 ![Android](https://img.shields.io/badge/Android-FLUTTER-blue) ![enter image description here](https://img.shields.io/badge/IOS-FLUTTER-brightgreen)
