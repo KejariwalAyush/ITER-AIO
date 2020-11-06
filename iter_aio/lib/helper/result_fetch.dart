@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/models/result_model.dart';
 import 'package:iteraio/helper/session.dart';
@@ -46,15 +44,15 @@ class ResultFetch {
       }
 
       print('Result Fetching Complete with helper');
-      Fluttertoast.showToast(
-        msg: "Results Fetched!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.greenAccent,
-        textColor: Colors.black,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Results Fetched!",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   timeInSecForIosWeb: 2,
+      //   backgroundColor: Colors.greenAccent,
+      //   textColor: Colors.black,
+      //   fontSize: 16.0,
+      // );
     }
 
     return resultData.reversed.toList();

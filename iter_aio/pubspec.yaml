@@ -34,7 +34,7 @@ dependencies:
   overlay_support: ^1.0.5
   package_info: ^0.4.3
   rflutter_alert: ^1.1.0
-  shared_preferences: ^0.5.7+3
+  shared_preferences: ^0.5.12+4
   # Path
   path_provider: ^1.6.22
   path: ^1.7.0

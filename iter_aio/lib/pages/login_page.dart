@@ -77,15 +77,16 @@ class _LoginPageState extends State<LoginPage> {
       isLoggedIn = false;
       password = null;
       _resetCredentials();
-      Fluttertoast.showToast(
-        msg: "Logged out!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.blueGrey,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      if (isMobile)
+        Fluttertoast.showToast(
+          msg: "Logged out!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.blueGrey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
     });
   }
 
@@ -368,7 +369,7 @@ class _LoginPageState extends State<LoginPage> {
                                       MaterialPageRoute(
                                         builder: (context) => AttendancePage(),
                                       ));
-                                } else
+                                } else if (isMobile)
                                   Fluttertoast.showToast(
                                     msg: loginFetch.finalLogin.message,
                                     toastLength: Toast.LENGTH_SHORT,

@@ -104,15 +104,16 @@ class CustomAppDrawer {
               title: Text('Study Materials'),
               onTap: noInternet
                   ? () {
-                      Fluttertoast.showToast(
-                        msg: "No Internet!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: Colors.redAccent,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
+                      if (isMobile)
+                        Fluttertoast.showToast(
+                          msg: "No Internet!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.redAccent,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                     }
                   : !isMobile
                       ? () => _launchURL(
@@ -131,15 +132,16 @@ class CustomAppDrawer {
               title: Text('Notices & News'),
               onTap: noInternet
                   ? () {
-                      Fluttertoast.showToast(
-                        msg: "No Internet!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: Colors.redAccent,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
+                      if (isMobile)
+                        Fluttertoast.showToast(
+                          msg: "No Internet!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.redAccent,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                     }
                   : () => Navigator.pushNamed(context, Notices.routeName),
             ),
@@ -244,15 +246,16 @@ class CustomAppDrawer {
               title: Text('Notices & News'),
               onTap: noInternet
                   ? () {
-                      Fluttertoast.showToast(
-                        msg: "No Internet!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 2,
-                        backgroundColor: Colors.redAccent,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
+                      if (isMobile)
+                        Fluttertoast.showToast(
+                          msg: "No Internet!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.redAccent,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                     }
                   : () => Navigator.pushReplacementNamed(
                       context, Notices.routeName),

@@ -1,6 +1,5 @@
 import 'dart:io' show InternetAddress, Platform, SocketException;
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,8 +38,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  // ignore: unused_field
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseInAppMessaging fiam = FirebaseInAppMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -57,15 +54,16 @@ class _MyAppState extends State<MyApp> {
       } on SocketException catch (_) {
         print('not connected');
         noInternet = true;
-        Fluttertoast.showToast(
-          msg: "No INTERNET !\nOffline Mode activated",
-          // toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 2,
-          backgroundColor: Colors.redAccent,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        if (isMobile)
+          Fluttertoast.showToast(
+            msg: "No INTERNET !\nOffline Mode activated",
+            // toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.redAccent,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
       }
       isUpdateAvailable = await UpdateFetch().fetchupdate(context);
     });
