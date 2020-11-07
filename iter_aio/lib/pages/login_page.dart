@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
     if (widget.logout) logout();
-    _getCredentials();
+    // _getCredentials();
     _login(regdNo, password);
     if (sem != null) lf = new LecturesFetch(semNo: sem);
     FetchNotice();
@@ -411,36 +411,36 @@ class _LoginPageState extends State<LoginPage> {
     await prefs.setString('theme', themeStr);
   }
 
-  _getCredentials() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      if (prefs.getString('initTime') != null) {
-        initTime = DateTime.parse(prefs.getString('initTime'));
-        print('time: ' + prefs.getString('initTime'));
-      }
-      brightness =
-          prefs.getBool('isbright') != null && prefs.getBool('isbright')
-              ? Brightness.light
-              : Brightness.dark;
-      if (prefs.getString('theme') != null) themeStr = prefs.getString('theme');
-      if (prefs.getString('regd') != null) regdNo = prefs.getString('regd');
-      // if (prefs.getInt('sem') != null) sem = prefs.getInt('sem');
-      if (prefs.getString('password') != null)
-        password = prefs.getString('password');
-      // if (noInternet) {
-      //   getoldData();
-      // }
-      setState(() {
-        getTheme(themeStr);
-      });
-      if (regdNo != null && password != null && appStarted && !noInternet) {
-        appStarted = false;
-        // isLoading = true;
-        _isLoggingIn = true;
-        _login(regdNo, password);
-      }
-    });
-  }
+  // _getCredentials() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     if (prefs.getString('initTime') != null) {
+  //       initTime = DateTime.parse(prefs.getString('initTime'));
+  //       print('time: ' + prefs.getString('initTime'));
+  //     }
+  //     brightness =
+  //         prefs.getBool('isbright') != null && prefs.getBool('isbright')
+  //             ? Brightness.light
+  //             : Brightness.dark;
+  //     if (prefs.getString('theme') != null) themeStr = prefs.getString('theme');
+  //     if (prefs.getString('regd') != null) regdNo = prefs.getString('regd');
+  //     // if (prefs.getInt('sem') != null) sem = prefs.getInt('sem');
+  //     if (prefs.getString('password') != null)
+  //       password = prefs.getString('password');
+  //     // if (noInternet) {
+  //     //   getoldData();
+  //     // }
+  //     setState(() {
+  //       getTheme(themeStr);
+  //     });
+  //     if (regdNo != null && password != null && appStarted && !noInternet) {
+  //       appStarted = false;
+  //       // isLoading = true;
+  //       _isLoggingIn = true;
+  //       _login(regdNo, password);
+  //     }
+  //   });
+  // }
 
   _resetCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -15,6 +15,7 @@ import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/widgets/on_pop.dart';
+import 'package:iteraio/widgets/show_notification.dart';
 import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,8 +39,9 @@ class _AttendancePageState extends State<AttendancePage> {
         load = buildNoAttendenceScreen(context);
       });
     });
-    _t2 = Timer(Duration(milliseconds: 800), () {
-      if (!serverError || loginFetch.finalLogin.status != 'Error Logging In')
+    _t2 = Timer(Duration(milliseconds: 800), () async {
+      await Future.microtask(() => loginFetch.getLogin());
+      if (!serverError)
         setState(() {
           _profile = pi.getProfile();
           _attendance = af.getAttendance();
@@ -75,13 +77,19 @@ class _AttendancePageState extends State<AttendancePage> {
                 icon: new Icon(
                   Icons.share,
                 ),
-                onPressed: () => ShareFilesAndScreenshotWidgets().shareScreenshot(
-                    previewContainer,
-                    originalSize,
-                    "MyAttendance",
-                    "Attendance.png",
-                    "image/png",
-                    text: "Download ITER-AIO from here http://tiny.cc/iteraio"),
+                onPressed: () {
+                  if (isMobile)
+                    Notify().showNotification(
+                        title: 'Share', body: 'Share Attendence');
+                  ShareFilesAndScreenshotWidgets().shareScreenshot(
+                      previewContainer,
+                      originalSize,
+                      "MyAttendance",
+                      "Attendance.png",
+                      "image/png",
+                      text:
+                          "Download ITER-AIO from here http://tiny.cc/iteraio");
+                },
               ),
             Padding(
               padding: const EdgeInsets.all(3.0),

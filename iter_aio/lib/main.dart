@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
         kIsWeb || Platform.isWindows || Platform.isWindows ? false : true;
     super.initState();
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('flutter_devs');
+        new AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettingsIOs = IOSInitializationSettings();
     var initSetttings = InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOs);

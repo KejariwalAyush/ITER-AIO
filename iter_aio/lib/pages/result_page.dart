@@ -11,6 +11,7 @@ import 'package:iteraio/models/result_model.dart';
 import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
+import 'package:iteraio/widgets/show_notification.dart';
 import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 
 class ResultPage extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ResultPageState extends State<ResultPage> {
       });
     });
     _t2 = Timer(Duration(milliseconds: 500), () {
-      if (!serverError || loginFetch.finalLogin.status != 'Error Logging In')
+      if (!serverError /* || loginFetch.finalLogin.status != 'Error Logging In'*/)
         setState(() {
           _profile = pi.getProfile();
           _result = rf.getResult();
@@ -65,13 +66,19 @@ class _ResultPageState extends State<ResultPage> {
               padding: const EdgeInsets.all(3.0),
               child: IconButton(
                 icon: new Icon(Icons.share),
-                onPressed: () => ShareFilesAndScreenshotWidgets().shareScreenshot(
-                    previewContainer,
-                    originalSize,
-                    "MyResult",
-                    "MyResult.png",
-                    "image/png",
-                    text: "Download ITER-AIO from here http://tiny.cc/iteraio"),
+                onPressed: () {
+                  if (isMobile)
+                    Notify()
+                        .showNotification(title: 'Share', body: 'Share Result');
+                  return ShareFilesAndScreenshotWidgets().shareScreenshot(
+                      previewContainer,
+                      originalSize,
+                      "MyResult",
+                      "MyResult.png",
+                      "image/png",
+                      text:
+                          "Download ITER-AIO from here http://tiny.cc/iteraio");
+                },
               ),
             ),
         ],

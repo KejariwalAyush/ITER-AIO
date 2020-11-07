@@ -4,14 +4,13 @@ import 'package:iteraio/Utilities/global_var.dart';
 
 class Notify {
   Notify();
-  showNotification() async {
+  showNotification({@required String title, @required String body}) async {
     var android = AndroidNotificationDetails('id', 'channel ', 'description',
         priority: Priority.High, importance: Importance.Max);
     var iOS = IOSNotificationDetails();
     var platform = new NotificationDetails(android, iOS);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'Flutter devs', 'Flutter Local Notification Demo', platform,
-        payload: 'Welcome to the Local Notification demo');
+    await flutterLocalNotificationsPlugin.show(0, title, body, platform,
+        payload: null);
   }
 
   Future<void> scheduleNotification() async {
