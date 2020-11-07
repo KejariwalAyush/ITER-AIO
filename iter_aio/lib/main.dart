@@ -13,6 +13,7 @@ import 'package:iteraio/components/push_msg.dart';
 import 'package:iteraio/components/splash_screen.dart';
 import 'package:iteraio/helper/attendance_fetch.dart';
 import 'package:iteraio/helper/login_fetch.dart';
+import 'package:iteraio/helper/notices_fetch.dart';
 import 'package:iteraio/helper/profile_fetch.dart';
 import 'package:iteraio/helper/result_fetch.dart';
 import 'package:iteraio/helper/update_fetch.dart';
@@ -73,6 +74,7 @@ class _MyAppState extends State<MyApp> {
       isUpdateAvailable = await UpdateFetch().fetchupdate(context);
     });
     setState(() {
+      nf = NoticesFetch();
       _getCredentials();
     });
 

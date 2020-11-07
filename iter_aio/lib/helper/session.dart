@@ -4,6 +4,13 @@ import 'package:http/http.dart' as http;
 
 class Session {
   Map<String, String> headers = {};
+  Future getReq(String url) async {
+    http.Response response = await http.get(url);
+    if (response.statusCode == 200)
+      return response.body;
+    else
+      return null;
+  }
 
   Future login(String url, dynamic data) async {
     headers['Content-Type'] = 'application/json';

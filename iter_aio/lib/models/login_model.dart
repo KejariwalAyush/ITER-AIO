@@ -19,6 +19,7 @@ class LoginData {
     this.password = pass;
   }
 
+  @override
   String toString() {
     return '''{
       "regdNo": "$regdNo",

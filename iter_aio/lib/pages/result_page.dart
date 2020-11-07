@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
@@ -156,6 +157,7 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Widget _resultListTile(CGPASemResult res) {
+    GlobalKey key = new GlobalKey(debugLabel: res.sem.toString());
     return Container(
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(10),
@@ -165,48 +167,83 @@ class _ResultPageState extends State<ResultPage> {
             : colorDark,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: ExpansionTile(
-        initiallyExpanded: false,
-        title: Text(
-          'Semester : ${res.sem}',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        trailing: Text(
-          '${res.sgpa}',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        leading: Image.asset(
-          res.sgpa >= 9.0
-              ? 'assets/logos/happy.gif'
-              : res.sgpa >= 7.5
-                  ? 'assets/logos/low happy.gif'
-                  : res.sgpa <= 5.0
-                      ? 'assets/logos/sad.gif'
-                      : 'assets/logos/low sad.gif',
-          fit: BoxFit.contain,
-        ),
-        children: <Widget>[
-          for (var i in res.details)
-            ListTile(
-              leading: Image.asset(
-                subjectAvatar(i.subjectCode),
-                width: 40,
+      child: Slidable(
+        secondaryActions: [
+          if (isMobile)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(15),
+                    topRight: Radius.circular(15)),
+                color: colorDark,
               ),
-              title: Text(
-                '${i.subjectName}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              child: IconSlideAction(
+                caption: 'Share',
+                color: Colors.transparent,
+                foregroundColor: Colors.white,
+                icon: Icons.share,
+                closeOnTap: true,
+                onTap: () {
+                  ShareFilesAndScreenshotWidgets().shareScreenshot(
+                      key,
+                      originalSize,
+                      "Semester${res.sem}Result",
+                      "Sem${res.sem}.png",
+                      "image/png",
+                      text:
+                          "My Sem ${res.sem} Result.\nDownload ITER-AIO http://tiny.cc/iteraio");
+                },
               ),
-              trailing: Text(
-                '${i.grade}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                '${i.subjectCode}\nEarned Credit : ${i.earnedCredit}',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              isThreeLine: true,
             ),
         ],
+        actionPane: SlidableBehindActionPane(),
+        actionExtentRatio: 0.20,
+        child: RepaintBoundary(
+          key: key,
+          child: ExpansionTile(
+            initiallyExpanded: false,
+            title: Text(
+              'Semester : ${res.sem}',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            trailing: Text(
+              '${res.sgpa}',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            leading: Image.asset(
+              res.sgpa >= 9.0
+                  ? 'assets/logos/happy.gif'
+                  : res.sgpa >= 7.5
+                      ? 'assets/logos/low happy.gif'
+                      : res.sgpa <= 5.0
+                          ? 'assets/logos/sad.gif'
+                          : 'assets/logos/low sad.gif',
+              fit: BoxFit.contain,
+            ),
+            children: <Widget>[
+              for (var i in res.details)
+                ListTile(
+                  leading: Image.asset(
+                    subjectAvatar(i.subjectCode),
+                    width: 40,
+                  ),
+                  title: Text(
+                    '${i.subjectName}',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Text(
+                    '${i.grade}',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    '${i.subjectCode}\nEarned Credit : ${i.earnedCredit}',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                  isThreeLine: true,
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

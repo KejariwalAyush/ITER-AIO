@@ -22,6 +22,7 @@ class Lecture {
       this.previewImgUrl,
       this.imageUrl});
 
+  @override
   String toString() {
     return '''{
       "title": "$title",
@@ -49,6 +50,7 @@ class Subject {
     this.lectures = lecs;
   }
 
+  @override
   String toString() {
     return '''{
       "name": "$name",
@@ -71,6 +73,7 @@ class CourseLectures {
 
   CourseLectures({@required this.course, @required this.subjects});
 
+  @override
   String toString() {
     return '''{
       "course": "$course",

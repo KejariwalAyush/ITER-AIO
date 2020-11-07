@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/models/notices_model.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
-import 'package:http/http.dart' as http;
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Notices extends StatefulWidget {
@@ -14,32 +15,32 @@ class Notices extends StatefulWidget {
   _NoticesState createState() => _NoticesState();
 }
 
-List iterNoticeData = List();
-List iterExamNoticeData = List();
-List soaNoticeData = List();
 int currentIndex = 0;
 bool showExamNotice = false;
 
 class _NoticesState extends State<Notices> {
-  var _isLoading = false;
-  FetchNotice _fetchNotice;
-  @override
-  void initState() {
-    setState(() {
-      _isLoading = true;
-    });
-    _fetchNotice = new FetchNotice();
-    if (iterExamNoticeData != null &&
-        iterNoticeData != null &&
-        soaNoticeData != null)
-      setState(() {
-        _isLoading = false;
-      });
-    super.initState();
-  }
-
+  int originalSize = 800;
   @override
   Widget build(BuildContext context) {
+    Widget examSwitch = currentIndex == 0
+        ? Center(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text('Exam Notices'),
+                Switch.adaptive(
+                  value: showExamNotice,
+                  onChanged: (value) {
+                    setState(() {
+                      showExamNotice = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+          )
+        : SizedBox();
     return Scaffold(
       appBar: AppBar(
         title: Text('Notices & News'),
@@ -50,14 +51,6 @@ class _NoticesState extends State<Notices> {
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
               ),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: new Icon(Icons.feedback),
-        //     onPressed: () {
-        //       Wiredash.of(context).show();
-        //     },
-        //   ),
-        // ],
         elevation: 15,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -81,11 +74,6 @@ class _NoticesState extends State<Notices> {
         onTap: (value) {
           setState(() {
             currentIndex = value;
-            if (value == 0) {
-              if (iterNoticeData == null) _fetchNotice.getIterNotices();
-            } else {
-              if (soaNoticeData == null) _fetchNotice.getSoaNotices();
-            }
           });
         },
         selectedFontSize: 18,
@@ -100,122 +88,127 @@ class _NoticesState extends State<Notices> {
             LargeAppDrawer().largeDrawer(context),
           Expanded(
             flex: 2,
-            child: _isLoading
-                ? Center(
-                    child: Container(
-                        height: 200,
-                        child: loading()), //CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Center(
-                          child: Text(
-                            currentIndex == 0
-                                ? showExamNotice
-                                    ? 'ITER Exam Notices'
-                                    : 'ITER Notices'
-                                : 'SOA News & Events',
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        currentIndex == 0
-                            ? Center(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Text('Exam Notices'),
-                                    Switch.adaptive(
-                                      value: showExamNotice,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          showExamNotice = value;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox(),
-                        if (iterNoticeData == null || soaNoticeData == null)
-                          Center(child: Text('No Data Available!'))
-                        else
-                          for (var i in currentIndex == 0
-                              ? showExamNotice
-                                  ? iterExamNoticeData
-                                  : iterNoticeData
-                              : soaNoticeData)
-                            InkWell(
-                              onTap: !isMobile
-                                  ? () => _launchURL(i['link'])
-                                  : () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WebPageView(
-                                              i['title'], i['link']))),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                  color: colorDark,
-                                  // boxShadow: [
-                                  //   BoxShadow(
-                                  //       color: colorDark,
-                                  //       blurRadius: 2,
-                                  //       spreadRadius: 2)
-                                  // ]
-                                ),
-                                margin: EdgeInsets.only(
-                                    top: 5, right: 10, left: 10, bottom: 5),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 8),
-                                child: ListTile(
-                                  // contentPadding: EdgeInsets.all(10.0),
-                                  title: Text(
-                                    '${i['title']}',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: RichText(
-                                    text: TextSpan(
-                                      text: '\n${i['time']}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: brightness == Brightness.light
-                                              ? Colors.black54
-                                              : Colors.white54),
-                                      // children: [
-                                      //   TextSpan(
-                                      //     text: '\nAuthor: ${i['author']}',
-                                      //     style: TextStyle(
-                                      //         color: MediaQuery.of(context)
-                                      //                     .platformBrightness ==
-                                      //                 Brightness.light
-                                      //             ? Colors.black38
-                                      //             : Colors.white38),
-                                      //   ),
-                                      // ]
-                                    ),
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                ),
-                              ),
-                            ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: examSwitch,
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    child: Text(
+                      currentIndex == 0
+                          ? showExamNotice
+                              ? 'ITER Exam Notices'
+                              : 'ITER Notices'
+                          : 'SOA News & Events',
+                      overflow: TextOverflow.clip,
+                      textAlign: TextAlign.start,
+                      style:
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                     ),
                   ),
+                  FutureBuilder<List<NoticeContent>>(
+                    // future: nf.getIterNotices(),
+                    future: currentIndex == 0
+                        ? showExamNotice
+                            ? nf.getIterExamNotices()
+                            : nf.getIterNotices()
+                        : nf.getSoaNotices(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData)
+                        return Container(
+                          alignment: Alignment.center,
+                          height: 200,
+                          child: loading(),
+                        );
+                      else
+                        return Column(
+                          children: [
+                            for (var item in snapshot.data)
+                              buildNoticeTile(item, context),
+                          ],
+                        );
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  InkWell buildNoticeTile(NoticeContent nc, BuildContext context) {
+    GlobalKey key = new GlobalKey(debugLabel: nc.title);
+    return InkWell(
+      onTap: !isMobile
+          ? () => _launchURL(nc.link)
+          : () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => WebPageView(nc.title, nc.link))),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          color: colorDark,
+        ),
+        margin: EdgeInsets.only(top: 5, right: 10, left: 10, bottom: 5),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+        child: Slidable(
+          secondaryActions: [
+            if (isMobile)
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(15),
+                      topRight: Radius.circular(15)),
+                  color: colorDark,
+                ),
+                child: IconSlideAction(
+                  caption: 'Share',
+                  color: Colors.transparent,
+                  foregroundColor: Colors.white,
+                  icon: Icons.share,
+                  closeOnTap: true,
+                  onTap: () {
+                    ShareFilesAndScreenshotWidgets().shareScreenshot(
+                        key, originalSize, "Notice", "Notice.png", "image/png",
+                        text:
+                            "Visit: ${nc.link}\n\nDownload ITER-AIO from here http://tiny.cc/iteraio");
+                  },
+                ),
+              ),
+          ],
+          actionPane: SlidableBehindActionPane(),
+          actionExtentRatio: 0.20,
+          child: RepaintBoundary(
+            key: key,
+            child: ListTile(
+              title: Text(
+                '${nc.title}',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              subtitle: RichText(
+                text: TextSpan(
+                  text: '\n${nc.time}',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: brightness == Brightness.light
+                          ? Colors.black54
+                          : Colors.white54),
+                ),
+                textAlign: TextAlign.justify,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -227,93 +220,5 @@ class _NoticesState extends State<Notices> {
       throw 'Could not launch $url';
     }
     return;
-  }
-}
-
-class FetchNotice {
-  FetchNotice() {
-    getIterNotices();
-    getSoaNotices();
-  }
-  getIterNotices() async {
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // setState(() {
-    //   _isLoading = true;
-    // });
-    final mainurl = 'https://www.soa.ac.in';
-    var resp = await http.get(mainurl + '/iter-student-notice/');
-    var resp2 = await http.get(mainurl + '/iter-exam-notice/');
-    // print(mainurl + '/iter-student-notice/');
-    if (resp.statusCode == 200) {
-      var doc = parse(resp.body);
-      var doc2 = parse(resp2.body);
-      var links = doc.querySelectorAll('main > section > section > article');
-      var links2 = doc2.querySelectorAll('main > section > section > article');
-      // print(links.length);
-      List<Map<String, dynamic>> linkMap = [];
-      // print(linkMap);
-      for (var link in links) {
-        linkMap.add({
-          'title': link.querySelector('a').text,
-          'link': mainurl + link.querySelector('a').attributes['href'],
-          'author': link.querySelector('div > a').text,
-          'time': link.querySelector('div > time').text,
-        });
-      }
-      iterNoticeData = linkMap;
-      List<Map<String, dynamic>> linkMap2 = [];
-      // print(linkMap);
-      for (var link in links2) {
-        linkMap2.add({
-          'title': link.querySelector('a').text,
-          'link': mainurl + link.querySelector('a').attributes['href'],
-          'author': link.querySelector('div > a').text,
-          'time': link.querySelector('div > time').text,
-        });
-      }
-      iterExamNoticeData = linkMap2;
-      // print(linkMap[0]);
-    } else {
-      iterNoticeData = null;
-    }
-
-    // setState(() {
-    //   _isLoading = false;
-    // });
-    // await prefs.setString('examNotice', iterExamNoticeData[0].toString());
-    // await prefs.setString('iterNotice', iterNoticeData[0].toString());
-  }
-
-  getSoaNotices() async {
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // setState(() {
-    //   _isLoading = true;
-    // });
-    final mainurl = 'https://www.soa.ac.in';
-    var resp = await http.get(mainurl + '/general-notifications/');
-    // print(mainurl + '/iter-student-notice/');
-    if (resp.statusCode == 200) {
-      var doc = parse(resp.body);
-      var links = doc.querySelectorAll('main > section > section > article');
-      // print(links.length);
-      List<Map<String, dynamic>> linkMap = [];
-      // print(linkMap);
-      for (var link in links) {
-        linkMap.add({
-          'title': link.querySelector('a').text,
-          'link': mainurl + link.querySelector('a').attributes['href'],
-          'author': link.querySelector('div > a').text,
-          'time': link.querySelector('div > time').text,
-        });
-      }
-      soaNoticeData = linkMap;
-      // print(linkMap[0]);
-    } else {
-      soaNoticeData = null;
-    }
-    // setState(() {
-    //   _isLoading = false;
-    // });
-    // await prefs.setString('soaNotice', soaNoticeData[0].toString());
   }
 }

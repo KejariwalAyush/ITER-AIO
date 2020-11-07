@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iteraio/helper/attendance_fetch.dart';
 import 'package:iteraio/helper/lectures_fetch.dart';
 import 'package:iteraio/helper/login_fetch.dart';
+import 'package:iteraio/helper/notices_fetch.dart';
 import 'package:iteraio/helper/profile_fetch.dart';
 import 'package:iteraio/helper/result_fetch.dart';
 
@@ -28,6 +29,7 @@ var updateText = "New Update is Here!";
 /// for helper
 var cookie;
 final mainUrl = "http://136.233.14.3:8282/CampusPortalSOA";
+NoticesFetch nf;
 LoginFetch loginFetch;
 AttendanceFetch af;
 ResultFetch rf;

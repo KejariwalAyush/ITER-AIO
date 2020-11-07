@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
@@ -236,6 +237,7 @@ class _AttendancePageState extends State<AttendancePage> {
   }
 
   Widget _attandenceExpansionTile(SubjectAttendance sat) {
+    GlobalKey key = new GlobalKey(debugLabel: sat.subjectCode);
     return Container(
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(10),
@@ -245,114 +247,151 @@ class _AttendancePageState extends State<AttendancePage> {
             : colorDark,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: ExpansionTile(
-        initiallyExpanded: false,
-        title: Text(
-          '${sat.subject}',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text('Code: ${sat.subjectCode}'),
-        trailing: Container(
-          padding: EdgeInsets.all(5),
-          margin: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: sat.totAtt > 90
-                ? Colors.green
-                : sat.totAtt > 80
-                    ? Colors.lightGreen
-                    : sat.totAtt > 75
-                        ? Colors.orangeAccent
-                        : Colors.redAccent,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            '${sat.totAtt} %',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+      child: Slidable(
+        secondaryActions: [
+          if (isMobile)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(15),
+                    topRight: Radius.circular(15)),
+                color: colorDark,
+              ),
+              child: IconSlideAction(
+                caption: 'Share',
+                color: Colors.transparent,
+                foregroundColor: Colors.white,
+                icon: Icons.share,
+                closeOnTap: true,
+                onTap: () {
+                  ShareFilesAndScreenshotWidgets().shareScreenshot(
+                      key,
+                      originalSize,
+                      "${sat.subjectCode}",
+                      "${sat.subjectCode}.png",
+                      "image/png",
+                      text:
+                          "Here is my Attendence for ${sat.subject}\nDownload ITER-AIO from here http://tiny.cc/iteraio");
+                },
+              ),
             ),
-          ),
-        ),
-        leading: Image.asset(
-          subjectAvatar(sat.subjectCode),
-          width: 40,
-          alignment: Alignment.center,
-        ),
-        children: <Widget>[
-          Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      FutureBuilder<String>(
-                          future: _getLastUpdatedOn(sat.lastUpdatedOn, sat),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData)
-                              return SizedBox();
-                            else
-                              return Text(
-                                'Last Updated On: ${snapshot.data}',
-                                textAlign: TextAlign.start,
-                              );
-                          }),
-                      if (sat.lattper != 0 && sat.latt != 'Not Applicable')
-                        Text(
-                          'Lecture: ${sat.latt} (${sat.lattper}%)',
-                          textAlign: TextAlign.start,
-                        ),
-                      if (sat.patt != '0 / 0' && sat.patt != 'Not Applicable')
-                        Text(
-                          'Practical: ${sat.patt} (${sat.pattper}%)',
-                          textAlign: TextAlign.start,
-                        ),
-                      if (sat.tatt != '0 / 0' && sat.tatt != 'Not Applicable')
-                        Text(
-                          'Theory: ${sat.tatt} (${sat.tattper}%)',
-                          textAlign: TextAlign.start,
-                        ),
-                      Text(
-                        'Present: ${sat.present}',
-                        textAlign: TextAlign.start,
-                      ),
-                      Text(
-                        'Absent: ${sat.absent}',
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
+        ],
+        actionPane: SlidableBehindActionPane(),
+        actionExtentRatio: 0.20,
+        child: RepaintBoundary(
+          key: key,
+          child: ExpansionTile(
+            initiallyExpanded: false,
+            title: Text(
+              '${sat.subject}',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text('Code: ${sat.subjectCode}'),
+            trailing: Container(
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: sat.totAtt > 90
+                    ? Colors.green
+                    : sat.totAtt > 80
+                        ? Colors.lightGreen
+                        : sat.totAtt > 75
+                            ? Colors.orangeAccent
+                            : Colors.redAccent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                '${sat.totAtt} %',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  child: Image.asset(
-                    sat.totAtt >= 90
-                        ? 'assets/logos/happy.gif'
-                        : sat.totAtt > 80
-                            ? 'assets/logos/low happy.gif'
-                            : sat.totAtt > 75
-                                ? 'assets/logos/low sad.gif'
-                                : 'assets/logos/sad.gif',
-                    fit: BoxFit.contain,
+            ),
+            leading: Image.asset(
+              subjectAvatar(sat.subjectCode),
+              width: 40,
+              alignment: Alignment.center,
+            ),
+            children: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FutureBuilder<String>(
+                              future: _getLastUpdatedOn(sat.lastUpdatedOn, sat),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData)
+                                  return SizedBox();
+                                else
+                                  return Text(
+                                    'Last Updated On: ${snapshot.data}',
+                                    textAlign: TextAlign.start,
+                                  );
+                              }),
+                          if (sat.lattper != 0 && sat.latt != 'Not Applicable')
+                            Text(
+                              'Lecture: ${sat.latt} (${sat.lattper}%)',
+                              textAlign: TextAlign.start,
+                            ),
+                          if (sat.patt != '0 / 0' &&
+                              sat.patt != 'Not Applicable')
+                            Text(
+                              'Practical: ${sat.patt} (${sat.pattper}%)',
+                              textAlign: TextAlign.start,
+                            ),
+                          if (sat.tatt != '0 / 0' &&
+                              sat.tatt != 'Not Applicable')
+                            Text(
+                              'Theory: ${sat.tatt} (${sat.tattper}%)',
+                              textAlign: TextAlign.start,
+                            ),
+                          Text(
+                            'Present: ${sat.present}',
+                            textAlign: TextAlign.start,
+                          ),
+                          Text(
+                            'Absent: ${sat.absent}',
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      child: Image.asset(
+                        sat.totAtt >= 90
+                            ? 'assets/logos/happy.gif'
+                            : sat.totAtt > 80
+                                ? 'assets/logos/low happy.gif'
+                                : sat.totAtt > 75
+                                    ? 'assets/logos/low sad.gif'
+                                    : 'assets/logos/sad.gif',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  sat.bunkText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              sat.bunkText,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
