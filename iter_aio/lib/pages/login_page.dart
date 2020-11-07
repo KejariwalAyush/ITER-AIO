@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   logout() {
-    setState(() {
+    setState(() async {
       name = null;
       sem = null;
       isLoggedIn = false;
@@ -88,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
+      await FirebaseAuth.instance.signOut();
     });
   }
 
@@ -411,37 +413,6 @@ class _LoginPageState extends State<LoginPage> {
     // await prefs.setInt('sem', pi.finalProfile.semester);
     await prefs.setString('theme', themeStr);
   }
-
-  // _getCredentials() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     if (prefs.getString('initTime') != null) {
-  //       initTime = DateTime.parse(prefs.getString('initTime'));
-  //       print('time: ' + prefs.getString('initTime'));
-  //     }
-  //     brightness =
-  //         prefs.getBool('isbright') != null && prefs.getBool('isbright')
-  //             ? Brightness.light
-  //             : Brightness.dark;
-  //     if (prefs.getString('theme') != null) themeStr = prefs.getString('theme');
-  //     if (prefs.getString('regd') != null) regdNo = prefs.getString('regd');
-  //     // if (prefs.getInt('sem') != null) sem = prefs.getInt('sem');
-  //     if (prefs.getString('password') != null)
-  //       password = prefs.getString('password');
-  //     // if (noInternet) {
-  //     //   getoldData();
-  //     // }
-  //     setState(() {
-  //       getTheme(themeStr);
-  //     });
-  //     if (regdNo != null && password != null && appStarted && !noInternet) {
-  //       appStarted = false;
-  //       // isLoading = true;
-  //       _isLoggingIn = true;
-  //       _login(regdNo, password);
-  //     }
-  //   });
-  // }
 
   _resetCredentials() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

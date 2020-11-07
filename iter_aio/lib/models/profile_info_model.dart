@@ -46,7 +46,7 @@ class ProfileInfo {
 
   String toString() {
     var s = '''{
-      "Name": "$name",
+      "name": "$name",
       "semester": $semester,
       "regdno": "$regdno",
       "image": "${image == null ? null : image.path}",

@@ -54,7 +54,7 @@ class ResultFetch {
       //   fontSize: 16.0,
       // );
     }
-
+    addResult(resultData.reversed.toList());
     return resultData.reversed.toList();
   }
 
@@ -75,18 +75,35 @@ class ResultFetch {
         ));
     return res.toList();
   }
-}
 
-// fetRes() async {
-//   final request = {
-//     "username": "1941012408",
-//     "password": "29Sept00",
-//     "MemberType": "S"
-//   };
-//   const url = "http://136.233.14.3:8282/CampusPortalSOA";
-//   var cookie = await Session().login(url + '/login', jsonEncode(request));
-//   // print(d.toString());
-//   var d2 = await Session().post(url + '/stdrst', jsonEncode({}),
-//       cookie.substring(0, cookie.indexOf(';')));
-//   print(d2.toString());
-// }
+  Future<void> addResult(List<CGPASemResult> list) {
+    return users
+        .doc(regdNo)
+        .update({
+          "result": [
+            for (var a in list)
+              {
+                "sem": a.sem,
+                "sgpa": a.sgpa,
+                "creditsearned": a.creditEarned,
+                "fail": a.fail == true,
+                "underHold": a.underHold == true,
+                "deactive": a.deactive == true,
+                "details": [
+                  for (var i in a.details)
+                    {
+                      "sem": i.sem,
+                      "subjectCode": "${i.subjectCode}",
+                      "subjectName": "${i.subjectName}",
+                      "subjectShortName": "${i.subjectShortName}",
+                      "earnedCredit": i.earnedCredit,
+                      "grade": "${i.grade}"
+                    }
+                ]
+              }
+          ]
+        })
+        .then((value) => print("Profile Added"))
+        .catchError((error) => print("Failed to add Result: $error"));
+  }
+}

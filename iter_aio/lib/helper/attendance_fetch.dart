@@ -39,15 +39,16 @@ class AttendanceFetch {
 
       if (body != null) {
         _attendanceInfo = AttendanceInfo(
-          data: _fetchSubjectAtt(body),
-          avgAttPer: _avgAttendence(body),
-          avgAbsPer: _avgAbsent(body),
-        );
+            data: _fetchSubjectAtt(body),
+            avgAttPer: _avgAttendence(body),
+            avgAbsPer: _avgAbsent(body),
+            attendAvailable: true);
       } else
-        return AttendanceInfo(attendAvailable: false);
+        _attendanceInfo = AttendanceInfo(attendAvailable: false);
     } else
-      return AttendanceInfo(attendAvailable: false);
+      _attendanceInfo = AttendanceInfo(attendAvailable: false);
 
+    addAttendance(_attendanceInfo);
     return _attendanceInfo;
   }
 
@@ -187,5 +188,40 @@ class AttendanceFetch {
       sub++;
     }
     return (totper / sub).round();
+  }
+
+  Future<void> addAttendance(AttendanceInfo a) {
+    return users
+        .doc(regdNo)
+        .update({
+          "attendance": {
+            "data": [
+              for (var i in a.data)
+                {
+                  "rawData": "${i.rawData}",
+                  "sem": i.sem,
+                  "bunkText": "${i.bunkText.toString().replaceAll('\n', ', ')}",
+                  "classes": i.classes,
+                  "present": i.present,
+                  "absent": i.absent,
+                  "totAtt": i.totAtt,
+                  "latt": "${i.latt}",
+                  "patt": "${i.patt}",
+                  "tatt": "${i.tatt}",
+                  "lattper": i.lattper,
+                  "pattper": i.pattper,
+                  "tattper": i.tattper,
+                  "subject": "${i.subject}",
+                  "subjectCode": "${i.subjectCode}",
+                  "lastUpdatedOn": "${i.lastUpdatedOn.toString()}"
+                }
+            ],
+            "avgAttPer": a.avgAttPer,
+            "avgAbsPer": a.avgAbsPer,
+            "attendAvailable": a.attendAvailable
+          }
+        })
+        .then((value) => print("Profile Added"))
+        .catchError((error) => print("Failed to add Profile: $error"));
   }
 }

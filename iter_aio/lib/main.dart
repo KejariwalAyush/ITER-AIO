@@ -1,5 +1,7 @@
 import 'dart:io' show InternetAddress, Platform, SocketException;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +33,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiredash/wiredash.dart';
 import 'package:package_info/package_info.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   kIsWeb ? runApp(MyApp()) : runApp(Phoenix(child: MyApp()));
 }
 
@@ -43,6 +48,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   final _navigatorKey = GlobalKey<NavigatorState>();
   static FirebaseInAppMessaging fiam = FirebaseInAppMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -50,6 +58,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
     fiam.setAutomaticDataCollectionEnabled(true);
     _getThingsOnStartup().then((value) async {
       try {

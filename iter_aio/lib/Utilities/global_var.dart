@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iteraio/helper/attendance_fetch.dart';
@@ -49,3 +50,5 @@ DateTime initTime;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 GlobalKey logo = new GlobalKey();
+
+CollectionReference users = FirebaseFirestore.instance.collection('users');

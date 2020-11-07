@@ -62,7 +62,38 @@ class ProfileFetch {
         );
     }
     // print(pd);
-
+    addProfile(_profileInfo);
     return _profileInfo;
+  }
+
+  Future<void> addProfile(ProfileInfo p) {
+    return users
+        .doc(regdNo)
+        .update({
+          'fullName': p.name,
+          'profile': {
+            "name": '${p.name}',
+            "semester": p.semester,
+            "regdno": '${p.regdno}',
+            "image": '${p.image == null ? null : p.image.path}',
+            "imageUrl": '${p.imageUrl}',
+            "sectioncode": '${p.sectioncode}',
+            "category": '${p.category}',
+            "pincode": p.pincode,
+            "gender": '${p.gender}',
+            "programdesc": '${p.programdesc}',
+            "branchdesc": '${p.branchdesc}',
+            "email": '${p.email}',
+            "dateofbirth": '${p.dateofbirth}',
+            "address": '${p.address}',
+            "state": '${p.state}',
+            "district": '${p.district}',
+            "cityname": '${p.cityname}',
+            "nationality": '${p.nationality}',
+            "fathername": '${p.fathername}'
+          }
+        })
+        .then((value) => print("Profile Added"))
+        .catchError((error) => print("Failed to add Profile: $error"));
   }
 }
