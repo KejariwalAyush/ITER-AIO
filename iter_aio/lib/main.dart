@@ -121,10 +121,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // if (!kIsWeb)
-    //   SystemChrome.setPreferredOrientations([
-    //     DeviceOrientation.portraitUp,
-    //   ]);
+    /*if (!kIsWeb)
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);*/
     if (kIsWeb)
       return OverlaySupport(child: buildMaterialWebApp());
     else if (Platform.isAndroid || Platform.isIOS)

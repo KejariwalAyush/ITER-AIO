@@ -41,7 +41,7 @@ dependencies:
   path: ^1.7.0
   # Url Handler
   url_launcher: ^5.6.0
-  webview_flutter: ^0.3.21
+  webview_flutter: ^1.0.6
   # Report bugs
   wiredash: ^0.1.0
   # Restart

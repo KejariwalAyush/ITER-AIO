@@ -75,25 +75,6 @@ class _AttendancePageState extends State<AttendancePage> {
                     ),
                   ),
             actions: <Widget>[
-              if (isMobile)
-                IconButton(
-                  icon: new Icon(
-                    Icons.share,
-                  ),
-                  onPressed: () {
-                    if (isMobile)
-                      Notify().showNotification(
-                          title: 'Share', body: 'Share Attendence');
-                    ShareFilesAndScreenshotWidgets().shareScreenshot(
-                        previewContainer,
-                        originalSize,
-                        "MyAttendance",
-                        "Attendance.png",
-                        "image/png",
-                        text:
-                            "Download ITER-AIO from here http://tiny.cc/iteraio");
-                  },
-                ),
               Padding(
                 padding: const EdgeInsets.all(3.0),
                 child: Stack(
@@ -133,6 +114,28 @@ class _AttendancePageState extends State<AttendancePage> {
                   ],
                 ),
               ),
+              if (isMobile)
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: IconButton(
+                    icon: new Icon(
+                      Icons.share,
+                    ),
+                    onPressed: () {
+                      if (isMobile)
+                        Notify().showNotification(
+                            title: 'Share', body: 'Share Attendence');
+                      ShareFilesAndScreenshotWidgets().shareScreenshot(
+                          previewContainer,
+                          originalSize,
+                          "MyAttendance",
+                          "Attendance.png",
+                          "image/png",
+                          text:
+                              "Download ITER-AIO from here http://tiny.cc/iteraio");
+                    },
+                  ),
+                ),
             ],
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
