@@ -28,7 +28,7 @@ class AttendancePage extends StatefulWidget {
 
 class _AttendancePageState extends State<AttendancePage> {
   GlobalKey previewContainer = new GlobalKey();
-  int originalSize = 800;
+  int originalSize = 1080;
   Widget load = Container(height: 200, child: loading());
   var _profile, _attendance;
   Timer _t1, _t2;
@@ -56,90 +56,90 @@ class _AttendancePageState extends State<AttendancePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: OnPop(context: context).onWillPop,
-      child: Scaffold(
-        drawer: CustomAppDrawer(
-                sresult: true, sbunk: true, slogout: true, srestart: true)
-            .widgetDrawer(context),
-        appBar: AppBar(
-          title: Text('ITER AIO'),
-          centerTitle: true,
-          elevation: 15,
-          leading: MediaQuery.of(context).size.width > 700
-              ? SizedBox()
-              : Builder(
-                  builder: (context) => IconButton(
-                    icon: new Icon(Icons.apps),
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                  ),
-                ),
-          actions: <Widget>[
-            if (isMobile)
-              IconButton(
-                icon: new Icon(
-                  Icons.share,
-                ),
-                onPressed: () {
-                  if (isMobile)
-                    Notify().showNotification(
-                        title: 'Share', body: 'Share Attendence');
-                  ShareFilesAndScreenshotWidgets().shareScreenshot(
-                      previewContainer,
-                      originalSize,
-                      "MyAttendance",
-                      "Attendance.png",
-                      "image/png",
-                      text:
-                          "Download ITER-AIO from here http://tiny.cc/iteraio");
-                },
-              ),
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Stack(
-                children: [
-                  IconButton(
-                    icon: new Icon(
-                      Icons.notifications,
+      child: RepaintBoundary(
+        key: previewContainer,
+        child: Scaffold(
+          drawer: CustomAppDrawer(
+                  sresult: true, sbunk: true, slogout: true, srestart: true)
+              .widgetDrawer(context),
+          appBar: AppBar(
+            title: Text('ITER AIO'),
+            centerTitle: true,
+            elevation: 15,
+            leading: MediaQuery.of(context).size.width > 700
+                ? SizedBox()
+                : Builder(
+                    builder: (context) => IconButton(
+                      icon: new Icon(Icons.apps),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
                     ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, Notices.routeName),
                   ),
-                  // newNotification
-                  //     ? new Positioned(
-                  //         right: 11,
-                  //         top: 11,
-                  //         child: new Container(
-                  //           padding: EdgeInsets.all(2),
-                  //           decoration: new BoxDecoration(
-                  //             color: Colors.red,
-                  //             borderRadius: BorderRadius.circular(6),
-                  //           ),
-                  //           constraints: BoxConstraints(
-                  //             minWidth: 14,
-                  //             minHeight: 14,
-                  //           ),
-                  //           child: Text(
-                  //             ' ',
-                  //             style: TextStyle(
-                  //               color: Colors.white,
-                  //               fontSize: 8,
-                  //             ),
-                  //             textAlign: TextAlign.center,
-                  //           ),
-                  //         ),
-                  //       )
-                  //     : new Container()
-                ],
+            actions: <Widget>[
+              if (isMobile)
+                IconButton(
+                  icon: new Icon(
+                    Icons.share,
+                  ),
+                  onPressed: () {
+                    if (isMobile)
+                      Notify().showNotification(
+                          title: 'Share', body: 'Share Attendence');
+                    ShareFilesAndScreenshotWidgets().shareScreenshot(
+                        previewContainer,
+                        originalSize,
+                        "MyAttendance",
+                        "Attendance.png",
+                        "image/png",
+                        text:
+                            "Download ITER-AIO from here http://tiny.cc/iteraio");
+                  },
+                ),
+              Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Stack(
+                  children: [
+                    IconButton(
+                      icon: new Icon(
+                        Icons.notifications,
+                      ),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, Notices.routeName),
+                    ),
+                    // newNotification
+                    //     ? new Positioned(
+                    //         right: 11,
+                    //         top: 11,
+                    //         child: new Container(
+                    //           padding: EdgeInsets.all(2),
+                    //           decoration: new BoxDecoration(
+                    //             color: Colors.red,
+                    //             borderRadius: BorderRadius.circular(6),
+                    //           ),
+                    //           constraints: BoxConstraints(
+                    //             minWidth: 14,
+                    //             minHeight: 14,
+                    //           ),
+                    //           child: Text(
+                    //             ' ',
+                    //             style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 8,
+                    //             ),
+                    //             textAlign: TextAlign.center,
+                    //           ),
+                    //         ),
+                    //       )
+                    //     : new Container()
+                  ],
+                ),
               ),
-            ),
-          ],
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25))),
-        ),
-        body: RepaintBoundary(
-          key: previewContainer,
-          child: Row(
+            ],
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25))),
+          ),
+          body: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -405,7 +405,7 @@ class _AttendancePageState extends State<AttendancePage> {
     if (prefs.getStringList(x.subjectCode) != null) {
       var osa = prefs.getStringList(x.subjectCode);
 
-      if (int.parse(osa[0]) > x.classes) {
+      if (int.parse(osa[0]) < x.classes) {
         setState(() {
           attUpdate = true;
         });
@@ -450,13 +450,16 @@ class _AttendancePageState extends State<AttendancePage> {
       children: <Widget>[
         Expanded(
           flex: 1,
-          child: Container(
-            height: 80,
-            // width: 100,
-            child: FlareActor("assets/animations/ITER-AIO.flr",
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                animation: "hello"),
+          child: RepaintBoundary(
+            key: logo,
+            child: Container(
+              height: 80,
+              // width: 100,
+              child: FlareActor("assets/animations/ITER-AIO.flr",
+                  alignment: Alignment.center,
+                  fit: BoxFit.contain,
+                  animation: "hello"),
+            ),
           ),
         ),
         Expanded(

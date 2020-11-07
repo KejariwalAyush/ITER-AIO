@@ -49,8 +49,7 @@ class _AboutUsState extends State<AboutUs> {
             LargeAppDrawer().largeDrawer(context),
           Expanded(
             flex: 2,
-            child: Center(
-                child: SingleChildScrollView(
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -249,7 +248,7 @@ class _AboutUsState extends State<AboutUs> {
                   ),
                 ],
               ),
-            )),
+            ),
           ),
         ],
       ),

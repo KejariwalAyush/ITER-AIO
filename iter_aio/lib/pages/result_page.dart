@@ -24,7 +24,7 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   List<CGPASemResult> finalRes = [];
   GlobalKey previewContainer = new GlobalKey();
-  int originalSize = 1500;
+  int originalSize = 1080;
   Widget load = Container(height: 200, child: loading());
   var _profile, _result;
   Timer _t1, _t2;
@@ -50,47 +50,47 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ITER AIO'),
-        centerTitle: true,
-        elevation: 15,
-        leading: MediaQuery.of(context).size.width > 700
-            ? SizedBox()
-            : IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pop(context),
+    return RepaintBoundary(
+      key: previewContainer,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('ITER AIO'),
+          centerTitle: true,
+          elevation: 15,
+          leading: MediaQuery.of(context).size.width > 700
+              ? SizedBox()
+              : IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                ),
+          actions: <Widget>[
+            if (isMobile)
+              Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: IconButton(
+                  icon: new Icon(Icons.share),
+                  onPressed: () {
+                    if (isMobile)
+                      Notify().showNotification(
+                          title: 'Share', body: 'Share Result');
+                    return ShareFilesAndScreenshotWidgets().shareScreenshot(
+                        previewContainer,
+                        originalSize,
+                        "MyResult",
+                        "MyResult.png",
+                        "image/png",
+                        text:
+                            "Download ITER-AIO from here http://tiny.cc/iteraio");
+                  },
+                ),
               ),
-        actions: <Widget>[
-          if (isMobile)
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: IconButton(
-                icon: new Icon(Icons.share),
-                onPressed: () {
-                  if (isMobile)
-                    Notify()
-                        .showNotification(title: 'Share', body: 'Share Result');
-                  return ShareFilesAndScreenshotWidgets().shareScreenshot(
-                      previewContainer,
-                      originalSize,
-                      "MyResult",
-                      "MyResult.png",
-                      "image/png",
-                      text:
-                          "Download ITER-AIO from here http://tiny.cc/iteraio");
-                },
-              ),
-            ),
-        ],
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
-      ),
-      body: RepaintBoundary(
-        key: previewContainer,
-        child: Row(
+          ],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25))),
+        ),
+        body: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -158,48 +158,48 @@ class _ResultPageState extends State<ResultPage> {
 
   Widget _resultListTile(CGPASemResult res) {
     GlobalKey key = new GlobalKey(debugLabel: res.sem.toString());
-    return Container(
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.light
-            ? colorLight
-            : colorDark,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Slidable(
-        secondaryActions: [
-          if (isMobile)
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(15),
-                    topRight: Radius.circular(15)),
-                color: colorDark,
+    return RepaintBoundary(
+      key: key,
+      child: Container(
+        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.light
+              ? colorLight
+              : colorDark,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Slidable(
+          secondaryActions: [
+            if (isMobile)
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(15),
+                      topRight: Radius.circular(15)),
+                  color: colorDark,
+                ),
+                child: IconSlideAction(
+                  caption: 'Share',
+                  color: Colors.transparent,
+                  foregroundColor: Colors.white,
+                  icon: Icons.share,
+                  closeOnTap: true,
+                  onTap: () {
+                    ShareFilesAndScreenshotWidgets().shareScreenshot(
+                        key,
+                        originalSize,
+                        "Semester${res.sem}Result",
+                        "Sem${res.sem}.png",
+                        "image/png",
+                        text:
+                            "My Sem ${res.sem} Result.\nDownload ITER-AIO http://tiny.cc/iteraio");
+                  },
+                ),
               ),
-              child: IconSlideAction(
-                caption: 'Share',
-                color: Colors.transparent,
-                foregroundColor: Colors.white,
-                icon: Icons.share,
-                closeOnTap: true,
-                onTap: () {
-                  ShareFilesAndScreenshotWidgets().shareScreenshot(
-                      key,
-                      originalSize,
-                      "Semester${res.sem}Result",
-                      "Sem${res.sem}.png",
-                      "image/png",
-                      text:
-                          "My Sem ${res.sem} Result.\nDownload ITER-AIO http://tiny.cc/iteraio");
-                },
-              ),
-            ),
-        ],
-        actionPane: SlidableBehindActionPane(),
-        actionExtentRatio: 0.20,
-        child: RepaintBoundary(
-          key: key,
+          ],
+          actionPane: SlidableBehindActionPane(),
+          actionExtentRatio: 0.20,
           child: ExpansionTile(
             initiallyExpanded: false,
             title: Text(

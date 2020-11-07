@@ -15,6 +15,7 @@ import 'package:iteraio/pages/settings.dart';
 import 'package:iteraio/widgets/WebPageView.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomAppDrawer {
@@ -152,6 +153,15 @@ class CustomAppDrawer {
               title: Text('Plan a Bunk'),
               onTap: () => Navigator.pushNamed(context, PlanBunk.routeName),
             ),
+          if (isMobile) Divider(),
+          if (isMobile)
+            ListTile(
+                leading: Icon(Icons.offline_share),
+                title: Text('Share App'),
+                onTap: () => ShareFilesAndScreenshotWidgets().shareScreenshot(
+                    logo, 2040, "logo", "logo.png", "image/png",
+                    text:
+                        "Download ITER-AIO to know yours from the link below. Get latest Attendance, Result Notices, etc. \n\nVisit: http://tiny.cc/iteraio")),
           if (ssettings) Divider(),
           if (ssettings)
             ListTile(

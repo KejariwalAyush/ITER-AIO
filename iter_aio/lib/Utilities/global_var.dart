@@ -48,3 +48,4 @@ DateTime initTime;
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+GlobalKey logo = new GlobalKey();
