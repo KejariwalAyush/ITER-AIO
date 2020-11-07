@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
+import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/models/result_model.dart';
 import 'package:iteraio/pages/attendance_page.dart';
@@ -20,6 +23,28 @@ class _ResultPageState extends State<ResultPage> {
   List<CGPASemResult> finalRes = [];
   GlobalKey previewContainer = new GlobalKey();
   int originalSize = 1500;
+  Widget load = Container(height: 200, child: loading());
+  var _profile, _result;
+  Timer _t1, _t2;
+
+  @override
+  void initState() {
+    _t1 = Timer(Duration(seconds: 10), () {
+      setState(() {
+        load = Container(
+            alignment: Alignment.center,
+            child: Text('Sorry No Result for now come back later'));
+      });
+    });
+    _t2 = Timer(Duration(milliseconds: 500), () {
+      if (!serverError || loginFetch.finalLogin.status != 'Error Logging In')
+        setState(() {
+          _profile = pi.getProfile();
+          _result = rf.getResult();
+        });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +118,11 @@ class _ResultPageState extends State<ResultPage> {
                               );
                           }),
                       FutureBuilder<List<CGPASemResult>>(
-                        future: rf.getResult(),
+                        future: _result,
                         builder: (context, snapshot) {
                           // (context as Element).markNeedsBuild();
                           if (!snapshot.hasData)
-                            return Container(height: 200, child: loading());
+                            return load;
                           else {
                             if (snapshot.data == [])
                               return Center(
@@ -202,10 +227,19 @@ class _ResultPageState extends State<ResultPage> {
                   builder: (context) => AttendancePage(),
                 )),
             child: FutureBuilder<ProfileInfo>(
-              future: pi.getProfile(),
+              future: _profile,
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
-                  return Text('Wating for info!');
+                  return FutureBuilder<LoginData>(
+                      future: loginFetch.getLogin(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return Center(
+                            child: Text('Waiting for Info!'),
+                          );
+                        else
+                          return Center(child: Text(snapshot.data.status));
+                      });
                 else
                   return RichText(
                     textAlign: TextAlign.end,
@@ -258,5 +292,11 @@ class _ResultPageState extends State<ResultPage> {
       cnt++;
     }
     return (sum ~/ (cnt * 0.01) / 100);
+  }
+
+  void dispose() {
+    _t1.cancel();
+    _t2.cancel();
+    super.dispose();
   }
 }

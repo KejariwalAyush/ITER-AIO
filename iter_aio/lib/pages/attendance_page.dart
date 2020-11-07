@@ -6,6 +6,7 @@ import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/helper/update_fetch.dart';
+import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/pages/notices.dart';
 import 'package:iteraio/models/attendance_info.dart';
 import 'package:iteraio/models/profile_info_model.dart';
@@ -26,20 +27,23 @@ class AttendancePage extends StatefulWidget {
 class _AttendancePageState extends State<AttendancePage> {
   GlobalKey previewContainer = new GlobalKey();
   int originalSize = 800;
-  var _profile, _attendance;
   Widget load = Container(height: 200, child: loading());
+  var _profile, _attendance;
+  Timer _t1, _t2;
+
   @override
   void initState() {
-    Timer(Duration(seconds: 15), () {
+    _t1 = Timer(Duration(seconds: 15), () {
       setState(() {
         load = buildNoAttendenceScreen(context);
       });
     });
-    Timer(Duration(milliseconds: 500), () {
-      setState(() {
-        _profile = pi.getProfile();
-        _attendance = af.getAttendance();
-      });
+    _t2 = Timer(Duration(milliseconds: 800), () {
+      if (!serverError || loginFetch.finalLogin.status != 'Error Logging In')
+        setState(() {
+          _profile = pi.getProfile();
+          _attendance = af.getAttendance();
+        });
     });
     if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
     super.initState();
@@ -79,41 +83,44 @@ class _AttendancePageState extends State<AttendancePage> {
                     "image/png",
                     text: "Download ITER-AIO from here http://tiny.cc/iteraio"),
               ),
-            Stack(
-              children: [
-                IconButton(
-                  icon: new Icon(
-                    Icons.notifications,
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: new Icon(
+                      Icons.notifications,
+                    ),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, Notices.routeName),
                   ),
-                  onPressed: () =>
-                      Navigator.pushNamed(context, Notices.routeName),
-                ),
-                // newNotification
-                //     ? new Positioned(
-                //         right: 11,
-                //         top: 11,
-                //         child: new Container(
-                //           padding: EdgeInsets.all(2),
-                //           decoration: new BoxDecoration(
-                //             color: Colors.red,
-                //             borderRadius: BorderRadius.circular(6),
-                //           ),
-                //           constraints: BoxConstraints(
-                //             minWidth: 14,
-                //             minHeight: 14,
-                //           ),
-                //           child: Text(
-                //             ' ',
-                //             style: TextStyle(
-                //               color: Colors.white,
-                //               fontSize: 8,
-                //             ),
-                //             textAlign: TextAlign.center,
-                //           ),
-                //         ),
-                //       )
-                //     : new Container()
-              ],
+                  // newNotification
+                  //     ? new Positioned(
+                  //         right: 11,
+                  //         top: 11,
+                  //         child: new Container(
+                  //           padding: EdgeInsets.all(2),
+                  //           decoration: new BoxDecoration(
+                  //             color: Colors.red,
+                  //             borderRadius: BorderRadius.circular(6),
+                  //           ),
+                  //           constraints: BoxConstraints(
+                  //             minWidth: 14,
+                  //             minHeight: 14,
+                  //           ),
+                  //           child: Text(
+                  //             ' ',
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 8,
+                  //             ),
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //         ),
+                  //       )
+                  //     : new Container()
+                ],
+              ),
             ),
           ],
           shape: RoundedRectangleBorder(
@@ -417,8 +424,18 @@ class _AttendancePageState extends State<AttendancePage> {
               future: _profile,
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
-                  return Text('Wating for info!');
+                  return FutureBuilder<LoginData>(
+                      future: loginFetch.getLogin(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return Center(
+                            child: Text('Waiting for Info!'),
+                          );
+                        else
+                          return Center(child: Text(snapshot.data.status));
+                      });
                 else
+                  // if(loginFetch.finalLogin.status == 'Error Logging In')
                   return RichText(
                     textAlign: TextAlign.end,
                     text: TextSpan(
@@ -459,5 +476,11 @@ class _AttendancePageState extends State<AttendancePage> {
         )
       ],
     );
+  }
+
+  void dispose() {
+    _t1.cancel();
+    _t2.cancel();
+    super.dispose();
   }
 }

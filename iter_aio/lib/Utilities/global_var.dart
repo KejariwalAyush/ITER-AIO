@@ -10,6 +10,7 @@ var appStarted = true;
 bool noInternet = false;
 bool serverTimeout = false;
 bool isLoggedIn = false;
+bool serverError = false;
 
 Brightness brightness = Brightness.dark;
 bool isMobile;
