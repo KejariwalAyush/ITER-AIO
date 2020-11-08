@@ -49,7 +49,7 @@ class LoginFetch {
 
       // print(resp.statusCode);
       if (resp.statusCode == 200) {
-        await firebaseAuth();
+        if (isMobile) await firebaseAuth();
 
         var _cookie = resp.headers['set-cookie'].toString();
         _cookie =

@@ -8,6 +8,8 @@ import 'package:iteraio/helper/notices_fetch.dart';
 import 'package:iteraio/helper/profile_fetch.dart';
 import 'package:iteraio/helper/result_fetch.dart';
 import 'package:iteraio/models/attendance_info.dart';
+import 'package:iteraio/models/profile_info_model.dart';
+import 'package:iteraio/models/result_model.dart';
 
 var appStarted = true;
 bool noInternet = false;
@@ -56,3 +58,5 @@ CollectionReference users = FirebaseFirestore.instance.collection('users');
 bool admin = false;
 
 AttendanceInfo oldai;
+List<CGPASemResult> oldres;
+ProfileInfo oldpi;

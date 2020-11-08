@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/models/firestore_to_model.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/helper/session.dart';
 
@@ -11,6 +12,11 @@ class ProfileFetch {
   }
 
   void _saveFinalProfile() async {
+    try {
+      oldpi = await fetchOldProfile();
+    } on Exception catch (e) {
+      print('$e');
+    }
     finalProfile = await _fetchProfile() as ProfileInfo;
 
     if (finalProfile != null) {
@@ -62,7 +68,7 @@ class ProfileFetch {
         );
     }
     // print(pd);
-    addProfile(_profileInfo);
+    if (isMobile) addProfile(_profileInfo);
     return _profileInfo;
   }
 
@@ -96,5 +102,10 @@ class ProfileFetch {
         })
         .then((value) => print("Profile Added"))
         .catchError((error) => print("Failed to add Profile: $error"));
+  }
+
+  Future<ProfileInfo> fetchOldProfile() {
+    return users.doc(regdNo).get().then(
+        (value) => FirestoretoModel().profileInfo(value.data()['profile']));
   }
 }

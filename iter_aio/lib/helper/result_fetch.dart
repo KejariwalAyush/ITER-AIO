@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/models/firestore_to_model.dart';
 import 'package:iteraio/models/result_model.dart';
 import 'package:iteraio/helper/session.dart';
 
@@ -12,6 +13,11 @@ class ResultFetch {
   }
 
   void _saveFinalResult() async {
+    try {
+      oldres = await fetchOldResult();
+    } on Exception catch (e) {
+      print('$e');
+    }
     finalResult = await _fetchResult() as List<CGPASemResult>;
   }
 
@@ -54,7 +60,7 @@ class ResultFetch {
       //   fontSize: 16.0,
       // );
     }
-    addResult(resultData.reversed.toList());
+    if (isMobile) addResult(resultData.reversed.toList());
     return resultData.reversed.toList();
   }
 
@@ -105,5 +111,14 @@ class ResultFetch {
         })
         .then((value) => print("Profile Added"))
         .catchError((error) => print("Failed to add Result: $error"));
+  }
+
+  Future<List<CGPASemResult>> fetchOldResult() {
+    return users.doc(regdNo).get().then((value) {
+      List<CGPASemResult> list = [];
+      for (var item in value.data()['result'])
+        list.add(FirestoretoModel().cgpaSemResult(item));
+      return list;
+    });
   }
 }

@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
       sem = null;
       isLoggedIn = false;
       password = null;
+      admin = false;
       _resetCredentials();
       if (isMobile)
         Fluttertoast.showToast(

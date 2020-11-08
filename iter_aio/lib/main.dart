@@ -34,10 +34,12 @@ import 'package:wiredash/wiredash.dart';
 import 'package:package_info/package_info.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:iteraio/MyHomePage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  isMobile = kIsWeb || Platform.isWindows || Platform.isWindows ? false : true;
+  if (Platform.isAndroid || Platform.isIOS) await Firebase.initializeApp();
   kIsWeb ? runApp(MyApp()) : runApp(Phoenix(child: MyApp()));
 }
 
@@ -48,23 +50,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  final _navigatorKey = GlobalKey<NavigatorState>();
+  FirebaseAuth auth = !isMobile ? null : FirebaseAuth.instance;
+  FirebaseFirestore firestore = !isMobile ? null : FirebaseFirestore.instance;
   static FirebaseInAppMessaging fiam = FirebaseInAppMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
-    FirebaseAuth.instance.authStateChanges().listen((User user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-      }
-    });
+    if (isMobile)
+      FirebaseAuth.instance.authStateChanges().listen((User user) {
+        if (user == null) {
+          print('User is currently signed out!');
+        } else {
+          print('User is signed in!');
+        }
+      });
     fiam.setAutomaticDataCollectionEnabled(true);
     _getThingsOnStartup().then((value) async {
       try {
@@ -174,6 +177,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/',
       routes: {
         '/': (context) => PushMessagingExample(),
+        '${MyHomePage.routeName}': (context) => MyHomePage(),
         '${LoginPage.routeName}': (context) => LoginPage(),
         '${AttendancePage.routeName}': (context) => AttendancePage(),
         '${CoursesPage.routeName}': (context) => CoursesPage(),

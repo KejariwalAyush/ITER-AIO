@@ -3,8 +3,11 @@ import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/events_page.dart';
 import 'package:iteraio/pages/profile_page.dart';
+import 'package:iteraio/pages/result_page.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 
 class MyHomePage extends StatefulWidget {
+  static const routeName = "/home-page";
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -23,10 +26,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icon(Icons.perm_contact_cal),
                     // ignore: deprecated_member_use
                     title: Text('Attendance')),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.event_note),
-                    // ignore: deprecated_member_use
-                    title: Text('Events')),
+                if (isMobile)
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.event_note),
+                      // ignore: deprecated_member_use
+                      title: Text('Events'))
+                else
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.description),
+                      // ignore: deprecated_member_use
+                      title: Text('Result')),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person),
                     // ignore: deprecated_member_use
@@ -53,7 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: _currentIndex == 0 || _currentIndex == 1
                   ? _currentIndex == 0
                       ? AttendancePage()
-                      : EventsPage()
+                      : isMobile
+                          ? EventsPage()
+                          : ResultPage()
                   : ProfilePage(),
             ),
           ),
@@ -100,7 +111,9 @@ class _MyHomePageState extends State<MyHomePage> {
       // unselectedIconTheme: IconThemeData(color: Colors.orange),
       destinations: [
         textDestination("Attendance", Icon(Icons.perm_contact_calendar)),
-        textDestination("Events", Icon(Icons.event_note)),
+        isMobile
+            ? textDestination("Events", Icon(Icons.event_note))
+            : textDestination("Result", Icon(Icons.description)),
         textDestination("Profile", Icon(Icons.person)),
       ],
     );

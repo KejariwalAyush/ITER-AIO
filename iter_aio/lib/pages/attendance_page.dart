@@ -11,7 +11,6 @@ import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/pages/notices.dart';
 import 'package:iteraio/models/attendance_info.dart';
 import 'package:iteraio/models/profile_info_model.dart';
-import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
@@ -27,7 +26,7 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  GlobalKey previewContainer = new GlobalKey();
+  GlobalKey _attendanceContainer = new GlobalKey();
   int originalSize = 1080;
   Widget load = Container(height: 200, child: loading());
   var _profile, _attendance;
@@ -56,7 +55,7 @@ class _AttendancePageState extends State<AttendancePage> {
   Future<void> saveAdmin() async {
     admin =
         await users.doc(regdNo).get().then((value) => value.data()['admin']);
-    print('admin: \n\n\n' + admin.toString());
+    // print('admin: \n\n\n' + admin.toString());
   }
 
   @override
@@ -64,7 +63,7 @@ class _AttendancePageState extends State<AttendancePage> {
     return WillPopScope(
       onWillPop: OnPop(context: context).onWillPop,
       child: RepaintBoundary(
-        key: previewContainer,
+        key: _attendanceContainer,
         child: Scaffold(
           drawer: CustomAppDrawer(
                   sresult: true, sbunk: true, slogout: true, srestart: true)
@@ -133,7 +132,7 @@ class _AttendancePageState extends State<AttendancePage> {
                         Notify().showNotification(
                             title: 'Share', body: 'Share Attendence');
                       ShareFilesAndScreenshotWidgets().shareScreenshot(
-                          previewContainer,
+                          _attendanceContainer,
                           originalSize,
                           "MyAttendance",
                           "Attendance.png",
@@ -202,7 +201,16 @@ class _AttendancePageState extends State<AttendancePage> {
                                       ],
                                     ),
                                     for (var data in snapshot.data.data)
-                                      _attandenceExpansionTile(data),
+                                      TweenAnimationBuilder(
+                                          duration: Duration(milliseconds: 500),
+                                          tween:
+                                              Tween<double>(begin: 0, end: 1),
+                                          builder: (context, value, child) =>
+                                              Transform.scale(
+                                                  scale: value,
+                                                  child:
+                                                      _attandenceExpansionTile(
+                                                          data))),
                                   ],
                                 );
                             }
@@ -476,11 +484,11 @@ class _AttendancePageState extends State<AttendancePage> {
         Expanded(
           flex: 3,
           child: InkWell(
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ResultPage(),
-                )),
+            // onTap: () => Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => ResultPage(),
+            //     )),
             child: FutureBuilder<ProfileInfo>(
               future: _profile,
               builder: (context, snapshot) {

@@ -15,8 +15,11 @@ class AttendanceFetch {
   }
 
   void _saveFinalAttendance() async {
-    oldai = await fetchOldAttendance();
-    print(oldai.avgAttPer);
+    try {
+      oldai = await fetchOldAttendance();
+    } on Exception catch (e) {
+      print(e.toString());
+    }
     finalAttendance = await _fetchAttendance() as AttendanceInfo;
   }
 
@@ -51,7 +54,7 @@ class AttendanceFetch {
     } else
       _attendanceInfo = AttendanceInfo(attendAvailable: false);
 
-    addAttendance(_attendanceInfo);
+    if (isMobile) addAttendance(_attendanceInfo);
     return _attendanceInfo;
   }
 

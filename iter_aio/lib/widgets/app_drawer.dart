@@ -17,6 +17,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:iteraio/MyHomePage.dart';
 
 class CustomAppDrawer {
   final bool noInternet;
@@ -246,10 +247,10 @@ class CustomAppDrawer {
           if (MediaQuery.of(context).size.width > 700)
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-              leading: Icon(Icons.hail),
-              title: Text('Attendance'),
-              onTap: () => Navigator.pushReplacementNamed(
-                  context, AttendancePage.routeName),
+              leading: Icon(Icons.home_work),
+              title: Text('Home'),
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, MyHomePage.routeName),
             ),
           if (slectures && !noInternet) Divider(),
           if (slectures && !noInternet)
@@ -260,8 +261,8 @@ class CustomAppDrawer {
                 title: Text('Lectures'),
                 onTap: () => Navigator.pushReplacementNamed(
                     context, CoursesPage.routeName)),
-          if (sresult && !noInternet) Divider(),
-          if (sresult && !noInternet)
+          if (sresult && !noInternet && isMobile) Divider(),
+          if (sresult && !noInternet && isMobile)
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.assignment),

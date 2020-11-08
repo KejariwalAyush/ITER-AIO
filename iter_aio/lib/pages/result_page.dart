@@ -9,7 +9,6 @@ import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/models/login_model.dart';
 import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/models/result_model.dart';
-import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/widgets/show_notification.dart';
@@ -23,7 +22,7 @@ class ResultPage extends StatefulWidget {
 
 class _ResultPageState extends State<ResultPage> {
   List<CGPASemResult> finalRes = [];
-  GlobalKey previewContainer = new GlobalKey();
+  GlobalKey resultContainer = new GlobalKey();
   int originalSize = 1080;
   Widget load = Container(height: 200, child: loading());
   var _profile, _result;
@@ -51,7 +50,7 @@ class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      key: previewContainer,
+      key: resultContainer,
       child: Scaffold(
         appBar: AppBar(
           title: Text('ITER AIO'),
@@ -74,7 +73,7 @@ class _ResultPageState extends State<ResultPage> {
                       Notify().showNotification(
                           title: 'Share', body: 'Share Result');
                     return ShareFilesAndScreenshotWidgets().shareScreenshot(
-                        previewContainer,
+                        resultContainer,
                         originalSize,
                         "MyResult",
                         "MyResult.png",
@@ -266,11 +265,11 @@ class _ResultPageState extends State<ResultPage> {
         Expanded(
           flex: 3,
           child: InkWell(
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AttendancePage(),
-                )),
+            // onTap: () => Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => AttendancePage(),
+            //     )),
             child: FutureBuilder<ProfileInfo>(
               future: _profile,
               builder: (context, snapshot) {
