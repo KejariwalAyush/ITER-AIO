@@ -74,10 +74,10 @@ class CustomAppDrawer {
           if (MediaQuery.of(context).size.width > 700)
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-              leading: Icon(Icons.hail),
-              title: Text('Attendance'),
-              onTap: () => Navigator.pushReplacementNamed(
-                  context, AttendancePage.routeName),
+              leading: Icon(Icons.home_work),
+              title: Text('Home'),
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, MyHomePage.routeName),
             ),
           if (isUpdateAvailable && isMobile)
             ListTile(

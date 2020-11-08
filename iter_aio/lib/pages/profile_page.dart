@@ -46,45 +46,47 @@ class _ProfilePageState extends State<ProfilePage> {
           Expanded(
             flex: 2,
             child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.all(5),
-                    child: buildHeader(context),
-                  ),
-                  FutureBuilder<ProfileInfo>(
-                    future: pi.getProfile(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData)
-                        return Container(
-                          height: 200,
-                          child: loading(),
-                        );
-                      else
-                        return Column(
-                          children: [
-                            buildRichText(context, 'Semester',
-                                snapshot.data.semester.toString()),
-                            buildRichText(
-                                context, 'Regd No.', snapshot.data.regdno),
-                            buildRichText(
-                                context, 'Branch', snapshot.data.branchdesc),
-                            buildRichText(
-                                context, 'Section', snapshot.data.sectioncode),
-                            buildRichText(
-                                context, 'Gender', snapshot.data.gender),
-                            buildRichText(
-                                context, 'Email', snapshot.data.email),
-                            buildRichText(context, 'R. Pincode',
-                                snapshot.data.pincode.toString()),
-                          ],
-                        );
-                    },
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      margin: EdgeInsets.all(5),
+                      child: buildHeader(context),
+                    ),
+                    FutureBuilder<ProfileInfo>(
+                      future: pi.getProfile(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return Container(
+                            height: 200,
+                            child: loading(),
+                          );
+                        else
+                          return Column(
+                            children: [
+                              buildRichText(context, 'Semester',
+                                  snapshot.data.semester.toString()),
+                              buildRichText(
+                                  context, 'Regd No.', snapshot.data.regdno),
+                              buildRichText(
+                                  context, 'Branch', snapshot.data.branchdesc),
+                              buildRichText(context, 'Section',
+                                  snapshot.data.sectioncode),
+                              buildRichText(
+                                  context, 'Gender', snapshot.data.gender),
+                              buildRichText(
+                                  context, 'Email', snapshot.data.email),
+                              buildRichText(context, 'R. Pincode',
+                                  snapshot.data.pincode.toString()),
+                            ],
+                          );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

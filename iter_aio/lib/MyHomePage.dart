@@ -23,36 +23,39 @@ class _MyHomePageState extends State<MyHomePage> {
           : BottomNavigationBar(
               items: [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.perm_contact_cal),
-                    // ignore: deprecated_member_use
-                    title: Text('Attendance')),
+                  icon: Icon(Icons.perm_contact_cal),
+                  label: 'Attendance',
+                ),
                 if (isMobile)
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.event_note),
-                      // ignore: deprecated_member_use
-                      title: Text('Events'))
+                    icon: Icon(Icons.event_note),
+                    label: 'Events',
+                  )
                 else
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.description),
-                      // ignore: deprecated_member_use
-                      title: Text('Result')),
+                    icon: Icon(Icons.description),
+                    label: 'Result',
+                  ),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    // ignore: deprecated_member_use
-                    title: Text('Profile')),
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
               ],
+              type: BottomNavigationBarType.shifting,
+              showSelectedLabels: true,
+              showUnselectedLabels: true,
               selectedItemColor: Colors.orangeAccent,
-              elevation: 10,
+              elevation: 15,
               currentIndex: _currentIndex,
               onTap: (value) {
                 setState(() {
                   _currentIndex = value;
                 });
               },
-              selectedFontSize: 16,
-              unselectedFontSize: 0,
-              unselectedIconTheme: IconThemeData(size: 30),
-              // selectedIconTheme: IconThemeData(size: 16),
+              selectedFontSize: 14,
+              unselectedFontSize: 12,
+              unselectedIconTheme: IconThemeData(size: 20),
+              selectedIconTheme: IconThemeData(size: 30),
             ),
       body: Row(
         children: [

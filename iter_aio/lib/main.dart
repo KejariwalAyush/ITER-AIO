@@ -35,6 +35,7 @@ import 'package:package_info/package_info.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:iteraio/MyHomePage.dart';
+import 'package:iteraio/helper/lectures_fetch.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -250,6 +251,7 @@ class _MyAppState extends State<MyApp> {
         af = AttendanceFetch();
         rf = ResultFetch();
         pi = ProfileFetch();
+        lf = LecturesFetch(semNo: sem);
       });
   }
 }

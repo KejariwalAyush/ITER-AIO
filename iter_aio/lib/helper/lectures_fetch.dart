@@ -58,7 +58,7 @@ class LecturesFetch {
 
     if (response.statusCode == 200) {
       var document = parse(response.body);
-      var links = document.getElementsByClassName('Index-page-content');
+      var links = document.getElementsByClassName('Index-page');
       for (var link in links) {
         lecturesData.add(CourseLectures(
           course: link
@@ -75,19 +75,22 @@ class LecturesFetch {
   Future<List<Subject>> _getSubjects(var link) async {
     List<Subject> subjectsData = [];
 
-    for (int i = 0; i < link.querySelectorAll('p').length - 2; i += 3)
-      subjectsData.add(Subject(
-        name: link.querySelectorAll('p')[i].text,
-        code: link.querySelectorAll('p')[i + 1].text,
-        link: link
-            .querySelectorAll('p')[i + 2]
-            .querySelector('a')
-            .attributes['href'],
-        // lectures: await _getLecture(link
-        //     .querySelectorAll('p')[i + 2]
-        //     .querySelector('a')
-        //     .attributes['href']),
-      ));
+    for (int i = 0; i < link.querySelectorAll('p').length - 2; i += 3) {
+      // print(link.querySelectorAll('p > a')[0].attributes['href']);
+      try {
+        subjectsData.add(Subject(
+          name: link.querySelectorAll('p')[i].text,
+          code: link.querySelectorAll('p')[i + 1].text,
+          link: link.querySelectorAll('p > a')[0].attributes['href'],
+          // .querySelectorAll('p')[i + 2]
+          // .querySelector('a')
+          // .attributes['href'],
+        ));
+      } on Exception catch (e) {
+        print('$e');
+      }
+    }
+    // print(subjectsData[0]);
     return subjectsData.toList();
   }
 
@@ -110,6 +113,7 @@ class LecturesFetch {
         pageno = data2['pageNumber'];
         pagecount = data2['pageCount'];
         for (var i in data2['items']) {
+          // print(i['name']);
           lecData.add(Lecture(
             title: i['name'],
             id: i['id'].toString(),
@@ -123,6 +127,7 @@ class LecturesFetch {
             previewImgUrl: i['thumbnailURLs']['preview'],
           ));
         }
+        // print(lecData[0]);
       }
     }
 

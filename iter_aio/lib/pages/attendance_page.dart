@@ -66,7 +66,11 @@ class _AttendancePageState extends State<AttendancePage> {
         key: _attendanceContainer,
         child: Scaffold(
           drawer: CustomAppDrawer(
-                  sresult: true, sbunk: true, slogout: true, srestart: true)
+                  sresult: true,
+                  slectures: true,
+                  sbunk: true,
+                  slogout: true,
+                  srestart: true)
               .widgetDrawer(context),
           appBar: AppBar(
             title: Text('ITER AIO'),
