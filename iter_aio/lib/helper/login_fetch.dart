@@ -21,7 +21,6 @@ class LoginFetch {
   void _saveFinalLogin() async {
     try {
       finalLogin = await _fetchLogin() as LoginData;
-      // print(finalLogin.toString());
     } on Exception catch (e) {
       debugPrint('On Save Exception: $e');
     }
@@ -189,82 +188,3 @@ class LoginFetch {
         .catchError((error) => print("Failed to add user: $error"));
   }
 }
-
-// void setUser() {
-//     users
-//         .doc(regdNo)
-//         .set({
-//           'regdNo': regdNo,
-//           'fullName': '',
-//           'sem': 2,
-//           'admin': false,
-//           'profile': {
-//             "name": '',
-//             "semester": 0,
-//             "regdno": '',
-//             "image": '',
-//             "imageUrl": '',
-//             "sectioncode": '',
-//             "category": '',
-//             "pincode": 0,
-//             "gender": '',
-//             "programdesc": '',
-//             "branchdesc": '',
-//             "email": '',
-//             "dateofbirth": '',
-//             "address": '',
-//             "state": '',
-//             "district": '',
-//             "cityname": '',
-//             "nationality": '',
-//             "fathername": ''
-//           },
-//           'attendance': {
-//             "data": [
-//               {
-//                 "rawData": "",
-//                 "sem": 0,
-//                 "bunkText": "",
-//                 "classes": 0,
-//                 "present": 0,
-//                 "absent": 0,
-//                 "totAtt": 0,
-//                 "latt": "",
-//                 "patt": "",
-//                 "tatt": "",
-//                 "lattper": 0,
-//                 "pattper": 0,
-//                 "tattper": 0,
-//                 "subject": "",
-//                 "subjectCode": "",
-//                 "lastUpdatedOn": ""
-//               }
-//             ],
-//             "avgAttPer": 0,
-//             "avgAbsPer": 0,
-//             "attendAvailable": false
-//           },
-//           'result': [
-//             {
-//               "sem": 0,
-//               "sgpa": 0,
-//               "creditsearned": 0,
-//               "fail": false,
-//               "underHold": false,
-//               "deactive": false,
-//               "details": [
-//                 {
-//                   "sem": 0,
-//                   "subjectCode": "",
-//                   "subjectName": "",
-//                   "subjectShortName": "",
-//                   "earnedCredit": 0,
-//                   "grade": ""
-//                 }
-//               ]
-//             }
-//           ],
-//         })
-//         .then((value) => print("User Added"))
-//         .catchError((error) => print("Failed to add user: $error"));
-//   }

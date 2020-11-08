@@ -4,6 +4,7 @@ import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/helper/bunk.dart';
 import 'package:iteraio/helper/session.dart';
 import 'package:iteraio/models/attendance_info.dart';
+import 'package:iteraio/models/firestore_to_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendanceFetch {
@@ -14,6 +15,8 @@ class AttendanceFetch {
   }
 
   void _saveFinalAttendance() async {
+    oldai = await fetchOldAttendance();
+    print(oldai.avgAttPer);
     finalAttendance = await _fetchAttendance() as AttendanceInfo;
   }
 
@@ -223,5 +226,10 @@ class AttendanceFetch {
         })
         .then((value) => print("Profile Added"))
         .catchError((error) => print("Failed to add Profile: $error"));
+  }
+
+  Future<AttendanceInfo> fetchOldAttendance() {
+    return users.doc(regdNo).get().then((value) =>
+        FirestoretoModel().attendanceInfo(value.data()['attendance']));
   }
 }

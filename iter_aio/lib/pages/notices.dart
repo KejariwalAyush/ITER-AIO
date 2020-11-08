@@ -23,25 +23,6 @@ class _NoticesState extends State<Notices> {
   GlobalKey noticeKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
-    Widget examSwitch = currentIndex == 0
-        ? Center(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text('Exam Notices'),
-                Switch.adaptive(
-                  value: showExamNotice,
-                  onChanged: (value) {
-                    setState(() {
-                      showExamNotice = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-          )
-        : SizedBox();
     return RepaintBoundary(
       key: noticeKey,
       child: Scaffold(
@@ -79,32 +60,39 @@ class _NoticesState extends State<Notices> {
           elevation: 15,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25))),
+            bottomLeft: Radius.circular(35),
+            // bottomRight: Radius.circular(25)
+          )),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.business_center),
-                // ignore: deprecated_member_use
-                title: Text('ITER')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.business),
-                // ignore: deprecated_member_use
-                title: Text('SOA')),
-          ],
-          selectedItemColor: themeDark,
-          elevation: 5,
-          currentIndex: currentIndex,
-          onTap: (value) {
-            setState(() {
-              currentIndex = value;
-            });
-          },
-          selectedFontSize: 18,
-          unselectedFontSize: 12,
-          unselectedIconTheme: IconThemeData(size: 16),
-        ),
+        bottomNavigationBar: (MediaQuery.of(context).size.width > 700)
+            ? SizedBox.shrink()
+            : BottomNavigationBar(
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.school),
+                      // ignore: deprecated_member_use
+                      title: Text('ITER')),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.backpack),
+                      // ignore: deprecated_member_use
+                      title: Text('Exam')),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.business),
+                      // ignore: deprecated_member_use
+                      title: Text('SOA')),
+                ],
+                selectedItemColor: Colors.orangeAccent,
+                elevation: 5,
+                currentIndex: currentIndex,
+                onTap: (value) {
+                  setState(() {
+                    currentIndex = value;
+                  });
+                },
+                selectedFontSize: 18,
+                unselectedFontSize: 12,
+                unselectedIconTheme: IconThemeData(size: 16),
+              ),
         body: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,57 +101,69 @@ class _NoticesState extends State<Notices> {
               LargeAppDrawer().largeDrawer(context),
             Expanded(
               flex: 2,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: examSwitch,
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                      child: Text(
-                        currentIndex == 0
-                            ? showExamNotice
-                                ? 'ITER Exam Notices'
-                                : 'ITER Notices'
-                            : 'SOA News & Events',
-                        overflow: TextOverflow.clip,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          // Padding(
+                          //   padding: const EdgeInsets.all(5.0),
+                          //   child: examSwitch,
+                          // ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                            child: Text(
+                              currentIndex == 0 || currentIndex == 1
+                                  ? currentIndex == 1
+                                      ? 'ITER Exam Notices'
+                                      : 'ITER Notices'
+                                  : 'SOA News & Events',
+                              overflow: TextOverflow.clip,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  fontSize: 32, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          FutureBuilder<List<NoticeContent>>(
+                            // future: nf.getIterNotices(),
+                            future: currentIndex == 0 || currentIndex == 1
+                                ? currentIndex == 1
+                                    ? nf.getIterExamNotices()
+                                    : nf.getIterNotices()
+                                : nf.getSoaNotices(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData)
+                                return Container(
+                                  alignment: Alignment.center,
+                                  height: 200,
+                                  child: loading(),
+                                );
+                              else
+                                return Column(
+                                  children: [
+                                    for (var item in snapshot.data)
+                                      buildNoticeTile(item, context),
+                                  ],
+                                );
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
                     ),
-                    FutureBuilder<List<NoticeContent>>(
-                      // future: nf.getIterNotices(),
-                      future: currentIndex == 0
-                          ? showExamNotice
-                              ? nf.getIterExamNotices()
-                              : nf.getIterNotices()
-                          : nf.getSoaNotices(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData)
-                          return Container(
-                            alignment: Alignment.center,
-                            height: 200,
-                            child: loading(),
-                          );
-                        else
-                          return Column(
-                            children: [
-                              for (var item in snapshot.data)
-                                buildNoticeTile(item, context),
-                            ],
-                          );
-                      },
+                  ),
+                  if (MediaQuery.of(context).size.width > 700)
+                    Expanded(
+                      flex: 1,
+                      child: verticalNavigationBar(),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
           ],
@@ -247,5 +247,53 @@ class _NoticesState extends State<Notices> {
       throw 'Could not launch $url';
     }
     return;
+  }
+
+  Widget verticalNavigationBar() {
+    return NavigationRail(
+      minWidth: 55.0,
+      groupAlignment: 0.0,
+      backgroundColor: colorDark,
+      selectedIndex: currentIndex,
+      onDestinationSelected: (int index) {
+        setState(() {
+          currentIndex = index;
+        });
+      },
+      labelType: NavigationRailLabelType.all,
+      leading: Column(
+        children: <Widget>[],
+      ),
+      selectedLabelTextStyle: TextStyle(
+        color: Colors.orangeAccent,
+        fontSize: 14,
+        letterSpacing: 1,
+        decorationThickness: 2.0,
+      ),
+      unselectedLabelTextStyle: TextStyle(
+        fontSize: 12,
+        letterSpacing: 0.8,
+      ),
+      selectedIconTheme: IconThemeData(color: Colors.orange),
+      // unselectedIconTheme: IconThemeData(color: Colors.orange),
+      destinations: [
+        textDestination("General", Icon(Icons.school)),
+        textDestination("Exam", Icon(Icons.backpack)),
+        textDestination("SOA", Icon(Icons.business)),
+      ],
+    );
+  }
+
+  NavigationRailDestination textDestination(String text, Icon icon) {
+    return NavigationRailDestination(
+      icon: icon,
+      label: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: RotatedBox(
+          quarterTurns: MediaQuery.of(context).size.height > 500 ? -1 : 0,
+          child: Text(text),
+        ),
+      ),
+    );
   }
 }

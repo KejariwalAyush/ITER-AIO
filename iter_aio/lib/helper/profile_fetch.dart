@@ -71,6 +71,7 @@ class ProfileFetch {
         .doc(regdNo)
         .update({
           'fullName': p.name,
+          'sem': p.semester,
           'profile': {
             "name": '${p.name}',
             "semester": p.semester,

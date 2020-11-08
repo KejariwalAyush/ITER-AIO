@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Utilities/global_var.dart';
-import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/login_page.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -16,7 +16,7 @@ class Splash extends StatelessWidget {
       //isLoading?sec:1,
       navigateAfterSeconds: isLoggedIn != null
           ? isLoggedIn
-              ? new AttendancePage()
+              ? new MyHomePage()
               : new LoginPage()
           : new LoginPage(),
       title: new Text(

@@ -72,6 +72,7 @@ class CustomAppDrawer {
         children: [
           if (MediaQuery.of(context).size.width > 700)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.hail),
               title: Text('Attendance'),
               onTap: () => Navigator.pushReplacementNamed(
@@ -79,6 +80,7 @@ class CustomAppDrawer {
             ),
           if (isUpdateAvailable && isMobile)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               tileColor: Colors.orangeAccent,
               leading: Icon(Icons.upgrade_rounded),
               title: Text('Update Available!'),
@@ -87,6 +89,8 @@ class CustomAppDrawer {
           if (slectures && !noInternet) Divider(),
           if (slectures && !noInternet)
             ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 leading: Icon(Icons.video_library),
                 title: Text('Lectures'),
                 onTap: () =>
@@ -94,6 +98,7 @@ class CustomAppDrawer {
           if (sresult && !noInternet) Divider(),
           if (sresult && !noInternet)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.assignment),
               title: Text('Result'),
               onTap: () => Navigator.pushNamed(context, ResultPage.routeName),
@@ -101,6 +106,7 @@ class CustomAppDrawer {
           if (sstudyMaterial) Divider(),
           if (sstudyMaterial)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(LineAwesomeIcons.book),
               title: Text('Study Materials'),
               onTap: noInternet
@@ -110,7 +116,7 @@ class CustomAppDrawer {
                           msg: "No Internet!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 2,
+                          timeInSecForIosWeb: 0,
                           backgroundColor: Colors.redAccent,
                           textColor: Colors.white,
                           fontSize: 16.0,
@@ -118,17 +124,18 @@ class CustomAppDrawer {
                     }
                   : !isMobile
                       ? () => _launchURL(
-                          'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing')
+                          'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF2_AqsUEpudWkOl?usp=sharing')
                       : () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => WebPageView(
                                   'ITER Book Shelf',
-                                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'))),
+                                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF2_AqsUEpudWkOl?usp=sharing'))),
             ),
           if (snotices) Divider(),
           if (snotices)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.notifications_none),
               title: Text('Notices & News'),
               onTap: noInternet
@@ -138,7 +145,7 @@ class CustomAppDrawer {
                           msg: "No Internet!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 2,
+                          timeInSecForIosWeb: 0,
                           backgroundColor: Colors.redAccent,
                           textColor: Colors.white,
                           fontSize: 16.0,
@@ -149,6 +156,7 @@ class CustomAppDrawer {
           if (sbunk) Divider(),
           if (sbunk)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.airline_seat_individual_suite),
               title: Text('Plan a Bunk'),
               onTap: () => Navigator.pushNamed(context, PlanBunk.routeName),
@@ -156,6 +164,8 @@ class CustomAppDrawer {
           if (isMobile) Divider(),
           if (isMobile)
             ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 leading: Icon(Icons.offline_share),
                 title: Text('Share App'),
                 onTap: () => ShareFilesAndScreenshotWidgets().shareScreenshot(
@@ -165,6 +175,7 @@ class CustomAppDrawer {
           if (ssettings) Divider(),
           if (ssettings)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.settings),
               title: Text('Settings'),
               onTap: () => Navigator.pushNamed(context, SettingsPage.routeName),
@@ -172,6 +183,7 @@ class CustomAppDrawer {
           if (saboutUs) Divider(),
           if (saboutUs)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.info_outline),
               title: Text('About Us'),
               onTap: () => Navigator.pushNamed(context, AboutUs.routeName),
@@ -179,6 +191,8 @@ class CustomAppDrawer {
           if (slogout && !noInternet) Divider(),
           if (slogout && !noInternet)
             ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 leading: Icon(Icons.power_settings_new),
                 title: Text('Logout'),
                 onTap: () => Alert(
@@ -215,6 +229,8 @@ class CustomAppDrawer {
           if (srestart) Divider(),
           if (srestart)
             ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 leading: Icon(LineAwesomeIcons.refresh),
                 title: Text('Restart App'),
                 onTap: () => Phoenix.rebirth(context)),
@@ -229,6 +245,7 @@ class CustomAppDrawer {
         children: [
           if (MediaQuery.of(context).size.width > 700)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.hail),
               title: Text('Attendance'),
               onTap: () => Navigator.pushReplacementNamed(
@@ -237,6 +254,8 @@ class CustomAppDrawer {
           if (slectures && !noInternet) Divider(),
           if (slectures && !noInternet)
             ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 leading: Icon(Icons.video_library),
                 title: Text('Lectures'),
                 onTap: () => Navigator.pushReplacementNamed(
@@ -244,6 +263,7 @@ class CustomAppDrawer {
           if (sresult && !noInternet) Divider(),
           if (sresult && !noInternet)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.assignment),
               title: Text('Result'),
               onTap: () =>
@@ -252,6 +272,7 @@ class CustomAppDrawer {
           if (snotices) Divider(),
           if (snotices)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.notifications_none),
               title: Text('Notices & News'),
               onTap: noInternet
@@ -261,7 +282,7 @@ class CustomAppDrawer {
                           msg: "No Internet!",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 2,
+                          timeInSecForIosWeb: 0,
                           backgroundColor: Colors.redAccent,
                           textColor: Colors.white,
                           fontSize: 16.0,
@@ -273,14 +294,16 @@ class CustomAppDrawer {
           if (sstudyMaterial) Divider(),
           if (sstudyMaterial)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(LineAwesomeIcons.book),
               title: Text('Study Materials'),
               onTap: () => _launchURL(
-                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF8_AqsUEpudWkOl?usp=sharing'),
+                  'https://drive.google.com/drive/folders/1kzQtTLe5RDoU15yulF2_AqsUEpudWkOl?usp=sharing'),
             ),
           if (sbunk) Divider(),
           if (sbunk)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.airline_seat_individual_suite),
               title: Text('Plan a Bunk'),
               onTap: () => Navigator.restorablePopAndPushNamed(
@@ -289,6 +312,7 @@ class CustomAppDrawer {
           if (ssettings) Divider(),
           if (ssettings)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.settings),
               title: Text('Settings'),
               onTap: () => Navigator.pushReplacementNamed(
@@ -297,6 +321,7 @@ class CustomAppDrawer {
           if (saboutUs) Divider(),
           if (saboutUs)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               leading: Icon(Icons.info_outline),
               title: Text('About Us'),
               onTap: () =>
@@ -305,6 +330,8 @@ class CustomAppDrawer {
           if (slogout && !noInternet) Divider(),
           if (slogout && !noInternet)
             ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 leading: Icon(Icons.power_settings_new),
                 title: Text('Logout'),
                 onTap: () => Alert(
@@ -341,6 +368,8 @@ class CustomAppDrawer {
           if (srestart) Divider(),
           if (srestart)
             ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 leading: Icon(LineAwesomeIcons.refresh),
                 title: Text('Restart App'),
                 onTap: () => Phoenix.rebirth(context)),

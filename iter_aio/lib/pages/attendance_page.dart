@@ -37,6 +37,7 @@ class _AttendancePageState extends State<AttendancePage> {
   void initState() {
     _t1 = Timer(Duration(seconds: 15), () {
       setState(() {
+        saveAdmin();
         load = buildNoAttendenceScreen(context);
       });
     });
@@ -50,6 +51,12 @@ class _AttendancePageState extends State<AttendancePage> {
     });
     if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
     super.initState();
+  }
+
+  Future<void> saveAdmin() async {
+    admin =
+        await users.doc(regdNo).get().then((value) => value.data()['admin']);
+    print('admin: \n\n\n' + admin.toString());
   }
 
   @override
@@ -139,8 +146,9 @@ class _AttendancePageState extends State<AttendancePage> {
             ],
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25))),
+              bottomLeft: Radius.circular(35),
+              // bottomRight: Radius.circular(25)
+            )),
           ),
           body: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

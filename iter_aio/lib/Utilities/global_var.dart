@@ -7,6 +7,7 @@ import 'package:iteraio/helper/login_fetch.dart';
 import 'package:iteraio/helper/notices_fetch.dart';
 import 'package:iteraio/helper/profile_fetch.dart';
 import 'package:iteraio/helper/result_fetch.dart';
+import 'package:iteraio/models/attendance_info.dart';
 
 var appStarted = true;
 bool noInternet = false;
@@ -52,3 +53,6 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 GlobalKey logo = new GlobalKey();
 
 CollectionReference users = FirebaseFirestore.instance.collection('users');
+bool admin = false;
+
+AttendanceInfo oldai;
