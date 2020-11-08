@@ -17,7 +17,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomAppDrawer(
-              sresult: true, sbunk: true, slogout: true, srestart: true)
+              sresult: true,
+              slectures: true,
+              sbunk: true,
+              slogout: true,
+              srestart: true)
           .widgetDrawer(context),
       appBar: AppBar(
         title: Text('Profile'),

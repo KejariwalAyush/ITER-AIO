@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
+import 'package:iteraio/pages/events_form.dart';
 
 class EventsPage extends StatefulWidget {
   @override
@@ -12,7 +13,11 @@ class _EventsPageState extends State<EventsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomAppDrawer(
-              sresult: true, sbunk: true, slogout: true, srestart: true)
+              sresult: true,
+              slectures: true,
+              sbunk: true,
+              slogout: true,
+              srestart: true)
           .widgetDrawer(context),
       appBar: AppBar(
         title: Text('Events'),
@@ -29,7 +34,11 @@ class _EventsPageState extends State<EventsPage> {
           if (admin)
             IconButton(
               icon: Icon(Icons.add_box),
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EventsForm(),
+                  )),
             ),
         ],
         elevation: 15,

@@ -3,7 +3,6 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
-import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/notices.dart';
 import 'package:iteraio/helper/update_fetch.dart';
 import 'package:iteraio/pages/aboutus_page.dart';

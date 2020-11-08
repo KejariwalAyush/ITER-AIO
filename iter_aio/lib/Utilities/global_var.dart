@@ -55,6 +55,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 GlobalKey logo = new GlobalKey();
 
 CollectionReference users = FirebaseFirestore.instance.collection('users');
+CollectionReference events = FirebaseFirestore.instance.collection('events');
 bool admin = false;
 
 AttendanceInfo oldai;
