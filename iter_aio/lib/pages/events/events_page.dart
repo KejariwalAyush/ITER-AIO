@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
-import 'package:iteraio/pages/events_form.dart';
+import 'package:iteraio/pages/events/events_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class EventsPage extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class EventsPage extends StatefulWidget {
 }
 
 class _EventsPageState extends State<EventsPage> {
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   var query = [];
   @override
   Widget build(BuildContext context) {

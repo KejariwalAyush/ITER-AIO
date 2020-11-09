@@ -4,7 +4,7 @@ import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/components/videoPlayer.dart';
 import 'package:iteraio/models/lectures_model.dart';
-import 'package:iteraio/pages/lectures_page.dart';
+import 'package:iteraio/pages/sides/lectures_page.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';

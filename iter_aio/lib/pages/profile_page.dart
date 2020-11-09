@@ -6,6 +6,7 @@ import 'package:iteraio/models/profile_info_model.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
+import 'package:iteraio/models/firestore_to_model.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -61,7 +62,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: buildHeader(context),
                     ),
                     FutureBuilder<ProfileInfo>(
-                      future: pi.getProfile(),
+                      // future: pi.getProfile(),
+                      future: users.doc(regdNo).get().then((value) =>
+                          FirestoretoModel().profileInfo(value['profile'])),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData)
                           return Container(

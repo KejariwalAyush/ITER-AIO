@@ -11,7 +11,7 @@ class FirestoretoModel {
   AttendanceInfo attendanceInfo(var x) {
     AttendanceInfo _ai;
     _ai = new AttendanceInfo(
-        attendAvailable: x['attendAvailable'] == "true",
+        attendAvailable: x['attendAvailable'],
         avgAbsPer: int.parse(x['avgAbsPer'].toString()),
         avgAttPer: double.parse(x['avgAttPer'].toString()),
         data: [for (var item in x['data']) subjectAttendance(item)]);
@@ -42,15 +42,23 @@ class FirestoretoModel {
     return _sa;
   }
 
+  List<CGPASemResult> result(var x) {
+    List<CGPASemResult> _lr = [];
+    for (var item in x) {
+      _lr.add(item);
+    }
+    return _lr;
+  }
+
   CGPASemResult cgpaSemResult(var x) {
     CGPASemResult _csr;
     _csr = new CGPASemResult(
       sem: (x['sem']),
       creditEarned: (x['creditEarned']),
       sgpa: (x['sgpa']),
-      deactive: x['deactive'] == 'true',
-      fail: x['fail'] == 'true',
-      underHold: x['underHold'] == 'true',
+      deactive: x['deactive'],
+      fail: x['fail'],
+      underHold: x['underHold'],
       details: [for (var i in x['details']) detailedResult(i)],
     );
     return _csr;

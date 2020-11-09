@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/pages/attendance_page.dart';
-import 'package:iteraio/pages/events_page.dart';
+import 'package:iteraio/pages/events/events_page.dart';
 import 'package:iteraio/pages/profile_page.dart';
 import 'package:iteraio/pages/result_page.dart';
-import 'package:iteraio/pages/clubs_page.dart';
+import 'package:iteraio/pages/clubs/clubs_page.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.perm_contact_cal),
                   label: 'Attendance',
                 ),
-                if (isMobile)
+                if (isMobile || !noInternet)
                   BottomNavigationBarItem(
                     icon: Icon(Icons.event_note),
                     label: 'Events',
@@ -38,13 +38,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: 'Result',
                   ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.group),
-                  label: 'Clubs',
-                ),
-                BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   label: 'Profile',
                 ),
+                if (isMobile || !noInternet)
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.group),
+                    label: 'Clubs',
+                  ),
               ],
               type: BottomNavigationBarType.shifting,
               showSelectedLabels: true,
@@ -74,8 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ? EventsPage()
                           : ResultPage()
                   : _currentIndex == 2
-                      ? ClubsPage()
-                      : ProfilePage(),
+                      ? ProfilePage()
+                      : ClubsPage(),
             ),
           ),
           if (MediaQuery.of(context).size.width > 700)
@@ -121,11 +122,12 @@ class _MyHomePageState extends State<MyHomePage> {
       // unselectedIconTheme: IconThemeData(color: Colors.orange),
       destinations: [
         textDestination("Attendance", Icon(Icons.perm_contact_calendar)),
-        isMobile
+        isMobile || !noInternet
             ? textDestination("Events", Icon(Icons.event_note))
             : textDestination("Result", Icon(Icons.description)),
-        textDestination("Clubs", Icon(Icons.group)),
         textDestination("Profile", Icon(Icons.person)),
+        if (isMobile || !noInternet)
+          textDestination("Clubs", Icon(Icons.group)),
       ],
     );
   }

@@ -42,6 +42,7 @@ dependencies:
   package_info: ^0.4.3
   rflutter_alert: ^1.1.0
   shared_preferences: ^0.5.12+4
+  badges: ^1.1.3
   # Path
   path_provider: ^1.6.22
   path: ^1.7.0

@@ -64,3 +64,5 @@ List<String> clubsDoc = [];
 AttendanceInfo oldai;
 List<CGPASemResult> oldres;
 ProfileInfo oldpi;
+
+bool isAttUpdated;

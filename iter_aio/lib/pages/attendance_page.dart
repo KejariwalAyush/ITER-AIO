@@ -18,6 +18,7 @@ import 'package:iteraio/widgets/on_pop.dart';
 import 'package:iteraio/widgets/show_notification.dart';
 import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:iteraio/models/firestore_to_model.dart';
 
 class AttendancePage extends StatefulWidget {
   static const routeName = "/attendance-page";
@@ -29,7 +30,7 @@ class _AttendancePageState extends State<AttendancePage> {
   GlobalKey _attendanceContainer = new GlobalKey();
   int originalSize = 1080;
   Widget load = Container(height: 200, child: loading());
-  var _profile, _attendance;
+  // var _profile, _attendance;
   Timer _t1, _t2;
 
   @override
@@ -40,13 +41,15 @@ class _AttendancePageState extends State<AttendancePage> {
         load = buildNoAttendenceScreen(context);
       });
     });
-    _t2 = Timer(Duration(milliseconds: 800), () async {
+    _t2 = Timer(Duration(milliseconds: 500), () async {
       await Future.microtask(() => loginFetch.getLogin());
-      if (!serverError)
-        setState(() {
-          _profile = pi.getProfile();
-          _attendance = af.getAttendance();
-        });
+      // if (!serverError)
+      //   setState(() {
+      //     _profile = users.doc(regdNo).get().then(
+      //         (value) => FirestoretoModel().profileInfo(value['profile']));
+      //     _attendance = users.doc(regdNo).get().then((value) =>
+      //         FirestoretoModel().attendanceInfo(value['attendance']));
+      //   });
     });
     if (isUpdateAvailable) UpdateFetch().showUpdateDialog(context);
     super.initState();
@@ -172,7 +175,9 @@ class _AttendancePageState extends State<AttendancePage> {
                           child: buildHeader(context),
                         ),
                         FutureBuilder<AttendanceInfo>(
-                          future: _attendance,
+                          future: users.doc(regdNo).get().then((value) =>
+                              FirestoretoModel()
+                                  .attendanceInfo(value['attendance'])),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData)
                               return load;
@@ -407,7 +412,7 @@ class _AttendancePageState extends State<AttendancePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  sat.bunkText,
+                  sat.bunkText.replaceAll(', ', '\n'),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -494,7 +499,8 @@ class _AttendancePageState extends State<AttendancePage> {
             //       builder: (context) => ResultPage(),
             //     )),
             child: FutureBuilder<ProfileInfo>(
-              future: _profile,
+              future: users.doc(regdNo).get().then(
+                  (value) => FirestoretoModel().profileInfo(value['profile'])),
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
                   return FutureBuilder<LoginData>(
