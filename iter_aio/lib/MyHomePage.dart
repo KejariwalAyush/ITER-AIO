@@ -4,6 +4,7 @@ import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/events_page.dart';
 import 'package:iteraio/pages/profile_page.dart';
 import 'package:iteraio/pages/result_page.dart';
+import 'package:iteraio/pages/clubs_page.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -37,6 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: 'Result',
                   ),
                 BottomNavigationBarItem(
+                  icon: Icon(Icons.group),
+                  label: 'Clubs',
+                ),
+                BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   label: 'Profile',
                 ),
@@ -68,7 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       : isMobile
                           ? EventsPage()
                           : ResultPage()
-                  : ProfilePage(),
+                  : _currentIndex == 2
+                      ? ClubsPage()
+                      : ProfilePage(),
             ),
           ),
           if (MediaQuery.of(context).size.width > 700)
@@ -117,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
         isMobile
             ? textDestination("Events", Icon(Icons.event_note))
             : textDestination("Result", Icon(Icons.description)),
+        textDestination("Clubs", Icon(Icons.group)),
         textDestination("Profile", Icon(Icons.person)),
       ],
     );

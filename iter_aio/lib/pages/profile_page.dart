@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Text(
             _desc,
-            overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.clip,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,

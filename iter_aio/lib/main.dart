@@ -112,7 +112,20 @@ class _MyAppState extends State<MyApp> {
 
   Future _getThingsOnStartup() async {
     UpdateFetch().fetchupdate(context);
-    // await Future.delayed(Duration(seconds: 0));
+    clubsName = await clubs.get().then((QuerySnapshot querySnapshot) {
+      List<String> _list = [];
+      querySnapshot.docs.forEach((doc) {
+        _list.add(doc['name']);
+      });
+      return _list;
+    });
+    clubsDoc = await clubs.get().then((QuerySnapshot querySnapshot) {
+      List<String> _list = [];
+      querySnapshot.docs.forEach((doc) {
+        _list.add(doc.id);
+      });
+      return _list;
+    });
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       appName = packageInfo.appName;

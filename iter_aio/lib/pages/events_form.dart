@@ -112,16 +112,7 @@ class _EventsFormState extends State<EventsForm> {
               // initialValue: 'CODEX',
               hint: Text('Select Club'),
               validators: [FormBuilderValidators.required()],
-              items: [
-                'CODEX',
-                'IRC',
-                'Sristi',
-                'SMC',
-                'O-Danza',
-                'Virtual Showreel',
-                'ASME',
-                'JAAGO'
-              ]
+              items: clubsName
                   .map((club) =>
                       DropdownMenuItem(value: club, child: Text("$club")))
                   .toList(),
