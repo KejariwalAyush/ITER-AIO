@@ -14,6 +14,10 @@ class EventsPage extends StatefulWidget {
 
 class _EventsPageState extends State<EventsPage> {
   var query = [];
+  TextEditingController _searchQueryController = TextEditingController();
+  bool _isSearching = false;
+  String searchQuery = "Search query";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,37 +29,29 @@ class _EventsPageState extends State<EventsPage> {
               srestart: true)
           .widgetDrawer(context),
       appBar: AppBar(
-        title: Text('Events'),
+        title: _isSearching ? _buildSearchField() : Text('Events'),
         centerTitle: true,
-        leading: MediaQuery.of(context).size.width > 700
-            ? SizedBox()
-            : Builder(
-                builder: (context) => IconButton(
-                  icon: new Icon(Icons.apps),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                ),
-              ),
-        actions: [
-          if (admin)
-            IconButton(
-              icon: Icon(Icons.add_box),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EventsForm(),
-                  )),
-            ),
-        ],
+        leading: _isSearching
+            ? const BackButton()
+            : MediaQuery.of(context).size.width > 700
+                ? SizedBox()
+                : Builder(
+                    builder: (context) => IconButton(
+                      icon: new Icon(Icons.apps),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
+                    ),
+                  ),
+        actions: _buildActions(),
         elevation: 15,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(35),
-          // bottomRight: Radius.circular(25)
-        )),
+                // bottomLeft: Radius.circular(35),
+                // bottomRight: Radius.circular(25)
+                )),
       ),
       body: Container(
         child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('events').snapshots(),
+            stream: events.snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData)
@@ -84,70 +80,75 @@ class _EventsPageState extends State<EventsPage> {
 
   Widget buildEventTile(String imgUrl, String title, String shortDesc,
       String clubName, String eventDate) {
-    return InkWell(
-      onTap: () {},
-      child: Column(
-        children: <Widget>[
-          Container(
-            width: double.maxFinite,
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            decoration: new BoxDecoration(
-              color: colorDark.withOpacity(0.7),
-              shape: BoxShape.rectangle,
-              borderRadius: new BorderRadius.circular(10.0),
+    var s = searchQuery.toLowerCase();
+    if (title.toLowerCase().contains(s) ||
+        clubName.toLowerCase().contains(s) ||
+        eventDate.toLowerCase().contains(s))
+      return InkWell(
+        onTap: () {},
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: double.maxFinite,
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: new BoxDecoration(
+                color: colorDark.withOpacity(0.7),
+                shape: BoxShape.rectangle,
+                borderRadius: new BorderRadius.circular(10.0),
+              ),
+              child: MediaQuery.of(context).size.width < 700
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          'Event Date: $eventDate',
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w300),
+                        ),
+                        buildImage(imgUrl),
+                        buildRichText(title, shortDesc, clubName),
+                      ],
+                    )
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Expanded(
+                          child: buildImage(imgUrl),
+                        ),
+                        Expanded(
+                          child: buildRichText(title, shortDesc, clubName),
+                        ),
+                      ],
+                    ),
             ),
-            child: MediaQuery.of(context).size.width < 700
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      buildImage(imgUrl),
-                      buildRichText(eventDate, title, shortDesc, clubName),
-                    ],
-                  )
-                : Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Expanded(
-                        child: buildImage(imgUrl),
-                      ),
-                      Expanded(
-                        child: buildRichText(
-                            eventDate, title, shortDesc, clubName),
-                      ),
-                    ],
-                  ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    return SizedBox.shrink();
   }
 
-  RichText buildRichText(
-      String eventDate, String title, String shortDesc, String clubName) {
+  RichText buildRichText(String title, String shortDesc, String clubName) {
     return RichText(
       textAlign: TextAlign.start,
+      overflow: TextOverflow.clip,
       text: TextSpan(
-          // text: 'Event Date: $eventDate',
-          style: TextStyle(color: Colors.grey[400], fontSize: 15),
+          // style: TextStyle(color: Colors.grey[400], fontSize: 15),
           children: <TextSpan>[
-            TextSpan(
-              text: 'Event Date: $eventDate',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-            ),
             TextSpan(
               text: '\n$title',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             TextSpan(
               text: '\n$shortDesc',
-              style: TextStyle(color: Colors.white70, fontSize: 16),
+              style: TextStyle(fontSize: 16),
             ),
             TextSpan(
-              text: '\n$clubName',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              text: '\n\n$clubName',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
           ]),
     );
@@ -160,10 +161,90 @@ class _EventsPageState extends State<EventsPage> {
               imgUrl,
               height: 170,
             )
-          : Icon(
-              Icons.image,
-              size: 100,
-            ),
+          : SizedBox.shrink(),
+      // : Icon(
+      //     Icons.image,
+      //     size: 100,
+      //   ),
     );
+  }
+
+  /// search query methods
+  Widget _buildSearchField() {
+    return TextField(
+      controller: _searchQueryController,
+      autofocus: true,
+      decoration: InputDecoration(
+        hintText: "Search Data...",
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: Colors.white30),
+      ),
+      style: TextStyle(color: Colors.white, fontSize: 16.0),
+      onChanged: (query) => updateSearchQuery(query),
+    );
+  }
+
+  List<Widget> _buildActions() {
+    if (_isSearching) {
+      return <Widget>[
+        IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            if (_searchQueryController == null ||
+                _searchQueryController.text.isEmpty) {
+              Navigator.pop(context);
+              return;
+            }
+            _clearSearchQuery();
+          },
+        ),
+      ];
+    }
+
+    return <Widget>[
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: _startSearch,
+      ),
+      if (admin)
+        IconButton(
+          icon: Icon(Icons.add_box),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EventsForm(),
+              )),
+        ),
+    ];
+  }
+
+  void _startSearch() {
+    ModalRoute.of(context)
+        .addLocalHistoryEntry(LocalHistoryEntry(onRemove: _stopSearching));
+
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void updateSearchQuery(String newQuery) {
+    setState(() {
+      searchQuery = newQuery;
+    });
+  }
+
+  void _stopSearching() {
+    _clearSearchQuery();
+
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  void _clearSearchQuery() {
+    setState(() {
+      _searchQueryController.clear();
+      updateSearchQuery("");
+    });
   }
 }

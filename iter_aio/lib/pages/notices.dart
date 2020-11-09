@@ -60,9 +60,9 @@ class _NoticesState extends State<Notices> {
           elevation: 15,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(35),
-            // bottomRight: Radius.circular(25)
-          )),
+                  // bottomLeft: Radius.circular(35),
+                  // bottomRight: Radius.circular(25)
+                  )),
         ),
         bottomNavigationBar: (MediaQuery.of(context).size.width > 700)
             ? SizedBox.shrink()

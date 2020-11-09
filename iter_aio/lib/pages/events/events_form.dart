@@ -21,9 +21,9 @@ class _EventsFormState extends State<EventsForm> {
         automaticallyImplyLeading: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(35),
-          // bottomRight: Radius.circular(25)
-        )),
+                // bottomLeft: Radius.circular(35),
+                // bottomRight: Radius.circular(25)
+                )),
       ),
       body: Container(
         padding: EdgeInsets.all(8),
@@ -137,6 +137,15 @@ class _EventsFormState extends State<EventsForm> {
             FormBuilderTextField(
               attribute: 'imgUrl',
               decoration: InputDecoration(labelText: "Image Url (Optional)"),
+              validators: [
+                FormBuilderValidators.url(),
+              ],
+              autocorrect: true,
+            ),
+            FormBuilderTextField(
+              attribute: 'link',
+              decoration:
+                  InputDecoration(labelText: "Link to Form/Website (Optional)"),
               validators: [
                 FormBuilderValidators.url(),
               ],

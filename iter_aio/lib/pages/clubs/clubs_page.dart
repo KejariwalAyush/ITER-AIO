@@ -36,9 +36,9 @@ class _ClubsPageState extends State<ClubsPage> {
               ),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(35),
-          // bottomRight: Radius.circular(25)
-        )),
+                // bottomLeft: Radius.circular(35),
+                // bottomRight: Radius.circular(25)
+                )),
       ),
       body: Container(
         child: FutureBuilder<List<String>>(
