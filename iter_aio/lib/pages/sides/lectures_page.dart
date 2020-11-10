@@ -40,9 +40,10 @@ class _LecturesPageState extends State<LecturesPage> {
                 onPressed: () => Navigator.pop(context),
               ),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
+            // borderRadius: BorderRadius.only(
+            // bottomLeft: Radius.circular(25),
+            // bottomRight: Radius.circular(25))
+            ),
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

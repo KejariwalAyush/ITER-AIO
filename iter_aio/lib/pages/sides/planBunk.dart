@@ -8,6 +8,7 @@ import 'package:iteraio/components/Icons.dart';
 import 'package:iteraio/helper/bunk.dart';
 import 'package:iteraio/models/attendance_info.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
+import 'package:iteraio/models/firestore_to_model.dart';
 
 class PlanBunk extends StatefulWidget {
   static const routeName = "/plan-bunk";
@@ -46,9 +47,10 @@ class _PlanBunkState extends State<PlanBunk> {
         //   ),
         // ],
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
+            // borderRadius: BorderRadius.only(
+            //     bottomLeft: Radius.circular(25),
+            //     bottomRight: Radius.circular(25))
+            ),
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -59,7 +61,8 @@ class _PlanBunkState extends State<PlanBunk> {
           Expanded(
             flex: 2,
             child: FutureBuilder<AttendanceInfo>(
-                future: af.getAttendance(),
+                future: users.doc(regdNo).get().then((value) =>
+                    FirestoretoModel().attendanceInfo(value['attendance'])),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
                     return buildNoData();
@@ -177,7 +180,7 @@ class _PlanBunkState extends State<PlanBunk> {
                                     // print(value);
                                     setState(() {
                                       resText = Bunk().planBunkLogic(
-                                          jsonDecode(jsonEncode(subdata)),
+                                          jsonDecode((subdata)),
                                           ebunk: int.parse(value));
                                     });
                                     // print(resText);

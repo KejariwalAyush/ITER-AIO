@@ -50,9 +50,10 @@ class _CoursesPageState extends State<CoursesPage> {
                 onPressed: () => Navigator.pop(context),
               ),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
+            // borderRadius: BorderRadius.only(
+            //     bottomLeft: Radius.circular(25),
+            //     bottomRight: Radius.circular(25))
+            ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: buildFloatingButton(),

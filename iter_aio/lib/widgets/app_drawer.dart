@@ -19,7 +19,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:iteraio/MyHomePage.dart';
 
 class CustomAppDrawer {
-  final bool noInternet;
   final bool slectures; //show Lectures
   final bool sresult; // show results
   final bool sstudyMaterial;
@@ -31,8 +30,7 @@ class CustomAppDrawer {
   final bool srestart;
 
   CustomAppDrawer(
-      {this.noInternet = false,
-      this.sbunk = false,
+      {this.sbunk = false,
       this.slectures = false,
       this.sresult = false,
       this.sstudyMaterial = true,
