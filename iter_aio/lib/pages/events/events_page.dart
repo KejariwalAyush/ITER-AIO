@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:intl/intl.dart';
+import 'package:iteraio/pages/events/event_desc.dart';
 
 class EventsPage extends StatefulWidget {
   @override
@@ -59,19 +60,27 @@ class _EventsPageState extends State<EventsPage> {
               else
                 return ListView(
                     children: snapshot.data.docs.map((doc) {
-                  return TweenAnimationBuilder(
-                      duration: Duration(milliseconds: 500),
-                      tween: Tween<double>(begin: 0, end: 1),
-                      builder: (context, value, child) => Transform.scale(
-                            scale: value,
-                            child: buildEventTile(
-                                doc['imgUrl'],
-                                doc['title'],
-                                doc['shortDesc'],
-                                doc['clubName'],
-                                new DateFormat.MMMd()
-                                    .format(doc['eventDate'].toDate())),
-                          ));
+                  return InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EventDesc(doc: doc),
+                        )),
+                    child: TweenAnimationBuilder(
+                        duration: Duration(milliseconds: 500),
+                        tween: Tween<double>(begin: 0, end: 1),
+                        builder: (context, value, child) => Transform.scale(
+                              scale: value,
+                              child: buildEventTile(
+                                  doc['imgUrl'],
+                                  doc['title'],
+                                  doc['shortDesc'],
+                                  doc['clubName'],
+                                  new DateFormat.MMMd()
+                                      .format(doc['eventDate'].toDate()),
+                                  doc['hashtags']),
+                            )),
+                  );
                 }).toList());
             }),
       ),
@@ -79,59 +88,68 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   Widget buildEventTile(String imgUrl, String title, String shortDesc,
-      String clubName, String eventDate) {
+      String clubName, String eventDate, List hashtags) {
     var s = searchQuery.toLowerCase();
-    if (title.toLowerCase().contains(s) ||
+    if (!_isSearching ||
+        title.toLowerCase().contains(s) ||
         clubName.toLowerCase().contains(s) ||
-        eventDate.toLowerCase().contains(s))
-      return InkWell(
-        onTap: () {},
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              decoration: new BoxDecoration(
-                color: colorDark.withOpacity(0.7),
-                shape: BoxShape.rectangle,
-                borderRadius: new BorderRadius.circular(10.0),
-              ),
-              child: MediaQuery.of(context).size.width < 700
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          'Event Date: $eventDate',
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w300),
-                        ),
-                        buildImage(imgUrl),
-                        buildRichText(title, shortDesc, clubName),
-                      ],
-                    )
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          child: buildImage(imgUrl),
-                        ),
-                        Expanded(
-                          child: buildRichText(title, shortDesc, clubName),
-                        ),
-                      ],
-                    ),
+        eventDate.toLowerCase().contains(s) ||
+        hashtags.contains(s))
+      return Column(
+        children: <Widget>[
+          Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            decoration: new BoxDecoration(
+              color: colorDark.withOpacity(0.7),
+              shape: BoxShape.rectangle,
+              borderRadius: new BorderRadius.circular(10.0),
             ),
-          ],
-        ),
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.start,
+              runAlignment: WrapAlignment.start,
+              direction: Axis.horizontal,
+              children: [
+                buildClubName(clubName),
+                buildEventDate(eventDate),
+                buildImage(imgUrl),
+                buildRichText(title, shortDesc)
+              ],
+            ),
+          ),
+        ],
       );
     return SizedBox.shrink();
   }
 
-  RichText buildRichText(String title, String shortDesc, String clubName) {
+  Widget buildClubName(String clubName) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+        decoration: BoxDecoration(
+            color: colorDark.withOpacity(1),
+            borderRadius: BorderRadius.circular(10)),
+        child: Text(
+          '$clubName',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+      ),
+    );
+  }
+
+  Text buildEventDate(String eventDate) {
+    return Text(
+      'Event Date: $eventDate',
+      textAlign: TextAlign.end,
+      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+    );
+  }
+
+  RichText buildRichText(String title, String shortDesc) {
     return RichText(
       textAlign: TextAlign.start,
       overflow: TextOverflow.clip,
@@ -146,10 +164,10 @@ class _EventsPageState extends State<EventsPage> {
               text: '\n$shortDesc',
               style: TextStyle(fontSize: 16),
             ),
-            TextSpan(
-              text: '\n\n$clubName',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-            ),
+            // TextSpan(
+            //   text: '\n\n$clubName',
+            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            // ),
           ]),
     );
   }
