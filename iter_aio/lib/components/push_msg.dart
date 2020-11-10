@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/components/splash_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 
 class PushMessagingExample extends StatefulWidget {
   @override
@@ -69,6 +70,11 @@ class _PushMessagingExampleState extends State<PushMessagingExample> {
       assert(token != null);
       setState(() {
         _homeScreenText = "Push Messaging token: $token";
+        users
+            .doc(regdNo)
+            .update({'fcmToken': token})
+            .then((value) => print("FCM token Updated"))
+            .catchError((error) => print("Failed to update token: $error"));
       });
       print(_homeScreenText);
     });

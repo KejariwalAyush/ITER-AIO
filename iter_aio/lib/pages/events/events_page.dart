@@ -52,7 +52,7 @@ class _EventsPageState extends State<EventsPage> {
       ),
       body: Container(
         child: StreamBuilder(
-            stream: events.snapshots(),
+            stream: events.orderBy('eventDate', descending: false).snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData)
@@ -172,18 +172,21 @@ class _EventsPageState extends State<EventsPage> {
     );
   }
 
-  Center buildImage(String imgUrl) {
-    return Center(
-      child: imgUrl != null && imgUrl != ''
-          ? Image.network(
-              imgUrl,
-              height: 170,
-            )
-          : SizedBox.shrink(),
-      // : Icon(
-      //     Icons.image,
-      //     size: 100,
-      //   ),
+  Container buildImage(String imgUrl) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Center(
+        child: imgUrl != null && imgUrl != ''
+            ? Image.network(
+                imgUrl,
+                height: 170,
+              )
+            : SizedBox.shrink(),
+        // : Icon(
+        //     Icons.image,
+        //     size: 100,
+        //   ),
+      ),
     );
   }
 

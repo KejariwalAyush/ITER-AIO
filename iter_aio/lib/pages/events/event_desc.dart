@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iteraio/Utilities/Theme.dart';
+import 'package:iteraio/Utilities/global_var.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventDesc extends StatefulWidget {
   final QueryDocumentSnapshot doc;
@@ -12,6 +14,7 @@ class EventDesc extends StatefulWidget {
 }
 
 class _EventDescState extends State<EventDesc> {
+  bool isIntrested = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +24,33 @@ class _EventDescState extends State<EventDesc> {
           overflow: TextOverflow.ellipsis,
         ),
         centerTitle: true,
+        actions: [
+          if (admin && regdNo == widget.doc['adminRegdNo'])
+            IconButton(
+              icon: Icon(Icons.delete_forever),
+              tooltip: 'Delete this Event',
+              onPressed: () {
+                events.doc(widget.doc.id).delete().then((value) {
+                  print("Event Deleted");
+                  Navigator.pop(context);
+                }).catchError(
+                    (error) => print("Failed to delete user: $error"));
+              },
+            )
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         isExtended: true,
-        icon: Icon(Icons.local_fire_department),
-        label: Text('I\'m Intrested'),
+        icon: Icon(
+          Icons.local_fire_department,
+          color: brightness == Brightness.dark ? Colors.white : Colors.black,
+        ),
+        label: Text(
+          'I\'m Intrested',
+          style: TextStyle(
+              color:
+                  brightness == Brightness.dark ? Colors.white : Colors.black),
+        ),
         backgroundColor: colorDark.withOpacity(1),
         onPressed: () {},
       ),
@@ -91,6 +116,8 @@ class _EventDescState extends State<EventDesc> {
 
   Column buildHastags() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
             alignment: Alignment.centerLeft,
@@ -99,22 +126,25 @@ class _EventDescState extends State<EventDesc> {
               'Hashtags',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             )),
-        Wrap(
-          children: [
-            for (var hashtag in widget.doc['hashtags'])
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                margin: EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                    color: colorDark.withOpacity(1),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Text(
-                  hashtag,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        Container(
+          padding: EdgeInsets.all(10),
+          child: Wrap(
+            children: [
+              for (var hashtag in widget.doc['hashtags'])
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  margin: EdgeInsets.all(3),
+                  decoration: BoxDecoration(
+                      color: colorDark.withOpacity(1),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    hashtag,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -122,7 +152,7 @@ class _EventDescState extends State<EventDesc> {
 
   Widget buildLink() {
     return InkWell(
-      onTap: () {},
+      onTap: () => _launchURL(widget.doc['link']),
       child: Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.all(10),
@@ -180,5 +210,14 @@ class _EventDescState extends State<EventDesc> {
         ],
       ),
     );
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+    return;
   }
 }

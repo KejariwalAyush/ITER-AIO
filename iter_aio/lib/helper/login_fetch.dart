@@ -118,6 +118,7 @@ class LoginFetch {
           'regdNo': regdNo,
           'fullName': '',
           'sem': 2,
+          'fcmToken': '',
           'admin': false,
           'profile': {
             "name": '',
