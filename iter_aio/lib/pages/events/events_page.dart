@@ -61,11 +61,14 @@ class _EventsPageState extends State<EventsPage> {
                 return ListView(
                     children: snapshot.data.docs.map((doc) {
                   return InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EventDesc(doc: doc),
-                        )),
+                    onTap: () {
+                      events.doc(doc.id).update({'views': (doc['views'] + 1)});
+                      return Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EventDesc(doc: doc),
+                          ));
+                    },
                     child: TweenAnimationBuilder(
                         duration: Duration(milliseconds: 500),
                         tween: Tween<double>(begin: 0, end: 1),

@@ -363,18 +363,22 @@ class _AttendancePageState extends State<AttendancePage> {
                                     textAlign: TextAlign.start,
                                   );
                               }),
-                          if (sat.lattper != 0 && sat.latt != 'Not Applicable')
+                          if (sat.latt != '0 / 0' &&
+                              sat.latt != '0/0' &&
+                              sat.latt != 'Not Applicable')
                             Text(
                               'Lecture: ${sat.latt} (${sat.lattper}%)',
                               textAlign: TextAlign.start,
                             ),
                           if (sat.patt != '0 / 0' &&
+                              sat.patt != '0/0' &&
                               sat.patt != 'Not Applicable')
                             Text(
                               'Practical: ${sat.patt} (${sat.pattper}%)',
                               textAlign: TextAlign.start,
                             ),
                           if (sat.tatt != '0 / 0' &&
+                              sat.tatt != '0/0' &&
                               sat.tatt != 'Not Applicable')
                             Text(
                               'Theory: ${sat.tatt} (${sat.tattper}%)',

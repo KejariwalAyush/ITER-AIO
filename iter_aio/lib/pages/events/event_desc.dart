@@ -15,6 +15,19 @@ class EventDesc extends StatefulWidget {
 
 class _EventDescState extends State<EventDesc> {
   bool isIntrested = false;
+  var intrestedButton = 'I\'m Intrested';
+  List list;
+
+  @override
+  void initState() {
+    setState(() {
+      list = widget.doc['intrestedPeople'].toList();
+      if (list.contains(regdNo)) intrestedButton = 'You are intrested!';
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +59,32 @@ class _EventDescState extends State<EventDesc> {
           color: brightness == Brightness.dark ? Colors.white : Colors.black,
         ),
         label: Text(
-          'I\'m Intrested',
+          intrestedButton,
           style: TextStyle(
               color:
                   brightness == Brightness.dark ? Colors.white : Colors.black),
         ),
         backgroundColor: colorDark.withOpacity(1),
-        onPressed: () {},
+        onPressed: () {
+          if (list.contains(regdNo))
+            setState(() {
+              intrestedButton = 'You are Intrested!';
+              isIntrested = true;
+            });
+          else
+            setState(() {
+              list.add(regdNo);
+              events
+                  .doc(widget.doc.id)
+                  .update({'intrestedPeople': list}).then((value) {
+                setState(() {
+                  intrestedButton = 'You are Intrested!';
+                  isIntrested = true;
+                });
+                return 'sucess';
+              });
+            });
+        },
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -71,7 +103,8 @@ class _EventDescState extends State<EventDesc> {
                   FlatButton.icon(
                     icon: Icon(Icons.local_fire_department),
                     onPressed: () {},
-                    label: Text('${widget.doc['intrested']} intrested'),
+                    label: Text(
+                        '${widget.doc['intrestedPeople'].length} intrested'),
                   ),
                 ],
               ),

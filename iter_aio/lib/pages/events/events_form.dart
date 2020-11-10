@@ -208,36 +208,57 @@ class _EventsFormState extends State<EventsForm> {
               decoration:
                   InputDecoration(labelText: "Publish Date (Non Editable)"),
             ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: FormBuilderTextField(
-                    decoration: InputDecoration(labelText: "No. of Intrests"),
-                    attribute: "intrested",
-                    validators: [
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.numeric()
-                    ],
-                    initialValue: '0',
-                    readOnly: true,
+
+            /// adding list of student refs
+            if (false)
+              // ignore: dead_code
+              FormBuilderChipsInput(
+                allowChipEditing: true,
+                initialValue: [regdNo], maxChips: 1,
+                // textCapitalization: TextCapitalization.words,
+                attribute: 'intrestedPeople',
+                chipBuilder: (context, state, title) {
+                  return InputChip(
+                    key: ObjectKey(title),
+                    label: Text(title),
+                    onDeleted: () => state.deleteChip(title),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  );
+                },
+                // validators: [FormBuilderValidators.pattern('')],
+                decoration: InputDecoration(labelText: "Intrested People"),
+                suggestionBuilder: (context, state, title) {
+                  return ListTile(
+                    key: ObjectKey(title),
+                    title: Text(title),
+                    onTap: () => state.selectSuggestion(title),
+                  );
+                },
+                findSuggestions: (String query) {
+                  return <String>[query];
+                },
+              ),
+
+            /// disabled tf
+            if (false)
+              // ignore: dead_code
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: FormBuilderTextField(
+                      decoration: InputDecoration(labelText: "No. of Views"),
+                      attribute: "views",
+                      validators: [
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.numeric()
+                      ],
+                      initialValue: '0',
+                      readOnly: true,
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: FormBuilderTextField(
-                    decoration: InputDecoration(labelText: "No. of Views"),
-                    attribute: "views",
-                    validators: [
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.numeric()
-                    ],
-                    initialValue: '0',
-                    readOnly: true,
-                  ),
-                ),
-              ],
-            )
+                ],
+              )
           ],
         ),
       ),

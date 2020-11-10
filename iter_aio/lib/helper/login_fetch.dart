@@ -119,6 +119,8 @@ class LoginFetch {
           'fullName': '',
           'sem': 2,
           'fcmToken': '',
+          'imgUrl': '',
+          'clubsRequested': [],
           'admin': false,
           'profile': {
             "name": '',
