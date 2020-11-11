@@ -184,21 +184,31 @@ class _EventsFormState extends State<EventsForm> {
                 return <String>[query];
               },
             ),
-            FormBuilderTextField(
-              attribute: 'adminName',
-              readOnly: true,
-              validators: [FormBuilderValidators.required()],
-              decoration:
-                  InputDecoration(labelText: "Admin Name (Non Editable)"),
-              initialValue: name,
-            ),
-            FormBuilderTextField(
-              attribute: 'adminRegdNo',
-              readOnly: true,
-              validators: [FormBuilderValidators.required()],
-              decoration:
-                  InputDecoration(labelText: "Admin Regd. No. (Non Editable)"),
-              initialValue: regdNo,
+
+            /// non editable feilds
+            Row(
+              children: [
+                Expanded(
+                  child: FormBuilderTextField(
+                    attribute: 'adminName',
+                    readOnly: true,
+                    validators: [FormBuilderValidators.required()],
+                    decoration:
+                        InputDecoration(labelText: "Admin Name (Non Editable)"),
+                    initialValue: name,
+                  ),
+                ),
+                Expanded(
+                  child: FormBuilderTextField(
+                    attribute: 'adminRegdNo',
+                    readOnly: true,
+                    validators: [FormBuilderValidators.required()],
+                    decoration: InputDecoration(
+                        labelText: "Admin Regd. No. (Non Editable)"),
+                    initialValue: regdNo,
+                  ),
+                ),
+              ],
             ),
             FormBuilderDateTimePicker(
               attribute: "time",
@@ -210,55 +220,68 @@ class _EventsFormState extends State<EventsForm> {
             ),
 
             /// adding list of student refs
-            if (false)
-              // ignore: dead_code
-              FormBuilderChipsInput(
-                allowChipEditing: true,
-                initialValue: [regdNo], maxChips: 1,
-                // textCapitalization: TextCapitalization.words,
-                attribute: 'intrestedPeople',
-                chipBuilder: (context, state, title) {
-                  return InputChip(
-                    key: ObjectKey(title),
-                    label: Text(title),
-                    onDeleted: () => state.deleteChip(title),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  );
-                },
-                // validators: [FormBuilderValidators.pattern('')],
-                decoration: InputDecoration(labelText: "Intrested People"),
-                suggestionBuilder: (context, state, title) {
-                  return ListTile(
-                    key: ObjectKey(title),
-                    title: Text(title),
-                    onTap: () => state.selectSuggestion(title),
-                  );
-                },
-                findSuggestions: (String query) {
-                  return <String>[query];
-                },
-              ),
-
-            /// disabled tf
-            if (false)
-              // ignore: dead_code
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: FormBuilderTextField(
-                      decoration: InputDecoration(labelText: "No. of Views"),
-                      attribute: "views",
-                      validators: [
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.numeric()
-                      ],
-                      initialValue: '0',
-                      readOnly: true,
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  child: FormBuilderChipsInput(
+                    allowChipEditing: true, readOnly: true,
+                    initialValue: [],
+                    maxChips: 1,
+                    // textCapitalization: TextCapitalization.words,
+                    attribute: 'intrested',
+                    chipBuilder: (context, state, title) {
+                      return InputChip(
+                        key: ObjectKey(title),
+                        label: Text(title),
+                        onDeleted: () => state.deleteChip(title),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      );
+                    },
+                    // validators: [FormBuilderValidators.pattern('')],
+                    decoration: InputDecoration(labelText: "Intrested People"),
+                    suggestionBuilder: (context, state, title) {
+                      return ListTile(
+                        key: ObjectKey(title),
+                        title: Text(title),
+                        onTap: () => state.selectSuggestion(title),
+                      );
+                    },
+                    findSuggestions: (String query) {
+                      return <String>[query];
+                    },
                   ),
-                ],
-              )
+                ),
+                Expanded(
+                  child: FormBuilderChipsInput(
+                    allowChipEditing: true, readOnly: true,
+                    initialValue: [regdNo], maxChips: 1,
+                    // textCapitalization: TextCapitalization.words,
+                    attribute: 'views',
+                    chipBuilder: (context, state, title) {
+                      return InputChip(
+                        key: ObjectKey(title),
+                        label: Text(title),
+                        onDeleted: () => state.deleteChip(title),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      );
+                    },
+                    // validators: [FormBuilderValidators.pattern('')],
+                    decoration:
+                        InputDecoration(labelText: "Views will be added"),
+                    suggestionBuilder: (context, state, title) {
+                      return ListTile(
+                        key: ObjectKey(title),
+                        title: Text(title),
+                        onTap: () => state.selectSuggestion(title),
+                      );
+                    },
+                    findSuggestions: (String query) {
+                      return <String>[query];
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

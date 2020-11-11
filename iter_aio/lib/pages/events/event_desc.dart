@@ -4,6 +4,7 @@ import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:iteraio/pages/events/view_list.dart';
 
 class EventDesc extends StatefulWidget {
   final QueryDocumentSnapshot doc;
@@ -16,13 +17,24 @@ class EventDesc extends StatefulWidget {
 class _EventDescState extends State<EventDesc> {
   bool isIntrested = false;
   var intrestedButton = 'I\'m Intrested';
-  List list;
+  List intrestedList;
+  List views;
 
   @override
   void initState() {
     setState(() {
-      list = widget.doc['intrestedPeople'].toList();
-      if (list.contains(regdNo)) intrestedButton = 'You are intrested!';
+      // print(widget.doc['views'].toString());
+      views = widget.doc['views'].toList();
+      if (views != null && !views.contains(regdNo)) {
+        views.add(regdNo);
+        events.doc(widget.doc.id).update({'views': views});
+      }
+
+      // print(widget.doc['views'].toString());
+      intrestedList = widget.doc['intrested'].toList();
+      // print(intrestedList.toString().contains(regdNo));
+      if (intrestedList.toString().contains(regdNo))
+        intrestedButton = 'You are intrested!';
     });
 
     super.initState();
@@ -66,17 +78,17 @@ class _EventDescState extends State<EventDesc> {
         ),
         backgroundColor: colorDark.withOpacity(1),
         onPressed: () {
-          if (list.contains(regdNo))
+          if (intrestedList.toString().contains(regdNo))
             setState(() {
               intrestedButton = 'You are Intrested!';
               isIntrested = true;
             });
           else
             setState(() {
-              list.add(regdNo);
+              intrestedList.add({regdNo: name});
               events
                   .doc(widget.doc.id)
-                  .update({'intrestedPeople': list}).then((value) {
+                  .update({'intrested': intrestedList}).then((value) {
                 setState(() {
                   intrestedButton = 'You are Intrested!';
                   isIntrested = true;
@@ -98,13 +110,12 @@ class _EventDescState extends State<EventDesc> {
                   FlatButton.icon(
                     icon: Icon(Icons.remove_red_eye),
                     onPressed: () {},
-                    label: Text('${widget.doc['views']} views'),
+                    label: Text('${widget.doc['views'].length} views'),
                   ),
                   FlatButton.icon(
                     icon: Icon(Icons.local_fire_department),
                     onPressed: () {},
-                    label: Text(
-                        '${widget.doc['intrestedPeople'].length} intrested'),
+                    label: Text('${widget.doc['intrested'].length} intrested'),
                   ),
                 ],
               ),
@@ -137,6 +148,19 @@ class _EventDescState extends State<EventDesc> {
                   new DateFormat.yMMMMEEEEd()
                       .format(widget.doc['time'].toDate())),
               buildHeadingWithDesc('Published by', widget.doc['adminName']),
+              if (admin)
+                InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewList(
+                              title: 'Event Intrested List',
+                              list: intrestedList),
+                        )),
+                    child: ListTile(
+                      title: Text('List of Intrested peoples'),
+                      leading: Icon(Icons.list),
+                    )),
               SizedBox(
                 height: 10,
               ),
