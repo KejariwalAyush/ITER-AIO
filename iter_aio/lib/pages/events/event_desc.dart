@@ -5,6 +5,7 @@ import 'package:iteraio/Utilities/global_var.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:iteraio/pages/events/view_list.dart';
+import 'package:iteraio/widgets/show_notification.dart';
 
 class EventDesc extends StatefulWidget {
   final QueryDocumentSnapshot doc;
@@ -57,6 +58,9 @@ class _EventDescState extends State<EventDesc> {
               onPressed: () {
                 events.doc(widget.doc.id).delete().then((value) {
                   print("Event Deleted");
+                  Notify().showNotification(
+                      title: 'Event Deleted!',
+                      body: 'Event Deleted Sucessessful');
                   Navigator.pop(context);
                 }).catchError(
                     (error) => print("Failed to delete user: $error"));

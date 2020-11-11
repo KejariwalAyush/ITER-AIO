@@ -120,6 +120,7 @@ class LoginFetch {
           'sem': 2,
           'fcmToken': '',
           'imgUrl': '',
+          'emailId': '',
           'clubsRequested': [],
           'admin': false,
           'profile': {

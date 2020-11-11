@@ -15,7 +15,6 @@ import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/widgets/on_pop.dart';
-import 'package:iteraio/widgets/show_notification.dart';
 import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:iteraio/models/firestore_to_model.dart';
@@ -133,9 +132,8 @@ class _AttendancePageState extends State<AttendancePage> {
                     Icons.share,
                   ),
                   onPressed: () {
-                    if (isMobile)
-                      Notify().showNotification(
-                          title: 'Share', body: 'Share Attendence');
+                    // Notify().showNotification(
+                    //     title: 'Share', body: 'Share Attendence');
                     ShareFilesAndScreenshotWidgets().shareScreenshot(
                         _attendanceContainer,
                         originalSize,
