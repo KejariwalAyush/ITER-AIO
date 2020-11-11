@@ -65,98 +65,98 @@ class _AttendancePageState extends State<AttendancePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: OnPop(context: context).onWillPop,
-      child: RepaintBoundary(
-        key: _attendanceContainer,
-        child: Scaffold(
-          drawer: CustomAppDrawer(
-                  sresult: true,
-                  slectures: true,
-                  sbunk: true,
-                  slogout: true,
-                  srestart: true)
-              .widgetDrawer(context),
-          appBar: AppBar(
-            title: Text('ITER AIO'),
-            centerTitle: true,
-            elevation: 15,
-            leading: MediaQuery.of(context).size.width > 700
-                ? SizedBox()
-                : Builder(
-                    builder: (context) => IconButton(
-                      icon: new Icon(Icons.apps),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                    ),
+      child: Scaffold(
+        drawer: CustomAppDrawer(
+                sresult: true,
+                slectures: true,
+                sbunk: true,
+                slogout: true,
+                srestart: true)
+            .widgetDrawer(context),
+        appBar: AppBar(
+          title: Text('ITER AIO'),
+          centerTitle: true,
+          elevation: 15,
+          leading: MediaQuery.of(context).size.width > 700
+              ? SizedBox()
+              : Builder(
+                  builder: (context) => IconButton(
+                    icon: new Icon(Icons.apps),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
-            actions: <Widget>[
+                ),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: new Icon(
+                      Icons.notifications,
+                    ),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, Notices.routeName),
+                  ),
+                  // newNotification
+                  //     ? new Positioned(
+                  //         right: 11,
+                  //         top: 11,
+                  //         child: new Container(
+                  //           padding: EdgeInsets.all(2),
+                  //           decoration: new BoxDecoration(
+                  //             color: Colors.red,
+                  //             borderRadius: BorderRadius.circular(6),
+                  //           ),
+                  //           constraints: BoxConstraints(
+                  //             minWidth: 14,
+                  //             minHeight: 14,
+                  //           ),
+                  //           child: Text(
+                  //             ' ',
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 8,
+                  //             ),
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //         ),
+                  //       )
+                  //     : new Container()
+                ],
+              ),
+            ),
+            if (isMobile)
               Padding(
                 padding: const EdgeInsets.all(3.0),
-                child: Stack(
-                  children: [
-                    IconButton(
-                      icon: new Icon(
-                        Icons.notifications,
-                      ),
-                      onPressed: () =>
-                          Navigator.pushNamed(context, Notices.routeName),
-                    ),
-                    // newNotification
-                    //     ? new Positioned(
-                    //         right: 11,
-                    //         top: 11,
-                    //         child: new Container(
-                    //           padding: EdgeInsets.all(2),
-                    //           decoration: new BoxDecoration(
-                    //             color: Colors.red,
-                    //             borderRadius: BorderRadius.circular(6),
-                    //           ),
-                    //           constraints: BoxConstraints(
-                    //             minWidth: 14,
-                    //             minHeight: 14,
-                    //           ),
-                    //           child: Text(
-                    //             ' ',
-                    //             style: TextStyle(
-                    //               color: Colors.white,
-                    //               fontSize: 8,
-                    //             ),
-                    //             textAlign: TextAlign.center,
-                    //           ),
-                    //         ),
-                    //       )
-                    //     : new Container()
-                  ],
+                child: IconButton(
+                  icon: new Icon(
+                    Icons.share,
+                  ),
+                  onPressed: () {
+                    if (isMobile)
+                      Notify().showNotification(
+                          title: 'Share', body: 'Share Attendence');
+                    ShareFilesAndScreenshotWidgets().shareScreenshot(
+                        _attendanceContainer,
+                        originalSize,
+                        "MyAttendance",
+                        "Attendance.png",
+                        "image/png",
+                        text:
+                            "Here is My Attendance! Find out yours Download ITER-AIO from here http://tiny.cc/iteraio");
+                  },
                 ),
               ),
-              if (isMobile)
-                Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: IconButton(
-                    icon: new Icon(
-                      Icons.share,
-                    ),
-                    onPressed: () {
-                      if (isMobile)
-                        Notify().showNotification(
-                            title: 'Share', body: 'Share Attendence');
-                      ShareFilesAndScreenshotWidgets().shareScreenshot(
-                          _attendanceContainer,
-                          originalSize,
-                          "MyAttendance",
-                          "Attendance.png",
-                          "image/png",
-                          text:
-                              "Download ITER-AIO from here http://tiny.cc/iteraio");
-                    },
-                  ),
-                ),
-            ],
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    // bottomLeft: Radius.circular(35),
-                    // bottomRight: Radius.circular(25)
-                    )),
-          ),
-          body: Row(
+          ],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  // bottomLeft: Radius.circular(35),
+                  // bottomRight: Radius.circular(25)
+                  )),
+        ),
+        body: RepaintBoundary(
+          key: _attendanceContainer,
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -225,6 +225,9 @@ class _AttendancePageState extends State<AttendancePage> {
                             }
                           },
                         ),
+                        SizedBox(
+                          height: 5,
+                        ),
                       ],
                     ),
                   ),
@@ -268,7 +271,7 @@ class _AttendancePageState extends State<AttendancePage> {
     GlobalKey key = new GlobalKey(debugLabel: sat.subjectCode);
     return Container(
       padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light
             ? colorLight

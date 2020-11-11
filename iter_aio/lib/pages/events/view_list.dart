@@ -43,7 +43,7 @@ class _ViewListState extends State<ViewList> {
         leading: Icon(Icons.person),
       );
     else
-      SizedBox.shrink();
+      return SizedBox.shrink();
   }
 
   /// search query methods
