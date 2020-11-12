@@ -51,6 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
               showSelectedLabels: true,
               showUnselectedLabels: true,
               selectedItemColor: Colors.orangeAccent,
+              unselectedItemColor: brightness == Brightness.dark
+                  ? Colors.white60
+                  : Colors.black87,
               elevation: 15,
               currentIndex: _currentIndex,
               onTap: (value) {

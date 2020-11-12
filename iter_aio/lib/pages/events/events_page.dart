@@ -51,6 +51,8 @@ class _EventsPageState extends State<EventsPage> {
                 )),
       ),
       body: Container(
+        color: colorDark.withOpacity(0.15),
+        height: double.maxFinite,
         child: StreamBuilder(
             stream: events.orderBy('eventDate', descending: false).snapshots(),
             builder:
@@ -158,7 +160,7 @@ class _EventsPageState extends State<EventsPage> {
           children: <TextSpan>[
             TextSpan(
               text: '\n$title',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             TextSpan(
               text: '\n$shortDesc',
@@ -179,7 +181,7 @@ class _EventsPageState extends State<EventsPage> {
         child: imgUrl != null && imgUrl != ''
             ? Image.network(
                 imgUrl,
-                height: 170,
+                height: 150,
               )
             : SizedBox.shrink(),
         // : Icon(

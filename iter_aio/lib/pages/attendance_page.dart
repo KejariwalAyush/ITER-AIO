@@ -93,84 +93,89 @@ class _AttendancePageState extends State<AttendancePage> {
         ),
         body: RepaintBoundary(
           key: _attendanceContainer,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (MediaQuery.of(context).size.width > 700)
-                LargeAppDrawer().largeDrawer(context),
-              Expanded(
-                flex: 2,
-                child: SingleChildScrollView(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          margin: EdgeInsets.all(5),
-                          child: buildHeader(context),
-                        ),
-                        FutureBuilder<AttendanceInfo>(
-                          future: users.doc(regdNo).get().then((value) =>
-                              FirestoretoModel()
-                                  .attendanceInfo(value['attendance'])),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData)
-                              return load;
-                            else {
-                              if (snapshot.data.attendAvailable == false)
-                                return buildNoAttendenceScreen(context);
-                              else
-                                return Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          'Avg Attendence: ${snapshot.data.avgAttPer} %',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+          child: Container(
+            color: colorDark.withOpacity(0.15),
+            height: double.maxFinite,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (MediaQuery.of(context).size.width > 700)
+                  LargeAppDrawer().largeDrawer(context),
+                Expanded(
+                  flex: 2,
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            margin: EdgeInsets.all(5),
+                            child: buildHeader(context),
+                          ),
+                          FutureBuilder<AttendanceInfo>(
+                            future: users.doc(regdNo).get().then((value) =>
+                                FirestoretoModel()
+                                    .attendanceInfo(value['attendance'])),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData)
+                                return load;
+                              else {
+                                if (snapshot.data.attendAvailable == false)
+                                  return buildNoAttendenceScreen(context);
+                                else
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Avg Attendence: ${snapshot.data.avgAttPer} %',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          'Avg Absent: ${snapshot.data.avgAbsPer}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            'Avg Absent: ${snapshot.data.avgAbsPer}',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    for (var data in snapshot.data.data)
-                                      TweenAnimationBuilder(
-                                          duration: Duration(milliseconds: 500),
-                                          tween:
-                                              Tween<double>(begin: 0, end: 1),
-                                          builder: (context, value, child) =>
-                                              Transform.scale(
-                                                  scale: value,
-                                                  child:
-                                                      _attandenceExpansionTile(
-                                                          data))),
-                                  ],
-                                );
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
+                                        ],
+                                      ),
+                                      for (var data in snapshot.data.data)
+                                        TweenAnimationBuilder(
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            tween:
+                                                Tween<double>(begin: 0, end: 1),
+                                            builder: (context, value, child) =>
+                                                Transform.scale(
+                                                    scale: value,
+                                                    child:
+                                                        _attandenceExpansionTile(
+                                                            data))),
+                                    ],
+                                  );
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

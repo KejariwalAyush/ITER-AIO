@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:iteraio/Utilities/theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 
 class ClubsPage extends StatefulWidget {
@@ -41,6 +42,8 @@ class _ClubsPageState extends State<ClubsPage> {
                 )),
       ),
       body: Container(
+        color: colorDark.withOpacity(0.1),
+        height: double.maxFinite,
         child: FutureBuilder<List<String>>(
             future: clubs.get().then((QuerySnapshot querySnapshot) {
               List<String> _list = [];

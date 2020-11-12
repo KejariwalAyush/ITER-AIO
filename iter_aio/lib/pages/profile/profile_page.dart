@@ -66,91 +66,95 @@ class _ProfilePageState extends State<ProfilePage> {
                 // bottomRight: Radius.circular(25)
                 )),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (MediaQuery.of(context).size.width > 700)
-            LargeAppDrawer().largeDrawer(context),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    buildStackHeader(),
-                    FutureBuilder<ProfileInfo>(
-                      // future: pi.getProfile(),
-                      future: users.doc(regdNo).get().then((value) =>
-                          FirestoretoModel().profileInfo(value['profile'])),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData)
-                          return Container(
-                            height: 200,
-                            child: loading(),
-                          );
-                        else
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: RichText(
-                                  textAlign: TextAlign.start,
-                                  text: TextSpan(
-                                      text: snapshot.data.name,
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).brightness ==
-                                                Brightness.light
-                                            ? Colors.black87
-                                            : Colors.white,
-                                      ),
-                                      children: [
-                                        if (emailId != null || emailId != '')
-                                          TextSpan(
-                                            text: '\n$emailId',
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                              color: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.light
-                                                  ? Colors.black87
-                                                  : Colors.white,
-                                            ),
-                                          )
-                                      ]),
+      body: Container(
+        color: colorDark.withOpacity(0.15),
+        height: double.maxFinite,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (MediaQuery.of(context).size.width > 700)
+              LargeAppDrawer().largeDrawer(context),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      buildStackHeader(),
+                      FutureBuilder<ProfileInfo>(
+                        // future: pi.getProfile(),
+                        future: users.doc(regdNo).get().then((value) =>
+                            FirestoretoModel().profileInfo(value['profile'])),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return Container(
+                              height: 200,
+                              child: loading(),
+                            );
+                          else
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: RichText(
+                                    textAlign: TextAlign.start,
+                                    text: TextSpan(
+                                        text: snapshot.data.name,
+                                        style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.light
+                                              ? Colors.black87
+                                              : Colors.white,
+                                        ),
+                                        children: [
+                                          if (emailId != null || emailId != '')
+                                            TextSpan(
+                                              text: '\n$emailId',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black87
+                                                    : Colors.white,
+                                              ),
+                                            )
+                                        ]),
+                                  ),
                                 ),
-                              ),
-                              buildRichText(context, 'Semester',
-                                  snapshot.data.semester.toString()),
-                              buildRichText(
-                                  context, 'Regd No.', snapshot.data.regdno),
-                              buildRichText(
-                                  context, 'Branch', snapshot.data.branchdesc),
-                              buildRichText(context, 'Section',
-                                  snapshot.data.sectioncode),
-                              buildRichText(
-                                  context, 'Gender', snapshot.data.gender),
-                              buildRichText(
-                                  context, 'Email', snapshot.data.email),
-                              buildRichText(context, 'R. Pincode',
-                                  snapshot.data.pincode.toString()),
-                            ],
-                          );
-                      },
-                    ),
-                  ],
+                                buildRichText(context, 'Semester',
+                                    snapshot.data.semester.toString()),
+                                buildRichText(
+                                    context, 'Regd No.', snapshot.data.regdno),
+                                buildRichText(context, 'Branch',
+                                    snapshot.data.branchdesc),
+                                buildRichText(context, 'Section',
+                                    snapshot.data.sectioncode),
+                                buildRichText(
+                                    context, 'Gender', snapshot.data.gender),
+                                buildRichText(
+                                    context, 'Email', snapshot.data.email),
+                                buildRichText(context, 'R. Pincode',
+                                    snapshot.data.pincode.toString()),
+                              ],
+                            );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -160,12 +164,12 @@ class _ProfilePageState extends State<ProfilePage> {
       children: [
         if (imgUrl != null || imgUrl != '')
           Container(
-            alignment: Alignment.bottomRight,
-            height: 200,
+            alignment: Alignment.bottomLeft,
+            height: 250,
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.all(5),
             child: CircleAvatar(
-              maxRadius: 45,
+              maxRadius: 65,
               minRadius: 20,
               backgroundColor: colorDark,
               backgroundImage: NetworkImage(imgUrl),
@@ -179,60 +183,62 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         Container(
-          // width: double.maxFinite,
+          width: double.maxFinite,
           padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(5),
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                // _controller.repeat();
-                if (flareAni == 'fly' || flareAni == 'closeEyes') {
-                  flareAni = 'openEyes';
-                  Future.delayed(Duration(seconds: 1)).whenComplete(() {
-                    setState(() {
-                      flareAni = 'fly';
-                      _width = 220;
-                      _height = 220;
-                      _alignment = Alignment.center;
-                      // if (flareAni == 'closeEyes') flareAni = 'openEyes';
-                      Future.delayed(Duration(seconds: 1)).whenComplete(() {
-                        setState(() {
-                          flareAni = 'hello';
+          alignment: (imgUrl != null || imgUrl != '')
+              ? Alignment.centerRight
+              : Alignment.center,
+          child: AnimatedContainer(
+            duration: Duration(seconds: 2),
+            alignment: _alignment,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  if (flareAni == 'fly' || flareAni == 'closeEyes') {
+                    flareAni = 'openEyes';
+                    Future.delayed(Duration(seconds: 1)).whenComplete(() {
+                      setState(() {
+                        flareAni = 'fly';
+                        _width = 220;
+                        _height = 220;
+                        _alignment = Alignment.center;
+                        Future.delayed(Duration(seconds: 1)).whenComplete(() {
+                          setState(() {
+                            flareAni = 'hello';
+                          });
                         });
                       });
                     });
-                  });
-                } else {
-                  // random generator
-                  _alignment = Alignment.centerLeft;
-                  final random = Random();
-
-                  // random dimension generator
-                  // _width = double.maxFinite;
-                  _width = random.nextInt(100).toDouble() + 110;
-                  _height = random.nextInt(100).toDouble() + 110;
-                  flareAni = 'fly';
-                  Future.delayed(Duration(seconds: 2)).whenComplete(() {
-                    setState(() {
-                      flareAni = 'closeEyes';
-                      // if (flareAni == 'closeEyes') flareAni = 'openEyes';
-                      // flareAni = 'hello';
+                  } else {
+                    // random generator
+                    final random = Random();
+                    _width = random.nextInt(150).toDouble() + 50;
+                    _height = random.nextInt(150).toDouble() + 60;
+                    _alignment = random.nextInt(10) % 2 == 0
+                        ? Alignment.centerRight
+                        : Alignment.bottomRight;
+                    flareAni = 'fly';
+                    Future.delayed(Duration(seconds: 2)).whenComplete(() {
+                      setState(() {
+                        flareAni = 'closeEyes';
+                      });
                     });
-                  });
-                }
-              });
-            },
-            child: AnimatedContainer(
-              width: _width,
-              height: _height,
-              alignment: _alignment,
-              duration: Duration(seconds: 2),
-              curve: Curves.fastOutSlowIn,
-              // width: 100,
-              child: FlareActor("assets/animations/ITER-AIO.flr",
-                  alignment: Alignment.center,
-                  fit: BoxFit.contain,
-                  animation: flareAni),
+                  }
+                });
+              },
+              child: AnimatedContainer(
+                width: _width,
+                height: _height,
+                alignment: _alignment,
+                duration: Duration(seconds: 2),
+                curve: Curves.fastOutSlowIn,
+                // width: 100,
+                child: FlareActor("assets/animations/ITER-AIO.flr",
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
+                    animation: flareAni),
+              ),
             ),
           ),
         ),
@@ -277,60 +283,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-  // Widget buildHeader(BuildContext context) {
-  //   return Column(
-  //     children: <Widget>[
-  //       InkWell(
-  //         onTap: () {
-  //           setState(() {
-  //             if (flareAni == 'fly')
-  //               flareAni = 'hello';
-  //             else
-  //               flareAni = 'fly';
-  //           });
-  //         },
-  //         child: Container(
-  //           height: 180,
-  //           // width: 100,
-  //           child: FlareActor("assets/animations/ITER-AIO.flr",
-  //               alignment: Alignment.center,
-  //               fit: BoxFit.contain,
-  //               animation: flareAni),
-  //         ),
-  //       ),
-  //       // FutureBuilder<ProfileInfo>(
-  //       //   future: pi.getProfile(),
-  //       //   builder: (context, snapshot) {
-  //       //     if (!snapshot.hasData)
-  //       //       return FutureBuilder<LoginData>(
-  //       //           future: loginFetch.getLogin(),
-  //       //           builder: (context, snapshot) {
-  //       //             if (!snapshot.hasData)
-  //       //               return Center(
-  //       //                 child: Text('Waiting for Info!'),
-  //       //               );
-  //       //             else
-  //       //               return Center(child: Text(snapshot.data.status));
-  //       //           });
-  //       //     else
-  //       //       // if(loginFetch.finalLogin.status == 'Error Logging In')
-  //       //       return RichText(
-  //       //         textAlign: TextAlign.end,
-  //       //         text: TextSpan(
-  //       //           text: snapshot.data.name,
-  //       //           style: TextStyle(
-  //       //             fontSize: 25,
-  //       //             fontWeight: FontWeight.bold,
-  //       //             color: Theme.of(context).brightness == Brightness.light
-  //       //                 ? Colors.black87
-  //       //                 : Colors.white,
-  //       //           ),
-  //       //         ),
-  //       //       );
-  //       //   },
-  //       // ),
-  //     ],
-  //   );
-  // }
 }
