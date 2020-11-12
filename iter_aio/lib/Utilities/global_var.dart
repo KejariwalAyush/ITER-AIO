@@ -47,6 +47,8 @@ String name;
 String branch;
 String gender;
 int sem;
+String emailId;
+String imgUrl;
 String themeStr;
 DateTime initTime;
 

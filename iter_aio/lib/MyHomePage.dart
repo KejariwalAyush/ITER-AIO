@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/pages/attendance_page.dart';
 import 'package:iteraio/pages/events/events_page.dart';
-import 'package:iteraio/pages/profile_page.dart';
+import 'package:iteraio/pages/profile/profile_page.dart';
 import 'package:iteraio/pages/result_page.dart';
 import 'package:iteraio/pages/clubs/clubs_page.dart';
 import 'package:iteraio/Utilities/global_var.dart';

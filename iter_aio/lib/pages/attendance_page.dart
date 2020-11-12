@@ -84,68 +84,7 @@ class _AttendancePageState extends State<AttendancePage> {
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
                 ),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Stack(
-                children: [
-                  IconButton(
-                    icon: new Icon(
-                      Icons.notifications,
-                    ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, Notices.routeName),
-                  ),
-                  // newNotification
-                  //     ? new Positioned(
-                  //         right: 11,
-                  //         top: 11,
-                  //         child: new Container(
-                  //           padding: EdgeInsets.all(2),
-                  //           decoration: new BoxDecoration(
-                  //             color: Colors.red,
-                  //             borderRadius: BorderRadius.circular(6),
-                  //           ),
-                  //           constraints: BoxConstraints(
-                  //             minWidth: 14,
-                  //             minHeight: 14,
-                  //           ),
-                  //           child: Text(
-                  //             ' ',
-                  //             style: TextStyle(
-                  //               color: Colors.white,
-                  //               fontSize: 8,
-                  //             ),
-                  //             textAlign: TextAlign.center,
-                  //           ),
-                  //         ),
-                  //       )
-                  //     : new Container()
-                ],
-              ),
-            ),
-            if (isMobile)
-              Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: IconButton(
-                  icon: new Icon(
-                    Icons.share,
-                  ),
-                  onPressed: () {
-                    // Notify().showNotification(
-                    //     title: 'Share', body: 'Share Attendence');
-                    ShareFilesAndScreenshotWidgets().shareScreenshot(
-                        _attendanceContainer,
-                        originalSize,
-                        "MyAttendance",
-                        "Attendance.png",
-                        "image/png",
-                        text:
-                            "Here is My Attendance! Find out yours Download ITER-AIO from here http://tiny.cc/iteraio");
-                  },
-                ),
-              ),
-          ],
+          actions: actions(context),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   // bottomLeft: Radius.circular(35),
@@ -238,6 +177,70 @@ class _AttendancePageState extends State<AttendancePage> {
     );
   }
 
+  List<Widget> actions(BuildContext context) {
+    return <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Stack(
+          children: [
+            IconButton(
+              icon: new Icon(
+                Icons.notifications,
+              ),
+              onPressed: () => Navigator.pushNamed(context, Notices.routeName),
+            ),
+            // newNotification
+            //     ? new Positioned(
+            //         right: 11,
+            //         top: 11,
+            //         child: new Container(
+            //           padding: EdgeInsets.all(2),
+            //           decoration: new BoxDecoration(
+            //             color: Colors.red,
+            //             borderRadius: BorderRadius.circular(6),
+            //           ),
+            //           constraints: BoxConstraints(
+            //             minWidth: 14,
+            //             minHeight: 14,
+            //           ),
+            //           child: Text(
+            //             ' ',
+            //             style: TextStyle(
+            //               color: Colors.white,
+            //               fontSize: 8,
+            //             ),
+            //             textAlign: TextAlign.center,
+            //           ),
+            //         ),
+            //       )
+            //     : new Container()
+          ],
+        ),
+      ),
+      if (isMobile)
+        Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: IconButton(
+            icon: new Icon(
+              Icons.share,
+            ),
+            onPressed: () {
+              // Notify().showNotification(
+              //     title: 'Share', body: 'Share Attendence');
+              ShareFilesAndScreenshotWidgets().shareScreenshot(
+                  _attendanceContainer,
+                  originalSize,
+                  "MyAttendance",
+                  "Attendance.png",
+                  "image/png",
+                  text:
+                      "Here is My Attendance! Find out yours Download ITER-AIO from here http://tiny.cc/iteraio");
+            },
+          ),
+        ),
+    ];
+  }
+
   Container buildNoAttendenceScreen(BuildContext context) {
     return Container(
         child: SingleChildScrollView(
@@ -268,8 +271,8 @@ class _AttendancePageState extends State<AttendancePage> {
   Widget _attandenceExpansionTile(SubjectAttendance sat) {
     GlobalKey key = new GlobalKey(debugLabel: sat.subjectCode);
     return Container(
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light
             ? colorLight
@@ -313,7 +316,7 @@ class _AttendancePageState extends State<AttendancePage> {
             initiallyExpanded: false,
             title: Text(
               '${sat.subject}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text('Code: ${sat.subjectCode}'),
             trailing: Container(
@@ -332,14 +335,14 @@ class _AttendancePageState extends State<AttendancePage> {
               child: Text(
                 '${sat.totAtt} %',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             leading: Image.asset(
               subjectAvatar(sat.subjectCode),
-              width: 40,
+              width: 37,
               alignment: Alignment.center,
             ),
             children: <Widget>[

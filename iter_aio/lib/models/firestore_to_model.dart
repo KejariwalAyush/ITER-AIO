@@ -55,7 +55,7 @@ class FirestoretoModel {
     _csr = new CGPASemResult(
       sem: (x['sem']),
       creditEarned: (x['creditEarned']),
-      sgpa: (x['sgpa']),
+      sgpa: double.parse(x['sgpa']),
       deactive: x['deactive'],
       fail: x['fail'],
       underHold: x['underHold'],

@@ -80,7 +80,11 @@ class LoginFetch {
     try {
       userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: "$regdNo@iteraio.com", password: password);
-      admin = await users.doc(regdNo).get().then((value) => value['admin']);
+      admin = await users.doc(regdNo).get().then((value) {
+        emailId = value['emailId'];
+        imgUrl = value['imgUrl'];
+        return value['admin'];
+      });
       print('admin: $admin');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
