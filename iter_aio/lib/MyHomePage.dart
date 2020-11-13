@@ -71,15 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             flex: 10,
             child: GestureDetector(
-              child: _currentIndex == 0 || _currentIndex == 1
-                  ? _currentIndex == 0
-                      ? AttendancePage()
-                      : isMobile
-                          ? EventsPage()
-                          : ResultPage()
-                  : _currentIndex == 2
-                      ? ProfilePage()
-                      : ClubsPage(),
+              child: pageChooser(_currentIndex),
             ),
           ),
           if (MediaQuery.of(context).size.width > 700)
@@ -90,6 +82,25 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  Widget pageChooser(int _index) {
+    switch (_index) {
+      case 0:
+        return AttendancePage();
+        break;
+      case 1:
+        return isMobile ? EventsPage() : ResultPage();
+        break;
+      case 2:
+        return ProfilePage();
+        break;
+      case 3:
+        return ClubsPage();
+        break;
+      default:
+        return AttendancePage();
+    }
   }
 
   Widget verticalNavigationBar() {

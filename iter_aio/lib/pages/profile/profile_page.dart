@@ -20,6 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   double _height = 180, _width = 200;
   var _alignment = Alignment.center;
+  var profileImg;
 
   @override
   void initState() {
@@ -83,11 +84,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      buildStackHeader(),
                       FutureBuilder<ProfileInfo>(
                         // future: pi.getProfile(),
-                        future: users.doc(regdNo).get().then((value) =>
-                            FirestoretoModel().profileInfo(value['profile'])),
+                        future: users.doc(regdNo).get().then((value) {
+                          profileImg = value['imgUrl'];
+                          profileImg = profileImg.toString().trim();
+                          return FirestoretoModel()
+                              .profileInfo(value['profile']);
+                        }),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData)
                             return Container(
@@ -99,6 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                buildStackHeader(snapshot.data.gender),
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: RichText(
@@ -159,36 +164,32 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Stack buildStackHeader() {
+  Stack buildStackHeader(String g) {
     return Stack(
       children: [
-        if (imgUrl != null || imgUrl != '')
-          Container(
-            alignment: Alignment.bottomLeft,
-            height: 250,
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.all(5),
-            child: CircleAvatar(
-              maxRadius: 65,
-              minRadius: 20,
-              backgroundColor: colorDark,
-              backgroundImage: NetworkImage(imgUrl),
-              onBackgroundImageError: (exception, stackTrace) {
-                SnackBar snackBar = SnackBar(
-                  content: Text('Error loading Profile Image'),
-                );
-                // ignore: deprecated_member_use
-                _scaffoldKey.currentState.showSnackBar(snackBar);
-              },
-            ),
+        Container(
+          alignment: Alignment.bottomLeft,
+          height: 250,
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(5),
+          child: CircleAvatar(
+            maxRadius: 65,
+            minRadius: 20,
+            backgroundColor: colorDark,
+            backgroundImage: profileImg == null || profileImg == ''
+                ? AssetImage(g == 'M'
+                    ? 'assets/logos/maleAavtar.png'
+                    : 'assets/logos/femaleAvtar.png')
+                : NetworkImage(profileImg),
           ),
+        ),
         Container(
           width: double.maxFinite,
           padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(5),
-          alignment: (imgUrl != null || imgUrl != '')
-              ? Alignment.centerRight
-              : Alignment.center,
+          alignment: (profileImg == null || profileImg == '')
+              ? Alignment.center
+              : Alignment.centerRight,
           child: AnimatedContainer(
             duration: Duration(seconds: 2),
             alignment: _alignment,
@@ -247,6 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildRichText(BuildContext context, String _name, String _desc) {
+    if (_desc == '') return SizedBox.shrink();
     return Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5),
