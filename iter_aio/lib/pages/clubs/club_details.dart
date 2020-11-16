@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/pages/clubs/club_form.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
@@ -20,7 +21,13 @@ class ClubDetails extends StatelessWidget {
           if (doc['coordinators'].contains(regdNo))
             IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClubDetailsForm(
+                      doc: doc,
+                    ),
+                  )),
             )
         ],
       ),
