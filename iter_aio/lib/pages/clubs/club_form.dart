@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 
+// ignore: must_be_immutable
 class ClubDetailsForm extends StatefulWidget {
   QueryDocumentSnapshot doc;
   ClubDetailsForm({this.doc, Key key}) : super(key: key);
@@ -117,7 +118,10 @@ class _ClubDetailsFormState extends State<ClubDetailsForm> {
               ],
             ),
             FormBuilderChipsInput(
-              allowChipEditing: true,
+              allowChipEditing: false,
+              validators: [
+                FormBuilderValidators.required(),
+              ],
               initialValue: widget.doc['coordinators'],
               maxChips: 7,
               attribute: 'coordinators',
@@ -125,7 +129,9 @@ class _ClubDetailsFormState extends State<ClubDetailsForm> {
                 return InputChip(
                   key: ObjectKey(title),
                   label: Text(title),
-                  onDeleted: () => state.deleteChip(title),
+                  onDeleted: () {
+                    if (title != regdNo) state.deleteChip(title);
+                  },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 );
               },

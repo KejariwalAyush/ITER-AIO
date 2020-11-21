@@ -42,8 +42,8 @@ class ClubDetails extends StatelessWidget {
                       maxRadius: 75,
                     )
                   : Icon(
-                      Icons.broken_image,
-                      size: 50,
+                      Icons.group,
+                      size: 75,
                     ),
               Text(
                 doc['name'],
@@ -54,6 +54,8 @@ class ClubDetails extends StatelessWidget {
               ),
               buildRichText(context, 'Description', doc['desc']),
               buildRichText(context, 'Instagram link', doc['instaLink']),
+              buildRichText(context, 'Other links',
+                  doc['otherLinks'].toString().replaceAll(' ', '\n')),
               buildRichText(context, 'How To Join?', doc['howToJoin']),
               buildRichText(context, 'Benifits', doc['benifits']),
               buildRichText(context, 'Activity', doc['activity']),
@@ -108,21 +110,27 @@ class ClubDetails extends StatelessWidget {
     );
   }
 
-  Widget buildLink(String link) {
-    return InkWell(
-      onTap: () => _launchURL(link),
-      child: Container(
-          alignment: Alignment.centerLeft,
-          child: RichText(
-            overflow: TextOverflow.fade,
-            text: TextSpan(
-              text: link,
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w100,
-                  color: Colors.blueAccent),
-            ),
-          )),
+  Widget buildLink(String links) {
+    var _linkList = links.split('\n');
+    return Column(
+      children: [
+        for (var link in _linkList)
+          InkWell(
+            onTap: () => _launchURL(link),
+            child: Container(
+                alignment: Alignment.centerLeft,
+                child: RichText(
+                  overflow: TextOverflow.fade,
+                  text: TextSpan(
+                    text: link,
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w100,
+                        color: Colors.blueAccent),
+                  ),
+                )),
+          ),
+      ],
     );
   }
 

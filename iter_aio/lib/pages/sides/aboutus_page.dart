@@ -30,6 +30,7 @@ class _AboutUsState extends State<AboutUs> {
         actions: <Widget>[
           IconButton(
             icon: new Icon(Icons.feedback),
+            tooltip: 'Report a bug!',
             onPressed: () {
               Wiredash.of(context).show();
             },
@@ -51,7 +52,7 @@ class _AboutUsState extends State<AboutUs> {
             flex: 2,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
@@ -100,64 +101,14 @@ class _AboutUsState extends State<AboutUs> {
                       onPressed: () => _launchURL(
                           'https://github.com/KejariwalAyush/ITER-AIO/blob/master/README.md'),
                     ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () => _launchURL(
-                            'https://www.facebook.com/ayushkejariwal.ayush'),
-                        icon: Icon(
-                          LineAwesomeIcons.facebook,
-                          size: 45,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => _launchURL(
-                            'https://www.instagram.com/a_kejariwal/'),
-                        icon: Icon(
-                          LineAwesomeIcons.instagram,
-                          size: 45,
-                          color: Colors.orangeAccent,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => _launchURL(
-                            'https://www.linkedin.com/in/ayush-kejariwal-1923a2191/'),
-                        icon: Icon(
-                          LineAwesomeIcons.linkedin_square,
-                          size: 45,
-                          color: Colors.lightBlueAccent,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () =>
-                            _launchURL('https://www.github.com/KejariwalAyush'),
-                        icon: Icon(
-                          LineAwesomeIcons.github_square,
-                          size: 45,
-                          color: brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () =>
-                            _launchURL('mailto:iteraio2020@gmail.com'),
-                        icon: Icon(
-                          LineAwesomeIcons.envelope,
-                          size: 45,
-                          color: brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    height: 15,
                   ),
-                  // SizedBox(
-                  //   height: 15,
-                  // ),
+                  Text(
+                    'Contact us',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  buildContact(),
                   // Center(
                   //   child: SelectableText('Email Us at: iteraio2020@gmail.com'),
                   // ),
@@ -252,7 +203,64 @@ class _AboutUsState extends State<AboutUs> {
           ),
         ],
       ),
-      bottomSheet: ReportBugs(),
+      // bottomSheet: ReportBugs(),
+    );
+  }
+
+  Widget buildContact() {
+    return SingleChildScrollView(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            onPressed: () =>
+                _launchURL('https://www.facebook.com/ayushkejariwal.ayush'),
+            icon: Icon(
+              LineAwesomeIcons.facebook,
+              size: 45,
+              color: Colors.blueAccent,
+            ),
+          ),
+          IconButton(
+            onPressed: () =>
+                _launchURL('https://www.instagram.com/a_kejariwal/'),
+            icon: Icon(
+              LineAwesomeIcons.instagram,
+              size: 45,
+              color: Colors.orangeAccent,
+            ),
+          ),
+          IconButton(
+            onPressed: () => _launchURL(
+                'https://www.linkedin.com/in/ayush-kejariwal-1923a2191/'),
+            icon: Icon(
+              LineAwesomeIcons.linkedin_square,
+              size: 45,
+              color: Colors.lightBlueAccent,
+            ),
+          ),
+          IconButton(
+            onPressed: () =>
+                _launchURL('https://www.github.com/KejariwalAyush'),
+            icon: Icon(
+              LineAwesomeIcons.github_square,
+              size: 45,
+              color:
+                  brightness == Brightness.dark ? Colors.white : Colors.black,
+            ),
+          ),
+          IconButton(
+            onPressed: () => _launchURL('mailto:iteraio2020@gmail.com'),
+            icon: Icon(
+              LineAwesomeIcons.envelope,
+              size: 45,
+              color:
+                  brightness == Brightness.dark ? Colors.white : Colors.black,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

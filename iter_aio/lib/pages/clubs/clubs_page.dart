@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:iteraio/Utilities/theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/pages/clubs/club_details.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ClubsPage extends StatefulWidget {
   ClubsPage({Key key}) : super(key: key);
@@ -16,8 +17,7 @@ class ClubsPage extends StatefulWidget {
 class _ClubsPageState extends State<ClubsPage> {
   // @override
   // void initState() {
-  //   clubs.doc('codex').set(codexFeilds);
-  //   clubs.doc('srishti').set(srishtiFeilds);
+  //   clubs.doc('codechef').set(codechefFeilds);
   //   super.initState();
   // }
 
@@ -48,7 +48,22 @@ class _ClubsPageState extends State<ClubsPage> {
                 // bottomLeft: Radius.circular(35),
                 // bottomRight: Radius.circular(25)
                 )),
+        actions: [
+          if (admin)
+            IconButton(
+              icon: Icon(Icons.add_box),
+              onPressed: () => showDialog(
+                context: context,
+                // barrierDismissible: false,
+                builder: (BuildContext context) => _buildAboutDialog(context),
+              ),
+            )
+        ],
       ),
+      // bottomSheet: Container(
+      //     height: 20,
+      //     alignment: Alignment.center,
+      //     child: Text('For adding Clubs or any query head over to About Us')),
       body: Container(
         // color: colorDark.withOpacity(0.1),
         height: double.maxFinite,
@@ -94,9 +109,12 @@ class _ClubsPageState extends State<ClubsPage> {
                                       NetworkImage(item['logoUrl']),
                                   maxRadius: 30,
                                 )
-                              : Icon(
-                                  Icons.group,
-                                  size: 30,
+                              : Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.group,
+                                    size: 30,
+                                  ),
                                 ),
                           title: Text(
                             item['name'],
@@ -111,36 +129,91 @@ class _ClubsPageState extends State<ClubsPage> {
         });
   }
 
-  // var codexFeilds = {
-  //   'name': 'CODEX',
-  //   'desc': '''The Only Coding Club of ITER.
-  // We code,we explore. This club is a community of coders who can help you with your programming stuff and any other Programming related doubts.''',
-  //   'logoUrl': 'https://avatars0.githubusercontent.com/u/32349210?s=200&v=4',
-  //   'instaLink': 'https://www.instagram.com/codexiter/',
-  //   'otherLinks': 'https://github.com/codex-iter http://t.me/codexinit',
-  //   'howToJoin':
-  //       'Follow the Above init link to Join the club. You need to solve some problems to enter the club.',
-  //   'benifits':
-  //       'Build a Community with us and get help from seniors for your problems.',
-  //   'activity': 'HackerWar 2.0, Hackodex & some Webinars',
-  //   'coordinators': ['1941012408', '1941012661'],
-  //   'members': [],
-  //   'anouncemnts': []
-  // };
-  // var srishtiFeilds = {
-  //   'name': 'Srishti',
+  GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  Widget _buildAboutDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Add new Club'),
+      content: FormBuilder(
+        key: _fbKey,
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new FormBuilderTextField(
+              attribute: "key",
+              decoration: InputDecoration(labelText: "Key Name (No Spaces)"),
+              validators: [FormBuilderValidators.required()],
+            ),
+            new FormBuilderTextField(
+              attribute: "clubName",
+              decoration: InputDecoration(labelText: "Club Name"),
+              validators: [FormBuilderValidators.required()],
+            ),
+            new FormBuilderTextField(
+              attribute: "imgUrl",
+              decoration: InputDecoration(labelText: "Logo Url"),
+              // validators: [FormBuilderValidators.required()],
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          // textColor: Theme.of(context).primaryColor,
+          child: const Text('Cancel'),
+        ),
+        new FlatButton(
+          onPressed: () {
+            if (_fbKey.currentState.saveAndValidate()) {
+              var x = _fbKey.currentState.value;
+              print(x);
+              clubs
+                  .doc(x['key'].toString().toLowerCase())
+                  .set(addNewClubFeilds(x['clubName'], imgUrl: x['imgUrl']));
+
+              Navigator.of(context).pop();
+            }
+          },
+          // textColor: Theme.of(context).primaryColor,
+          child: const Text('Done'),
+        ),
+      ],
+    );
+  }
+
+  // var codechefFeilds = {
+  //   'name': 'CodeChef ITER chapter',
   //   'desc':
-  //       '''Art Club. Brushing The Beyond. We do all kinds of Painting, Art, Digital Posters, Artifects, etc.''',
+  //       '''This is the Codechef Chapter of ITER. This club is a community of Competitive Programming(CP) who can help you with your DSA, Algo, etc.''',
   //   'logoUrl':
-  //       'https://scontent-ort2-2.cdninstagram.com/v/t51.2885-19/92824595_640241626535346_1252290142845009920_n.jpg?_nc_ht=scontent-ort2-2.cdninstagram.com&_nc_ohc=Fylx7huogUAAX_t0nMY&oh=cf0cc3e31469c05851c53b48a9a229c8&oe=5FD70B3E',
-  //   'instaLink': 'https://www.instagram.com/srishticlub/',
-  //   'otherLinks': '',
+  //       'https://media-exp1.licdn.com/dms/image/C4E03AQEGTPInAWIepg/profile-displayphoto-shrink_800_800/0?e=1611187200&v=beta&t=PCA6tuIO1J0DqrD8UEWG2Fg6Z6MQJRUhDYIwxCINbcE',
+  //   'instaLink': 'https://www.instagram.com/iter_codechef/',
+  //   'otherLinks':
+  //       'https://www.linkedin.com/in/codechef-iter-chapter-9492771bb/',
   //   'howToJoin':
-  //       'Joining us is a peice of cake if you love drawing, art, digital art. Just join us and we will explore.',
-  //   'benifits': 'Build a Community with us to make world beautiful with paints',
-  //   'activity': '',
-  //   'coordinators': [],
+  //       'If you are Intrested in CP then contact us through the mentioned links.',
+  //   'benifits': 'Will improve your skills and hold on DSA, Algo, etc for CP',
+  //   'activity': 'HackerWar 2.0, Hackodex & some Webinars',
+  //   'coordinators': ['1941012408'],
   //   'members': [],
   //   'anouncemnts': []
   // };
+  addNewClubFeilds(String name, {String imgUrl}) {
+    return {
+      'name': name,
+      'desc': '',
+      'logoUrl': imgUrl ?? '',
+      'instaLink': '',
+      'otherLinks': '',
+      'howToJoin': '',
+      'benifits': '',
+      'activity': '',
+      'coordinators': ['$regdNo'],
+      'members': [],
+      'anouncemnts': []
+    };
+  }
 }

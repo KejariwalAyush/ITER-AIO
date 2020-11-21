@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/components/splash_screen.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 
@@ -24,6 +25,10 @@ class _PushMessagingExampleState extends State<PushMessagingExample> {
         //   _messageText = "Push Messaging message: $message";
         // });
         print("onMessage: $message");
+        showSimpleNotification(
+          Container(child: Text(message['notification']['title'])),
+          position: NotificationPosition.top,
+        );
         Alert(
                 context: context,
                 title: message['notification']['title'],
