@@ -36,6 +36,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/helper/lectures_fetch.dart';
+import 'package:iteraio/pages/clubs/clubs_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -200,6 +201,7 @@ class _MyAppState extends State<MyApp> {
         '${PlanBunk.routeName}': (context) => PlanBunk(),
         '${AboutUs.routeName}': (context) => AboutUs(),
         '${SettingsPage.routeName}': (context) => SettingsPage(),
+        '${ClubsPage.routeName}': (context) => ClubsPage(),
       },
       // themeMode: ThemeMode.system,
       theme: ThemeData(

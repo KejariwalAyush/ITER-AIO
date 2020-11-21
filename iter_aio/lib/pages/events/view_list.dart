@@ -47,12 +47,14 @@ class _ViewListState extends State<ViewList> {
       ),
       body: RepaintBoundary(
         key: _listContainer,
-        child: ListView.builder(
-          itemCount: widget.list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return buildListTile(index);
-          },
-        ),
+        child: widget.list == [] || widget.list.isEmpty
+            ? Center(child: Text('Sorry No one is intrested yet!'))
+            : ListView.builder(
+                itemCount: widget.list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return buildListTile(index);
+                },
+              ),
       ),
     );
   }

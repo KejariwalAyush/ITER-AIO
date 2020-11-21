@@ -17,6 +17,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:iteraio/MyHomePage.dart';
+import 'package:iteraio/pages/clubs/clubs_page.dart';
 
 class CustomAppDrawer {
   final bool slectures; //show Lectures
@@ -28,6 +29,7 @@ class CustomAppDrawer {
   final bool slogout;
   final bool sbunk;
   final bool srestart;
+  final bool sclub;
 
   CustomAppDrawer(
       {this.sbunk = false,
@@ -38,6 +40,7 @@ class CustomAppDrawer {
       this.ssettings = true,
       this.saboutUs = true,
       this.srestart = false,
+      this.sclub = false,
       this.slogout = false});
 
   Widget widgetDrawer(context) {
@@ -84,6 +87,14 @@ class CustomAppDrawer {
               title: Text('Update Available!'),
               onTap: () => UpdateFetch().showUpdateDialog(context),
             ),
+          if (sclub && !noInternet) Divider(),
+          if (sclub && !noInternet)
+            ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                leading: Icon(Icons.video_library),
+                title: Text('Clubs'),
+                onTap: () => Navigator.pushNamed(context, ClubsPage.routeName)),
           if (slectures && !noInternet) Divider(),
           if (slectures && !noInternet)
             ListTile(

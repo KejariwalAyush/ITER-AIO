@@ -8,6 +8,7 @@ import 'package:iteraio/pages/clubs/club_details.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ClubsPage extends StatefulWidget {
+  static const routeName = "/clubs-page";
   ClubsPage({Key key}) : super(key: key);
 
   @override

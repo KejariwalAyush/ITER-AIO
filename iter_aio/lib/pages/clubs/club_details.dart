@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/pages/clubs/club_form.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:iteraio/Utilities/Theme.dart';
+import '../events/events_form.dart';
 
 // ignore: must_be_immutable
 class ClubDetails extends StatelessWidget {
@@ -18,7 +20,7 @@ class ClubDetails extends StatelessWidget {
         elevation: 15,
         automaticallyImplyLeading: true,
         actions: [
-          if (doc['coordinators'].contains(regdNo))
+          if (doc['coordinators'].contains(regdNo) || admin)
             IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => Navigator.push(
@@ -31,6 +33,31 @@ class ClubDetails extends StatelessWidget {
             )
         ],
       ),
+      floatingActionButton: !doc['coordinators'].contains(regdNo) && !admin
+          ? SizedBox.shrink()
+          : FloatingActionButton.extended(
+              isExtended: true,
+              icon: Icon(
+                Icons.event_note,
+                color:
+                    brightness == Brightness.dark ? Colors.white : Colors.black,
+              ),
+              label: Text(
+                'Add an Event!',
+                style: TextStyle(
+                    color: brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
+              ),
+              backgroundColor: colorDark.withOpacity(1),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EventsForm(),
+                    ));
+              },
+            ),
       body: Container(
         padding: EdgeInsets.all(8),
         child: SingleChildScrollView(
