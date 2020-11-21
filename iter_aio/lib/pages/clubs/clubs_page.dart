@@ -118,6 +118,7 @@ class _ClubsPageState extends State<ClubsPage> {
                                 ),
                           title: Text(
                             item['name'],
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 24),
                           ),
                         ),

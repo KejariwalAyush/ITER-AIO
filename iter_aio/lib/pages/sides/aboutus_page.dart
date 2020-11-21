@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/widgets/Mdviewer.dart';
-import 'package:iteraio/widgets/ReportBugs.dart';
 import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:url_launcher/url_launcher.dart';

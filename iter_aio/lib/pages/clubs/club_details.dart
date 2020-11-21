@@ -59,8 +59,27 @@ class ClubDetails extends StatelessWidget {
               buildRichText(context, 'How To Join?', doc['howToJoin']),
               buildRichText(context, 'Benifits', doc['benifits']),
               buildRichText(context, 'Activity', doc['activity']),
-              buildRichText(
-                  context, 'Coordinators:', doc['coordinators'].toString()),
+              ExpansionTile(
+                title: Text('Coordinators'),
+                leading: Icon(Icons.admin_panel_settings),
+                children: [
+                  for (var item in doc['coordinators'])
+                    ListTile(
+                      title: SelectableText(item),
+                    ),
+                ],
+              ),
+              // if (doc['members'] != null && doc['members'] != [])
+              //   ExpansionTile(
+              //     title: Text('Members'),
+              //     leading: Icon(Icons.person_outline),
+              //     children: [
+              //       for (var item in doc['members'])
+              //         ListTile(
+              //           title: SelectableText(item),
+              //         ),
+              //     ],
+              //   ),
             ],
           ),
         ),

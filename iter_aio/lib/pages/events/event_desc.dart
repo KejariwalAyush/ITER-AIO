@@ -89,7 +89,7 @@ class _EventDescState extends State<EventDesc> {
             });
           else
             setState(() {
-              intrestedList.add({regdNo: name});
+              intrestedList.add({regdNo: name, "email": emailId});
               events
                   .doc(widget.doc.id)
                   .update({'intrested': intrestedList}).then((value) {

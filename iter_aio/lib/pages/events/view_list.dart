@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iteraio/Utilities/Theme.dart';
+import 'package:iteraio/Utilities/global_var.dart';
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewList extends StatefulWidget {
   final String title;
@@ -10,6 +14,7 @@ class ViewList extends StatefulWidget {
 }
 
 class _ViewListState extends State<ViewList> {
+  GlobalKey _listContainer = new GlobalKey();
   var query = [];
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
@@ -23,11 +28,31 @@ class _ViewListState extends State<ViewList> {
         automaticallyImplyLeading: true,
         actions: _buildActions(),
       ),
-      body: ListView.builder(
-        itemCount: widget.list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return buildListTile(index);
-        },
+      floatingActionButton: FloatingActionButton.extended(
+        isExtended: true,
+        icon: Icon(
+          Icons.email,
+          color: brightness == Brightness.dark ? Colors.white : Colors.black,
+        ),
+        label: Text(
+          "Write a mail to all of them",
+          style: TextStyle(
+              color:
+                  brightness == Brightness.dark ? Colors.white : Colors.black),
+        ),
+        backgroundColor: colorDark.withOpacity(1),
+        onPressed: () => _launchURL(
+            // 'mailto:ayush1kej@gmail.com,akej@yahoo.in,abc@gmail.com'
+            'mailto:${widget.list.map((e) => e['email']).toList().toString().replaceAll('[', '').replaceAll(']', '')}'),
+      ),
+      body: RepaintBoundary(
+        key: _listContainer,
+        child: ListView.builder(
+          itemCount: widget.list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return buildListTile(index);
+          },
+        ),
       ),
     );
   }
@@ -39,7 +64,8 @@ class _ViewListState extends State<ViewList> {
         .substring(1, widget.list[index].toString().length - 1);
     if (!_isSearching || t.toLowerCase().contains(s))
       return ListTile(
-        title: Text(t),
+        title: Text(t.split(',')[0]),
+        subtitle: Text(t.split(',')[1]),
         leading: Icon(Icons.person),
       );
     else
@@ -83,7 +109,26 @@ class _ViewListState extends State<ViewList> {
         icon: const Icon(Icons.search),
         onPressed: _startSearch,
       ),
+      IconButton(
+        icon: const Icon(Icons.ios_share),
+        onPressed: () {
+          ShareFilesAndScreenshotWidgets().shareScreenshot(
+              _listContainer, 1080, "Event", "MyEvent.png", "image/png",
+              text:
+                  "Here is the List of Emails of intrested people of ${widget.title} Event!\n\n${widget.list.map((e) => e['email']).toList()}\n\nFind out more, Download ITER-AIO from here http://tiny.cc/iteraio");
+        },
+      ),
     ];
+  }
+
+  _launchURL(String url) async {
+    // const url = 'https://flutter.dev';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+    return;
   }
 
   void _startSearch() {
