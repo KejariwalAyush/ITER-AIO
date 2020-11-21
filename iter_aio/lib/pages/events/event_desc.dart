@@ -51,7 +51,7 @@ class _EventDescState extends State<EventDesc> {
         ),
         centerTitle: true,
         actions: [
-          if (admin && regdNo == widget.doc['adminRegdNo'])
+          if (admin || regdNo == widget.doc['adminRegdNo'])
             IconButton(
               icon: Icon(Icons.delete_forever),
               tooltip: 'Delete this Event',

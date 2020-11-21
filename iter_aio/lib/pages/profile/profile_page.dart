@@ -121,7 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                         children: [
                                           (emailId != null || emailId != '')
                                               ? TextSpan(
-                                                  text: '\n$emailId',
+                                                  text: emailId != ''
+                                                      ? '\n$emailId'
+                                                      : '\nAdd your current email for event notifications',
                                                   style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w600,
