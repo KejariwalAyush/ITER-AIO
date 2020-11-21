@@ -119,19 +119,25 @@ class _ProfilePageState extends State<ProfilePage> {
                                               : Colors.white,
                                         ),
                                         children: [
-                                          if (emailId != null || emailId != '')
-                                            TextSpan(
-                                              text: '\n$emailId',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.light
-                                                    ? Colors.black87
-                                                    : Colors.white,
-                                              ),
-                                            )
+                                          (emailId != null || emailId != '')
+                                              ? TextSpan(
+                                                  text: '\n$emailId',
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.light
+                                                        ? Colors.black87
+                                                        : Colors.white,
+                                                  ),
+                                                )
+                                              : Text(
+                                                  'Add your current email for event notifications',
+                                                  overflow: TextOverflow.clip,
+                                                  style:
+                                                      TextStyle(fontSize: 15),
+                                                )
                                         ]),
                                   ),
                                 ),

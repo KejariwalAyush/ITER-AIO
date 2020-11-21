@@ -76,7 +76,7 @@ class AttendanceFetch {
               : _getPercentage(item['Patt']),
           tattper: item['Tatt'] == 'Not Applicable' || item['Tatt'] == '0 / 0'
               ? 0.0
-              : _getPercentage(item['Tatt']),
+              : _getPercentage(item['Tatt']).abs(),
           latt: item['Latt'] == 'Not Applicable' ? '0/0' : item['Latt'],
           patt: item['Patt'] == 'Not Applicable' ? '0/0' : item['Patt'],
           tatt: item['Tatt'] == 'Not Applicable' ? '0/0' : item['Tatt'],
@@ -117,7 +117,7 @@ class AttendanceFetch {
         int.parse(x.split('/')[1].trim()) *
         100);
     // print(d);
-    return d == double.nan ? 0.0 : d;
+    return d == double.nan ? 0.0 : ((d * 100).abs() / 100);
   }
 
   int _getPresent(var i) {

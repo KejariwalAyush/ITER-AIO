@@ -292,11 +292,13 @@ class _LoginPageState extends State<LoginPage>
                     if (loginFetch.finalLogin.status == 'success') {
                       isLoading = true;
                       _isLoggingIn = true;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyHomePage(),
-                          ));
+                      Navigator.pushReplacementNamed(
+                          context, MyHomePage.routeName);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => MyHomePage(),
+                      //     ));
                     } else if (isMobile)
                       Fluttertoast.showToast(
                         msg: loginFetch.finalLogin.message,
