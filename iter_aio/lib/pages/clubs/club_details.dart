@@ -5,6 +5,7 @@ import 'package:iteraio/pages/clubs/club_form.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import '../events/events_form.dart';
+import 'package:iteraio/pages/events/event_desc.dart';
 
 // ignore: must_be_immutable
 class ClubDetails extends StatelessWidget {
@@ -94,6 +95,47 @@ class ClubDetails extends StatelessWidget {
                     ListTile(
                       title: SelectableText(item),
                     ),
+                ],
+              ),
+              ExpansionTile(
+                title: Text('Events'),
+                leading: Icon(Icons.event_available),
+                children: [
+                  StreamBuilder(
+                    stream: events
+                        .where('clubName', isEqualTo: doc['name'])
+                        .snapshots(),
+                    // initialData: initialData ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData)
+                        return Container(
+                          // height: 200,
+                          child: Text('Loading.../No events Yet'),
+                        );
+                      else
+                        return Column(children: [
+                          for (var doc in snapshot.data.docs)
+                            InkWell(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EventDesc(doc: doc),
+                                  )),
+                              child: ListTile(
+                                leading: doc['imgUrl'] != ''
+                                    ? CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(doc['imgUrl']),
+                                      )
+                                    : Icon(Icons.image),
+                                title: Text(doc['title']),
+                                subtitle: Text(doc['shortDesc']),
+                                trailing: Icon(Icons.chevron_right),
+                              ),
+                            ),
+                        ]);
+                    },
+                  ),
                 ],
               ),
               // if (doc['members'] != null && doc['members'] != [])

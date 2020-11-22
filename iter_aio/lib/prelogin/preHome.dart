@@ -5,6 +5,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:iteraio/pages/login_page.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/widgets/on_pop.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:iteraio/pages/clubs/club_details.dart';
+import 'package:iteraio/widgets/loading.dart';
 
 class PreHome extends StatelessWidget {
   static const routeName = '/pre-home';
@@ -25,13 +28,6 @@ class PreHome extends StatelessWidget {
           body: Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              // image: DecorationImage(
-              //   image: AssetImage(
-              //     'assets/logos/icon.png',
-              //   ),
-              //   scale: 0.5,
-              // ),
-              backgroundBlendMode: BlendMode.darken,
               gradient: LinearGradient(
                   begin: FractionalOffset.bottomRight,
                   end: FractionalOffset.topLeft,
@@ -47,29 +43,7 @@ class PreHome extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  RichText(
-                    textAlign: TextAlign.justify,
-                    text: TextSpan(
-                        text: 'SOA/ITER\n',
-                        style: TextStyle(fontSize: 18),
-                        children: [
-                          TextSpan(
-                            text:
-                                'Institute of Technical Education and Research',
-                            style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: '''\n
-⭐ It was established in 1996. This is the Engineering School of Siksha 'O' Anusandhan (formerly SOA University or SIksha 'O' Anusandhan). 
-⭐ Faculty of Engineering and Technology is placed at 32nd rank by NIRF and Govt of India. 
-⭐ Times Higher Education(THE) World University ranking 2020 has ranked its Engineering and Technology, Computer Sciences & Health science in 601 + bracket. 
-⭐ Besides all this, it has been placed within top 50 among Indian Universities.''',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w400),
-                          ),
-                        ]),
-                  ),
+                  buildHeaderText(),
                   SizedBox(
                     height: 15,
                   ),
@@ -124,12 +98,37 @@ class PreHome extends StatelessWidget {
                           TextStyle(fontSize: 35, fontWeight: FontWeight.w900),
                     ),
                   ),
-                  Wrap(
-                    children: [
-                      for (var item in clubList)
-                        clubCard(context, item['name'], item['logoUrl'],
-                            item['desc'])
-                    ],
+                  FutureBuilder(
+                    future: clubs.get().then((QuerySnapshot querySnapshot) {
+                      List _list = [];
+                      querySnapshot.docs.forEach((doc) {
+                        _list.add(doc);
+                      });
+                      return _list;
+                    }),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData)
+                        return Container(
+                          height: 200,
+                          child: loading(),
+                        );
+                      else
+                        return Wrap(
+                          children: [
+                            for (QueryDocumentSnapshot item in snapshot.data)
+                              GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClubDetails(doc: item),
+                                    )),
+                                child: clubCard(context, item['name'],
+                                    item['logoUrl'], item['desc']),
+                              )
+                          ],
+                        );
+                    },
                   ),
                 ],
               ),
@@ -140,34 +139,28 @@ class PreHome extends StatelessWidget {
     );
   }
 
-  final clubList = [
-    {
-      'name': 'CODEX',
-      'desc': 'WE CODE WE EXPLORE!\nThe only coding club of ITER',
-      'logoUrl': 'https://avatars0.githubusercontent.com/u/32349210?s=200&v=4',
-      'resgisterLink': ''
-    },
-    {
-      'name': 'SMC',
-      'desc': 'Soa Music Club\nLets Sing Together! ',
-      'logoUrl':
-          'https://scontent-ort2-1.cdninstagram.com/v/t51.2885-19/43160709_353453038559402_7176192642768699392_n.jpg?_nc_ht=scontent-ort2-1.cdninstagram.com&_nc_ohc=vO09Qo66d4sAX8BB8jz&oh=7eefffa442fb63326c716f3737012bda&oe=5FE570A9',
-      'resgisterLink': ''
-    },
-    {
-      'name': 'Shristi',
-      'desc': 'Srishti - Brushing The Beyond\nWe make things beautiful',
-      'logoUrl':
-          'https://scontent-ort2-2.cdninstagram.com/v/t51.2885-19/92824595_640241626535346_1252290142845009920_n.jpg?_nc_ht=scontent-ort2-2.cdninstagram.com&_nc_ohc=HOo1XhVQg2AAX_8OO2q&oh=61fa13c8d9d37a973a0e274fd5676c05&oe=5FE2E8BE',
-      'resgisterLink': ''
-    },
-    {
-      'name': 'Odanza',
-      'desc': 'Dance in traditional way!\nChalo dance kare or tod de ye floor.',
-      'logoUrl': '',
-      'resgisterLink': ''
-    },
-  ];
+  RichText buildHeaderText() {
+    return RichText(
+      textAlign: TextAlign.justify,
+      text: TextSpan(
+          text: 'SOA/ITER\n',
+          style: TextStyle(fontSize: 18),
+          children: [
+            TextSpan(
+              text: 'Institute of Technical Education and Research',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: '''\n
+⭐ It was established in 1996. This is the Engineering School of Siksha 'O' Anusandhan (formerly SOA University or SIksha 'O' Anusandhan). 
+⭐ Faculty of Engineering and Technology is placed at 32nd rank by NIRF and Govt of India. 
+⭐ Times Higher Education(THE) World University ranking 2020 has ranked its Engineering and Technology, Computer Sciences & Health science in 601 + bracket. 
+⭐ Besides all this, it has been placed within top 50 among Indian Universities.''',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            ),
+          ]),
+    );
+  }
 
   Widget clubCard(
       BuildContext context, String clubName, String logoUrl, String desc) {
