@@ -116,7 +116,7 @@ class ClubDetails extends StatelessWidget {
                         return Column(children: [
                           for (var doc in snapshot.data.docs)
                             InkWell(
-                              onTap: isLoggedIn ?? false || regdNo != null
+                              onTap: regdNo != null
                                   ? () => Navigator.push(
                                       context,
                                       MaterialPageRoute(

@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/landing/landingPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInForm extends StatefulWidget {
   final User user;
@@ -28,7 +29,7 @@ class _SignInFormState extends State<SignInForm> {
           onPressed: () async {
             await googleSignIn.signOut();
             setState(() {
-              user = null;
+              googleUser = null;
             });
             Navigator.pop(context);
           },
@@ -43,7 +44,7 @@ class _SignInFormState extends State<SignInForm> {
         onWillPop: () async {
           await googleSignIn.signOut();
           setState(() {
-            user = null;
+            googleUser = null;
           });
           Navigator.pop(context);
           return;
@@ -66,12 +67,22 @@ class _SignInFormState extends State<SignInForm> {
                           child: RaisedButton.icon(
                             icon: Icon(Icons.publish),
                             label: Text('Publish'),
-                            onPressed: () {
+                            onPressed: () async {
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
                               if (_fbKey.currentState.saveAndValidate()) {
                                 var x = _fbKey.currentState.value;
                                 print(x);
                                 googleUsers.doc(x['regdno']).set(x);
-                                gUser = x;
+                                setState(() {
+                                  gUser = x;
+                                  regdNo = x['regdno'];
+                                  emailId = x['email'];
+                                  name = x['name'];
+                                  admin = false;
+                                });
+                                await prefs.setStringList(
+                                    'guser', [emailId, regdNo, name]);
                                 Navigator.pop(context);
                               }
                             },

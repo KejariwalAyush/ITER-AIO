@@ -11,9 +11,10 @@ import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/landing/signInForm.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
-User user;
+User googleUser;
 var gUser;
 
 class LandingPage extends StatefulWidget {
@@ -25,6 +26,36 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool isGuser = false;
+
+  @override
+  void initState() {
+    getGUser();
+    super.initState();
+  }
+
+  getGUser() async {
+    isGuser = await googleSignIn.isSignedIn();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getStringList('guser') != null) {
+      setState(() {
+        emailId = prefs.getStringList('guser')[0];
+        regdNo = prefs.getStringList('guser')[1];
+        name = prefs.getStringList('guser')[2];
+        print(emailId + '\n' + regdNo + '\n' + name);
+      });
+    }
+  }
+
+  resetGUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.remove('guser');
+      emailId = null;
+      regdNo = null;
+      name = null;
+    });
+  }
 
   Future<String> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
@@ -38,18 +69,18 @@ class _LandingPageState extends State<LandingPage> {
 
     final UserCredential authResult =
         await _auth.signInWithCredential(credential);
-    user = authResult.user;
+    googleUser = authResult.user;
 
-    if (user != null) {
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
+    if (googleUser != null) {
+      assert(!googleUser.isAnonymous);
+      assert(await googleUser.getIdToken() != null);
 
       final User currentUser = _auth.currentUser;
-      assert(user.uid == currentUser.uid);
+      assert(googleUser.uid == currentUser.uid);
 
-      print('signInWithGoogle succeeded: $user');
+      print('signInWithGoogle succeeded: $googleUser');
 
-      return '$user';
+      return '$googleUser';
     }
 
     return null;
@@ -77,19 +108,29 @@ class _LandingPageState extends State<LandingPage> {
           //     padding: EdgeInsets.all(5),
           //     child: CircleAvatar(child: Image.asset('assets/logos/icon.png'))),
           title: Text('ITER-AIO'),
-          centerTitle: user == null ?? true,
+          centerTitle: emailId == null || !(isLoggedIn ?? false),
           actions: [
-            if (user != null ?? false)
+            if ((googleUser != null || emailId != null) &&
+                !(isLoggedIn ?? false))
               FlatButton.icon(
                 color: Colors.blueAccent,
                 icon: Icon(LineAwesomeIcons.power_off),
                 label: Text('Logout'),
                 onPressed: () {
                   setState(() {
-                    signOutGoogle().then((value) => user = null);
-                    user = null;
+                    resetGUser();
+                    signOutGoogle().then((value) => googleUser = null);
+                    googleUser = null;
                   });
                 },
+              ),
+            if (isLoggedIn ?? false)
+              FlatButton.icon(
+                color: Colors.blueAccent,
+                icon: Icon(LineAwesomeIcons.home),
+                label: Text('Go to Home'),
+                onPressed: () =>
+                    Navigator.pushNamed(context, MyHomePage.routeName),
               ),
           ],
         ),
@@ -119,7 +160,7 @@ class _LandingPageState extends State<LandingPage> {
                 SizedBox(
                   height: 15,
                 ),
-                if (user == null || !firebaseSignedIn ?? true)
+                if (emailId == null || regdNo == null)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -136,7 +177,7 @@ class _LandingPageState extends State<LandingPage> {
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return SignInForm(
-                                        user: user,
+                                        user: googleUser,
                                       );
                                     },
                                   ),
@@ -160,17 +201,6 @@ class _LandingPageState extends State<LandingPage> {
                         ),
                       ),
                     ],
-                  ),
-                if (isLoggedIn ?? false)
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    child: FlatButton.icon(
-                      color: Colors.blueAccent,
-                      icon: Icon(LineAwesomeIcons.home),
-                      label: Text('Go to Home'),
-                      onPressed: () =>
-                          Navigator.pushNamed(context, MyHomePage.routeName),
-                    ),
                   ),
                 Align(
                   alignment: Alignment.centerLeft,

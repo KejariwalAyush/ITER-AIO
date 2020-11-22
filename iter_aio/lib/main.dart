@@ -37,6 +37,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/helper/lectures_fetch.dart';
 import 'package:iteraio/pages/clubs/clubs_page.dart';
+import 'package:iteraio/landing/landingPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,6 +70,7 @@ class _MyAppState extends State<MyApp> {
           print('User is currently signed out!');
         } else {
           firebaseSignedIn = true;
+          googleUser = user;
           print('User is signed in!');
         }
       });
