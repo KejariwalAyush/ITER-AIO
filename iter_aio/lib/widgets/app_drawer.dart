@@ -95,6 +95,54 @@ class CustomAppDrawer {
                 leading: Icon(Icons.video_library),
                 title: Text('Clubs'),
                 onTap: () => Navigator.pushNamed(context, ClubsPage.routeName)),
+          if (sstudyMaterial) Divider(),
+          if (sstudyMaterial)
+            InkWell(
+              onTap: noInternet
+                  ? () {
+                      if (isMobile)
+                        Fluttertoast.showToast(
+                          msg: "No Internet!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 0,
+                          backgroundColor: Colors.redAccent,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                    }
+                  : () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => WebPageView(
+                              'Moodle', 'http://136.233.14.6/moodle/my/'))),
+              child: Column(
+                children: [
+                  Container(
+                    height: 75,
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      'assets/icons/moodle.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      style: TextStyle(color: Colors.white),
+                      children: [
+                        TextSpan(
+                          text: "Moodle ITER",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           if (slectures && !noInternet) Divider(),
           if (slectures && !noInternet)
             ListTile(
