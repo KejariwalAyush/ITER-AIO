@@ -11,7 +11,7 @@ import 'package:iteraio/models/firestore_to_model.dart';
 import 'package:iteraio/pages/profile/profile_form.dart';
 import 'package:iteraio/widgets/on_pop.dart';
 
-import 'package:iteraio/prelogin/preHome.dart';
+import 'package:iteraio/landing/LandingPage.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -69,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PreHome(),
+                    builder: (context) => LandingPage(),
                   )),
             ),
           ],

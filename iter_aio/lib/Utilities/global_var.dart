@@ -60,6 +60,9 @@ GlobalKey logo = new GlobalKey();
 CollectionReference users = FirebaseFirestore.instance.collection('users');
 CollectionReference events = FirebaseFirestore.instance.collection('events');
 CollectionReference clubs = FirebaseFirestore.instance.collection('clubs');
+CollectionReference googleUsers =
+    FirebaseFirestore.instance.collection('googleUser');
+
 bool admin = false;
 List<String> clubsName = [];
 List<String> clubsDoc = [];

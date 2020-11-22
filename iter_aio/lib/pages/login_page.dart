@@ -19,6 +19,7 @@ import 'package:iteraio/widgets/app_drawer.dart';
 import 'package:iteraio/widgets/on_pop.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:iteraio/landing/LandingPage.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login-page";
@@ -113,7 +114,8 @@ class _LoginPageState extends State<LoginPage>
       onWillPop: OnPop(context: context).onWillPop,
       child: Scaffold(
         backgroundColor: themeDark.withOpacity(0.9),
-        drawer: CustomAppDrawer(srestart: true).widgetDrawer(context),
+        drawer: CustomAppDrawer(srestart: true, sstudyMaterial: false)
+            .widgetDrawer(context),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -144,13 +146,23 @@ class _LoginPageState extends State<LoginPage>
             ),
             IconButton(
               icon: new Icon(
-                Icons.circle_notifications,
+                Icons.notifications_none,
                 size: 20,
                 color:
                     brightness == Brightness.dark ? Colors.white : Colors.black,
               ),
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Notices())),
+            ),
+            IconButton(
+              icon: new Icon(
+                Icons.home_outlined,
+                size: 20,
+                color:
+                    brightness == Brightness.dark ? Colors.white : Colors.black,
+              ),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LandingPage())),
             ),
           ],
         ),

@@ -116,11 +116,14 @@ class ClubDetails extends StatelessWidget {
                         return Column(children: [
                           for (var doc in snapshot.data.docs)
                             InkWell(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EventDesc(doc: doc),
-                                  )),
+                              onTap: isLoggedIn ?? false || regdNo != null
+                                  ? () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            EventDesc(doc: doc),
+                                      ))
+                                  : null,
                               child: ListTile(
                                 leading: doc['imgUrl'] != ''
                                     ? CircleAvatar(
@@ -138,17 +141,9 @@ class ClubDetails extends StatelessWidget {
                   ),
                 ],
               ),
-              // if (doc['members'] != null && doc['members'] != [])
-              //   ExpansionTile(
-              //     title: Text('Members'),
-              //     leading: Icon(Icons.person_outline),
-              //     children: [
-              //       for (var item in doc['members'])
-              //         ListTile(
-              //           title: SelectableText(item),
-              //         ),
-              //     ],
-              //   ),
+              SizedBox(
+                height: 25,
+              ),
             ],
           ),
         ),
