@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Utilities/global_var.dart';
-import 'package:iteraio/pages/login_page.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:iteraio/prelogin/preHome.dart';
 
 class Splash extends StatelessWidget {
   const Splash({
@@ -17,8 +17,8 @@ class Splash extends StatelessWidget {
       navigateAfterSeconds: isLoggedIn != null
           ? isLoggedIn
               ? new MyHomePage()
-              : new LoginPage()
-          : new LoginPage(),
+              : new PreHome()
+          : new PreHome(),
       title: new Text(
         'ITER AIO\n\nAn all-in-one app for ITER',
         textAlign: TextAlign.center,

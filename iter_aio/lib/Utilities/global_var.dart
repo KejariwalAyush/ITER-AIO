@@ -16,6 +16,7 @@ bool noInternet = false;
 bool serverTimeout = false;
 bool isLoggedIn = false;
 bool serverError = false;
+bool firebaseSignedIn = false;
 
 Brightness brightness = Brightness.dark;
 bool isMobile;

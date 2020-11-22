@@ -65,8 +65,10 @@ class _MyAppState extends State<MyApp> {
     if (isMobile)
       FirebaseAuth.instance.authStateChanges().listen((User user) {
         if (user == null) {
+          firebaseSignedIn = false;
           print('User is currently signed out!');
         } else {
+          firebaseSignedIn = true;
           print('User is signed in!');
         }
       });

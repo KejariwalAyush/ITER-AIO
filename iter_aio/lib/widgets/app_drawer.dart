@@ -128,7 +128,6 @@ class CustomAppDrawer {
                   ),
                   Text.rich(
                     TextSpan(
-                      style: TextStyle(color: Colors.white),
                       children: [
                         TextSpan(
                           text: "Moodle ITER",

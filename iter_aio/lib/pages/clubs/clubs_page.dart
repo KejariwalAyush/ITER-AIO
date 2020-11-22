@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:iteraio/pages/clubs/club_details.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:iteraio/widgets/on_pop.dart';
 
 class ClubsPage extends StatefulWidget {
   static const routeName = "/clubs-page";
@@ -24,51 +25,54 @@ class _ClubsPageState extends State<ClubsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: CustomAppDrawer(
-              sresult: true,
-              slectures: true,
-              sbunk: true,
-              slogout: true,
-              srestart: true)
-          .widgetDrawer(context),
-      appBar: AppBar(
-        title: Text('Clubs'),
-        centerTitle: true,
-        elevation: 15,
-        leading: MediaQuery.of(context).size.width > 700
-            ? SizedBox()
-            : Builder(
-                builder: (context) => IconButton(
-                  icon: new Icon(Icons.apps),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
+    return WillPopScope(
+      onWillPop: OnPop(context: context).onWillPop,
+      child: Scaffold(
+        drawer: CustomAppDrawer(
+                sresult: true,
+                slectures: true,
+                sbunk: true,
+                slogout: true,
+                srestart: true)
+            .widgetDrawer(context),
+        appBar: AppBar(
+          title: Text('Clubs'),
+          centerTitle: true,
+          elevation: 15,
+          leading: MediaQuery.of(context).size.width > 700
+              ? SizedBox()
+              : Builder(
+                  builder: (context) => IconButton(
+                    icon: new Icon(Icons.apps),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
                 ),
-              ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                // bottomLeft: Radius.circular(35),
-                // bottomRight: Radius.circular(25)
-                )),
-        actions: [
-          if (admin)
-            IconButton(
-              icon: Icon(Icons.add_box),
-              onPressed: () => showDialog(
-                context: context,
-                // barrierDismissible: false,
-                builder: (BuildContext context) => _buildAboutDialog(context),
-              ),
-            )
-        ],
-      ),
-      // bottomSheet: Container(
-      //     height: 20,
-      //     alignment: Alignment.center,
-      //     child: Text('For adding Clubs or any query head over to About Us')),
-      body: Container(
-        // color: colorDark.withOpacity(0.1),
-        height: double.maxFinite,
-        child: buildFutureBuilder(),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  // bottomLeft: Radius.circular(35),
+                  // bottomRight: Radius.circular(25)
+                  )),
+          actions: [
+            if (admin)
+              IconButton(
+                icon: Icon(Icons.add_box),
+                onPressed: () => showDialog(
+                  context: context,
+                  // barrierDismissible: false,
+                  builder: (BuildContext context) => _buildAboutDialog(context),
+                ),
+              )
+          ],
+        ),
+        // bottomSheet: Container(
+        //     height: 20,
+        //     alignment: Alignment.center,
+        //     child: Text('For adding Clubs or any query head over to About Us')),
+        body: Container(
+          // color: colorDark.withOpacity(0.1),
+          height: double.maxFinite,
+          child: buildFutureBuilder(),
+        ),
       ),
     );
   }

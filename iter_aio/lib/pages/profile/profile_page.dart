@@ -9,6 +9,9 @@ import 'package:iteraio/widgets/large_appdrawer.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/models/firestore_to_model.dart';
 import 'package:iteraio/pages/profile/profile_form.dart';
+import 'package:iteraio/widgets/on_pop.dart';
+
+import 'package:iteraio/prelogin/preHome.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -30,143 +33,149 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: CustomAppDrawer(
-              sresult: true,
-              slectures: true,
-              sbunk: true,
-              slogout: true,
-              srestart: true)
-          .widgetDrawer(context),
-      appBar: AppBar(
-        title: Text('Profile'),
-        centerTitle: true,
-        leading: MediaQuery.of(context).size.width > 700
-            ? SizedBox()
-            : Builder(
-                builder: (context) => IconButton(
-                  icon: new Icon(Icons.apps),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
+    return WillPopScope(
+      onWillPop: OnPop(context: context).onWillPop,
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: CustomAppDrawer(
+                sresult: true,
+                slectures: true,
+                sbunk: true,
+                slogout: true,
+                srestart: true)
+            .widgetDrawer(context),
+        appBar: AppBar(
+          title: Text('Profile'),
+          centerTitle: true,
+          leading: MediaQuery.of(context).size.width > 700
+              ? SizedBox()
+              : Builder(
+                  builder: (context) => IconButton(
+                    icon: new Icon(Icons.apps),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
                 ),
-              ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.mode_edit),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfileForm(),
-                )),
-          )
-        ],
-        elevation: 15,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                // bottomLeft: Radius.circular(35),
-                // bottomRight: Radius.circular(25)
-                )),
-      ),
-      body: Container(
-        color: colorDark.withOpacity(0.15),
-        height: double.maxFinite,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (MediaQuery.of(context).size.width > 700)
-              LargeAppDrawer().largeDrawer(context),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      FutureBuilder<ProfileInfo>(
-                        // future: pi.getProfile(),
-                        future: users.doc(regdNo).get().then((value) {
-                          profileImg = value['imgUrl'];
-                          profileImg = profileImg.toString().trim();
-                          return FirestoretoModel()
-                              .profileInfo(value['profile']);
-                        }),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData)
-                            return Container(
-                              height: 200,
-                              child: loading(),
-                            );
-                          else
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                buildStackHeader(snapshot.data.gender),
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: RichText(
-                                    textAlign: TextAlign.start,
-                                    text: TextSpan(
-                                        text: snapshot.data.name,
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.light
-                                              ? Colors.black87
-                                              : Colors.white,
-                                        ),
-                                        children: [
-                                          (emailId != null || emailId != '')
-                                              ? TextSpan(
-                                                  text: emailId != ''
-                                                      ? '\n$emailId'
-                                                      : '\nAdd your current email for event notifications',
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.light
-                                                        ? Colors.black87
-                                                        : Colors.white,
-                                                  ),
-                                                )
-                                              : Text(
-                                                  'Add your current email for event notifications',
-                                                  overflow: TextOverflow.clip,
-                                                  style:
-                                                      TextStyle(fontSize: 15),
-                                                )
-                                        ]),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.mode_edit),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileForm(),
+                  )),
+            ),
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PreHome(),
+                  )),
+            ),
+          ],
+          elevation: 15,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  // bottomLeft: Radius.circular(35),
+                  // bottomRight: Radius.circular(25)
+                  )),
+        ),
+        body: Container(
+          color: colorDark.withOpacity(0.15),
+          height: double.maxFinite,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (MediaQuery.of(context).size.width > 700)
+                LargeAppDrawer().largeDrawer(context),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        FutureBuilder<ProfileInfo>(
+                          // future: pi.getProfile(),
+                          future: users.doc(regdNo).get().then((value) {
+                            profileImg = value['imgUrl'];
+                            profileImg = profileImg.toString().trim();
+                            return FirestoretoModel()
+                                .profileInfo(value['profile']);
+                          }),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData)
+                              return Container(
+                                height: 200,
+                                child: loading(),
+                              );
+                            else
+                              return Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  buildStackHeader(snapshot.data.gender),
+                                  Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: RichText(
+                                      textAlign: TextAlign.start,
+                                      text: TextSpan(
+                                          text: snapshot.data.name,
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black87
+                                                    : Colors.white,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: emailId != ''
+                                                  ? '\n${emailId ?? 'Add your current email for event notifications'}'
+                                                  : '\nAdd your current email for event notifications',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black87
+                                                    : Colors.white,
+                                              ),
+                                            )
+                                          ]),
+                                    ),
                                   ),
-                                ),
-                                buildRichText(context, 'Semester',
-                                    snapshot.data.semester.toString()),
-                                buildRichText(
-                                    context, 'Regd No.', snapshot.data.regdno),
-                                buildRichText(context, 'Branch',
-                                    snapshot.data.branchdesc),
-                                buildRichText(context, 'Section',
-                                    snapshot.data.sectioncode),
-                                buildRichText(
-                                    context, 'Gender', snapshot.data.gender),
-                                buildRichText(
-                                    context, 'Email', snapshot.data.email),
-                                buildRichText(context, 'R. Pincode',
-                                    snapshot.data.pincode.toString()),
-                              ],
-                            );
-                        },
-                      ),
-                    ],
+                                  buildRichText(context, 'Semester',
+                                      snapshot.data.semester.toString()),
+                                  buildRichText(context, 'Regd No.',
+                                      snapshot.data.regdno),
+                                  buildRichText(context, 'Branch',
+                                      snapshot.data.branchdesc),
+                                  buildRichText(context, 'Section',
+                                      snapshot.data.sectioncode),
+                                  buildRichText(
+                                      context, 'Gender', snapshot.data.gender),
+                                  buildRichText(
+                                      context, 'Email', snapshot.data.email),
+                                  buildRichText(context, 'R. Pincode',
+                                      snapshot.data.pincode.toString()),
+                                ],
+                              );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

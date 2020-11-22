@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iteraio/widgets/loading.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:intl/intl.dart';
+import 'package:iteraio/widgets/on_pop.dart';
 import 'package:iteraio/pages/events/event_desc.dart';
 
 class EventsPage extends StatefulWidget {
@@ -21,70 +22,74 @@ class _EventsPageState extends State<EventsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: CustomAppDrawer(
-              sresult: true,
-              slectures: true,
-              sbunk: true,
-              slogout: true,
-              srestart: true)
-          .widgetDrawer(context),
-      appBar: AppBar(
-        title: _isSearching ? _buildSearchField() : Text('Events'),
-        centerTitle: true,
-        leading: _isSearching
-            ? const BackButton()
-            : MediaQuery.of(context).size.width > 700
-                ? SizedBox()
-                : Builder(
-                    builder: (context) => IconButton(
-                      icon: new Icon(Icons.apps),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
+    return WillPopScope(
+      onWillPop: OnPop(context: context).onWillPop,
+      child: Scaffold(
+        drawer: CustomAppDrawer(
+                sresult: true,
+                slectures: true,
+                sbunk: true,
+                slogout: true,
+                srestart: true)
+            .widgetDrawer(context),
+        appBar: AppBar(
+          title: _isSearching ? _buildSearchField() : Text('Events'),
+          centerTitle: true,
+          leading: _isSearching
+              ? const BackButton()
+              : MediaQuery.of(context).size.width > 700
+                  ? SizedBox()
+                  : Builder(
+                      builder: (context) => IconButton(
+                        icon: new Icon(Icons.apps),
+                        onPressed: () => Scaffold.of(context).openDrawer(),
+                      ),
                     ),
-                  ),
-        actions: _buildActions(),
-        elevation: 15,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                // bottomLeft: Radius.circular(35),
-                // bottomRight: Radius.circular(25)
-                )),
-      ),
-      body: Container(
-        color: colorDark.withOpacity(0.15),
-        height: double.maxFinite,
-        child: StreamBuilder(
-            stream: events.orderBy('eventDate', descending: false).snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData)
-                return Container(height: 200, child: loading());
-              else
-                return ListView(
-                    children: snapshot.data.docs.map((doc) {
-                  return InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EventDesc(doc: doc),
-                        )),
-                    child: TweenAnimationBuilder(
-                        duration: Duration(milliseconds: 500),
-                        tween: Tween<double>(begin: 0, end: 1),
-                        builder: (context, value, child) => Transform.scale(
-                              scale: value,
-                              child: buildEventTile(
-                                  doc['imgUrl'],
-                                  doc['title'],
-                                  doc['shortDesc'],
-                                  doc['clubName'],
-                                  new DateFormat.MMMd()
-                                      .format(doc['eventDate'].toDate()),
-                                  doc['hashtags']),
-                            )),
-                  );
-                }).toList());
-            }),
+          actions: _buildActions(),
+          elevation: 15,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  // bottomLeft: Radius.circular(35),
+                  // bottomRight: Radius.circular(25)
+                  )),
+        ),
+        body: Container(
+          color: colorDark.withOpacity(0.15),
+          height: double.maxFinite,
+          child: StreamBuilder(
+              stream:
+                  events.orderBy('eventDate', descending: false).snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData)
+                  return Container(height: 200, child: loading());
+                else
+                  return ListView(
+                      children: snapshot.data.docs.map((doc) {
+                    return InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EventDesc(doc: doc),
+                          )),
+                      child: TweenAnimationBuilder(
+                          duration: Duration(milliseconds: 500),
+                          tween: Tween<double>(begin: 0, end: 1),
+                          builder: (context, value, child) => Transform.scale(
+                                scale: value,
+                                child: buildEventTile(
+                                    doc['imgUrl'],
+                                    doc['title'],
+                                    doc['shortDesc'],
+                                    doc['clubName'],
+                                    new DateFormat.MMMd()
+                                        .format(doc['eventDate'].toDate()),
+                                    doc['hashtags']),
+                              )),
+                    );
+                  }).toList());
+              }),
+        ),
       ),
     );
   }
