@@ -1,8 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
+import 'dart:io';
 
 class EventsForm extends StatefulWidget {
   @override
@@ -43,9 +45,11 @@ class _EventsFormState extends State<EventsForm> {
                         child: RaisedButton.icon(
                           icon: Icon(Icons.publish),
                           label: Text('Publish'),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_fbKey.currentState.saveAndValidate()) {
                               var x = _fbKey.currentState.value;
+                              if (x['imgUrl'] != null)
+                                x['imgUrl'] = await uploadImg(x['imgUrl'][0]);
                               print(x);
                               try {
                                 events.add(x);
@@ -88,7 +92,7 @@ class _EventsFormState extends State<EventsForm> {
     return FormBuilder(
       key: _fbKey,
       initialValue: {
-        'eventDate': DateTime.now(),
+        // 'eventDate': DateTime.now(),
         'time': DateTime.now(),
       },
       child: SingleChildScrollView(
@@ -134,14 +138,25 @@ class _EventsFormState extends State<EventsForm> {
               decoration: InputDecoration(labelText: "Detailed Description"),
               autocorrect: true,
             ),
-            FormBuilderTextField(
+
+            /// add Image then upload it and get link
+            FormBuilderImagePicker(
               attribute: 'imgUrl',
-              decoration: InputDecoration(labelText: "Image Url (Optional)"),
-              validators: [
-                FormBuilderValidators.url(),
-              ],
-              autocorrect: true,
+              decoration: const InputDecoration(
+                labelText: 'Images',
+              ),
+              maxImages: 1,
+              iconColor: Colors.grey,
+              // onSaved: uploadImg,
             ),
+            // FormBuilderTextField(
+            //   attribute: 'imgUrl',
+            //   decoration: InputDecoration(labelText: "Image Url (Optional)"),
+            //   validators: [
+            //     FormBuilderValidators.url(),
+            //   ],
+            //   autocorrect: true,
+            // ),
             FormBuilderTextField(
               attribute: 'link',
               decoration:
@@ -286,5 +301,39 @@ class _EventsFormState extends State<EventsForm> {
         ),
       ),
     );
+  }
+
+  uploadImg(value) async {
+    File img = value;
+    var url = 'https://0x0.st';
+    var resp;
+    var formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(img.path, filename: 'my'),
+    });
+    resp = await Dio().post(
+      url,
+      data: formData,
+      onSendProgress: (int sent, int total) {
+        // showDialog(
+        //   context: context,
+        //   barrierDismissible: false,
+        //   builder: (BuildContext context) => AlertDialog(
+        //     title: Text('Uploading'),
+        //     content: Text(
+        //         '$sent/$total(${(sent / total).ceil() * 100}%)'),
+        //     actions: [
+        //       if (sent == total)
+        //         FlatButton(
+        //           child: Text('Okay'),
+        //           onPressed: () => Navigator.pop(context),
+        //         )
+        //     ],
+        //   ),
+        // );
+        print("$sent $total");
+      },
+    );
+    print(resp);
+    return resp.toString().trim();
   }
 }
