@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
+import 'package:iteraio/pages/events/events_page.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:iteraio/pages/login_page.dart';
 import 'package:iteraio/MyHomePage.dart';
@@ -108,12 +109,11 @@ class _LandingPageState extends State<LandingPage> {
           //     padding: EdgeInsets.all(5),
           //     child: CircleAvatar(child: Image.asset('assets/logos/icon.png'))),
           title: Text('ITER-AIO'),
-          centerTitle: emailId == null || !(isLoggedIn ?? false),
+          centerTitle: true,
           actions: [
             if ((googleUser != null || emailId != null) &&
                 !(isLoggedIn ?? false))
               FlatButton.icon(
-                color: Colors.blueAccent,
                 icon: Icon(LineAwesomeIcons.power_off),
                 label: Text('Logout'),
                 onPressed: () {
@@ -126,9 +126,8 @@ class _LandingPageState extends State<LandingPage> {
               ),
             if (isLoggedIn ?? false)
               FlatButton.icon(
-                color: Colors.blueAccent,
                 icon: Icon(LineAwesomeIcons.home),
-                label: Text('Go to Home'),
+                label: Text('Home'),
                 onPressed: () =>
                     Navigator.pushNamed(context, MyHomePage.routeName),
               ),
@@ -160,47 +159,28 @@ class _LandingPageState extends State<LandingPage> {
                 SizedBox(
                   height: 15,
                 ),
-                if (emailId == null || regdNo == null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        child: FlatButton.icon(
-                          color: Colors.blueAccent,
-                          icon: Icon(LineAwesomeIcons.google_plus),
-                          label: Text('Google Sign in'),
-                          onPressed: () {
-                            signInWithGoogle().then((result) {
-                              if (result != null) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return SignInForm(
-                                        user: googleUser,
-                                      );
-                                    },
-                                  ),
-                                );
-                              }
-                            });
-                          },
+                if (emailId == null || regdNo == null) loginButtons(context),
+                if (regdNo != null || emailId != null)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EventsPage(
+                              isRedirect: true,
+                            ),
+                          )),
+                      child: ListTile(
+                        leading: Icon(Icons.event_available),
+                        title: Text(
+                          'All Events',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
                         ),
+                        trailing: Icon(Icons.arrow_forward_ios),
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        child: FlatButton.icon(
-                          color: colorDark.withOpacity(1),
-                          icon: Icon(Icons.business),
-                          label: Text('Campus Portal Login'),
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginPage(),
-                              )),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -247,6 +227,53 @@ class _LandingPageState extends State<LandingPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Wrap loginButtons(BuildContext context) {
+    return Wrap(
+      direction: Axis.horizontal,
+      runAlignment: WrapAlignment.spaceAround,
+      alignment: WrapAlignment.spaceAround,
+      spacing: 5,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          child: FlatButton.icon(
+            color: Colors.blueAccent,
+            icon: Icon(LineAwesomeIcons.google_plus),
+            label: Text('Google Sign in'),
+            onPressed: () {
+              signInWithGoogle().then((result) {
+                if (result != null) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SignInForm(
+                          user: googleUser,
+                        );
+                      },
+                    ),
+                  );
+                }
+              });
+            },
+          ),
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          child: FlatButton.icon(
+            color: colorDark.withOpacity(1),
+            icon: Icon(Icons.business),
+            label: Text('Campus Portal Login'),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                )),
+          ),
+        ),
+      ],
     );
   }
 

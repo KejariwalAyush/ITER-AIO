@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:iteraio/pages/events/view_list.dart';
 import 'package:iteraio/widgets/show_notification.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class EventDesc extends StatefulWidget {
   final QueryDocumentSnapshot doc;
@@ -87,19 +88,30 @@ class _EventDescState extends State<EventDesc> {
               intrestedButton = 'You are Intrested!';
               isIntrested = true;
             });
-          else
-            setState(() {
-              intrestedList.add({regdNo: name, "email": emailId});
-              events
-                  .doc(widget.doc.id)
-                  .update({'intrested': intrestedList}).then((value) {
-                setState(() {
-                  intrestedButton = 'You are Intrested!';
-                  isIntrested = true;
+          else {
+            if ((emailId ?? '').trim() == '' ||
+                (name ?? '').trim() == '' ||
+                (regdNo ?? '').trim() == '')
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) => _buildAboutDialog(context),
+              );
+            else
+              setState(() {
+                intrestedList
+                    .add({"regdNo": regdNo, "name": name, "email": emailId});
+                events
+                    .doc(widget.doc.id)
+                    .update({'intrested': intrestedList}).then((value) {
+                  setState(() {
+                    intrestedButton = 'You are Intrested!';
+                    isIntrested = true;
+                  });
+                  return 'sucess';
                 });
-                return 'sucess';
               });
-            });
+          }
         },
       ),
       body: Container(
@@ -270,6 +282,88 @@ class _EventDescState extends State<EventDesc> {
           ),
         ],
       ),
+    );
+  }
+
+  GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  Widget _buildAboutDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Your Details'),
+      content: FormBuilder(
+        key: _fbKey,
+        initialValue: {
+          'email': emailId,
+          'name': name,
+          'regdno': regdNo,
+        },
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            FormBuilderTextField(
+              attribute: 'email',
+              readOnly: (emailId ?? '').trim() != '',
+              validators: [
+                FormBuilderValidators.required(),
+                FormBuilderValidators.email()
+              ],
+              decoration: InputDecoration(labelText: "Email"),
+              autocorrect: true,
+            ),
+            FormBuilderTextField(
+              readOnly: (name ?? '').trim() != '',
+              attribute: 'name',
+              validators: [FormBuilderValidators.required()],
+              decoration: InputDecoration(labelText: "Name"),
+              autocorrect: true,
+            ),
+            FormBuilderTextField(
+              readOnly: (regdNo ?? '').trim() != '',
+              attribute: 'regdno',
+              decoration: InputDecoration(labelText: "Registration No."),
+              validators: [
+                FormBuilderValidators.required(),
+                FormBuilderValidators.numeric()
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancel'),
+        ),
+        new FlatButton(
+          onPressed: () {
+            if (_fbKey.currentState.saveAndValidate()) {
+              var x = _fbKey.currentState.value;
+              print(x);
+              setState(() {
+                intrestedList.add({
+                  "regdNo": x['regdno'],
+                  "name": x['name'],
+                  "email": x['email']
+                });
+                events
+                    .doc(widget.doc.id)
+                    .update({'intrested': intrestedList}).then((value) {
+                  setState(() {
+                    intrestedButton = 'You are Intrested!';
+                    isIntrested = true;
+                  });
+                  return 'sucess';
+                });
+              });
+              Navigator.of(context).pop();
+            }
+          },
+          // textColor: Theme.of(context).primaryColor,
+          child: const Text('Done'),
+        ),
+      ],
     );
   }
 

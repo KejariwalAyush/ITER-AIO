@@ -4,6 +4,10 @@ import 'package:iteraio/Utilities/Theme.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 
 class ProfileForm extends StatefulWidget {
+  final profileImg;
+
+  const ProfileForm({Key key, this.profileImg}) : super(key: key);
+
   @override
   _EventsFormState createState() => _EventsFormState();
 }
@@ -47,6 +51,9 @@ class _EventsFormState extends State<ProfileForm> {
                               var x = _fbKey.currentState.value;
                               print(x);
                               try {
+                                setState(() {
+                                  emailId = x['emailId'];
+                                });
                                 users.doc(regdNo).update(x);
                                 print('Profile info Added');
                               } on Exception catch (e) {
@@ -86,7 +93,7 @@ class _EventsFormState extends State<ProfileForm> {
   Widget buildFormFeilds() {
     return FormBuilder(
       key: _fbKey,
-      initialValue: {},
+      initialValue: {'emailId': emailId, 'imgUrl': widget.profileImg},
       child: SingleChildScrollView(
         child: Column(
           children: [

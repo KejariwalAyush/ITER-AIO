@@ -61,7 +61,9 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileForm(),
+                    builder: (context) => ProfileForm(
+                      profileImg: profileImg,
+                    ),
                   )),
             ),
             IconButton(
@@ -100,8 +102,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         FutureBuilder<ProfileInfo>(
                           // future: pi.getProfile(),
                           future: users.doc(regdNo).get().then((value) {
-                            profileImg = value['imgUrl'];
-                            profileImg = profileImg.toString().trim();
+                            setState(() {
+                              profileImg = value['imgUrl'];
+                              profileImg = profileImg.toString().trim();
+                              emailId = value['emailId'];
+                            });
                             return FirestoretoModel()
                                 .profileInfo(value['profile']);
                           }),

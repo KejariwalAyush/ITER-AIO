@@ -10,6 +10,8 @@ import 'package:iteraio/widgets/on_pop.dart';
 import 'package:iteraio/pages/events/event_desc.dart';
 
 class EventsPage extends StatefulWidget {
+  final bool isRedirect;
+  EventsPage({this.isRedirect = false});
   @override
   _EventsPageState createState() => _EventsPageState();
 }
@@ -23,7 +25,9 @@ class _EventsPageState extends State<EventsPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: OnPop(context: context).onWillPop,
+      onWillPop: widget.isRedirect
+          ? () => Future.value(Navigator.canPop(context))
+          : OnPop(context: context).onWillPop,
       child: Scaffold(
         drawer: CustomAppDrawer(
                 sresult: true,
@@ -35,7 +39,7 @@ class _EventsPageState extends State<EventsPage> {
         appBar: AppBar(
           title: _isSearching ? _buildSearchField() : Text('Events'),
           centerTitle: true,
-          leading: _isSearching
+          leading: _isSearching || widget.isRedirect
               ? const BackButton()
               : MediaQuery.of(context).size.width > 700
                   ? SizedBox()

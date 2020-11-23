@@ -66,8 +66,8 @@ class _ViewListState extends State<ViewList> {
         .substring(1, widget.list[index].toString().length - 1);
     if (!_isSearching || t.toLowerCase().contains(s))
       return ListTile(
-        title: Text(t.split(',')[0]),
-        subtitle: Text(t.split(',')[1]),
+        title: Text(t.split(',')[0].split(':')[1]),
+        subtitle: Text(t.split(',')[1] + '\n' + t.split(',')[2].split(':')[1]),
         leading: Icon(Icons.person),
       );
     else
