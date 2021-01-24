@@ -20,6 +20,7 @@ import 'package:iteraio/widgets/on_pop.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:iteraio/landing/LandingPage.dart';
+import 'package:iteraio/pages/attendance_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login-page";
@@ -154,16 +155,16 @@ class _LoginPageState extends State<LoginPage>
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Notices())),
             ),
-            IconButton(
-              icon: new Icon(
-                Icons.home_outlined,
-                size: 20,
-                color:
-                    brightness == Brightness.dark ? Colors.white : Colors.black,
-              ),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LandingPage())),
-            ),
+            // IconButton(
+            //   icon: new Icon(
+            //     Icons.home_outlined,
+            //     size: 20,
+            //     color:
+            //         brightness == Brightness.dark ? Colors.white : Colors.black,
+            //   ),
+            //   onPressed: () => Navigator.push(context,
+            //       MaterialPageRoute(builder: (context) => LandingPage())),
+            // ),
           ],
         ),
         floatingActionButton: !_isLoggingIn
@@ -289,15 +290,16 @@ class _LoginPageState extends State<LoginPage>
                 ),
                 onPressed: () async {
                   print('$regdNo : $password');
-                  await _login(regdNo, password);
                   setState(() {
                     animationName = 'openEyes';
+                    _isLoggingIn = true;
                     Future.delayed(Duration(seconds: 1)).whenComplete(() {
                       setState(() {
                         animationName = 'hello';
                       });
                     });
                   });
+                  await _login(regdNo, password);
                   Future.delayed(Duration(seconds: 15))
                       .whenComplete(() => _setCredentials());
                   try {
@@ -305,7 +307,8 @@ class _LoginPageState extends State<LoginPage>
                       isLoading = true;
                       _isLoggingIn = true;
                       Navigator.pushReplacementNamed(
-                          context, MyHomePage.routeName);
+                          context, AttendancePage.routeName);
+                      // context, MyHomePage.routeName);
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(

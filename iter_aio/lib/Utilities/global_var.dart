@@ -33,7 +33,7 @@ var updateText = "New Update is Here!";
 
 /// for helper
 var cookie;
-final mainUrl = "http://136.233.14.3:8282/CampusPortalSOA";
+final mainUrl = "http://103.112.27.37:8282/CampusPortalSOA";
 NoticesFetch nf;
 LoginFetch loginFetch;
 AttendanceFetch af;

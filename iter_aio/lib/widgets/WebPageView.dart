@@ -26,6 +26,7 @@ class _WebPageViewState extends State<WebPageView> {
   WebViewController controllerGlobal;
 
   Future<bool> _exitApp(BuildContext context) async {
+    Navigator.pop(context);
     if (await controllerGlobal.canGoBack()) {
       print("onwill goback");
       controllerGlobal.goBack();

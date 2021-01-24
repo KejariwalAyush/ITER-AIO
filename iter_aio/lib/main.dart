@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp> {
             fontSize: 16.0,
           );
       }
-      isUpdateAvailable = await UpdateFetch().fetchupdate(context);
+      // isUpdateAvailable = await UpdateFetch().fetchupdate(context);
     });
     setState(() {
       nf = NoticesFetch();
@@ -116,7 +116,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future _getThingsOnStartup() async {
-    UpdateFetch().fetchupdate(context);
+    // UpdateFetch().fetchupdate(context);
     clubsName = await clubs.get().then((QuerySnapshot querySnapshot) {
       List<String> _list = [];
       querySnapshot.docs.forEach((doc) {

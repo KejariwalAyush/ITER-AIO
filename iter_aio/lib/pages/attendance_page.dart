@@ -230,6 +230,7 @@ class _AttendancePageState extends State<AttendancePage> {
               Icons.share,
             ),
             onPressed: () {
+              // var x = new UpdateFetch().fetchupdate(context);
               // Notify().showNotification(
               //     title: 'Share', body: 'Share Attendence');
               ShareFilesAndScreenshotWidgets().shareScreenshot(

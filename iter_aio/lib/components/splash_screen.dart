@@ -3,6 +3,8 @@ import 'package:iteraio/MyHomePage.dart';
 import 'package:iteraio/Utilities/global_var.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:iteraio/landing/LandingPage.dart';
+import 'package:iteraio/pages/login_page.dart';
+import 'package:iteraio/pages/attendance_page.dart';
 
 class Splash extends StatelessWidget {
   const Splash({
@@ -15,10 +17,11 @@ class Splash extends StatelessWidget {
       seconds: 1,
       //isLoading?sec:1,
       navigateAfterSeconds: isLoggedIn != null
-          ? isLoggedIn
-              ? new MyHomePage()
-              : new LandingPage()
-          : new LandingPage(),
+          // ? isLoggedIn
+          // ? new MyHomePage()
+          // : new LandingPage()
+          ? new AttendancePage()
+          : new LoginPage(),
       title: new Text(
         'ITER AIO\n\nAn all-in-one app for ITER',
         textAlign: TextAlign.center,

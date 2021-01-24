@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
@@ -70,11 +70,13 @@ class UpdateFetch {
       updateText = document.querySelector('div.markdown-body').text;
       // print(updateText);
       List links = document.querySelectorAll('div > ul > li > a > span ');
+      print(links.toString());
       List<Map<String, String>> linkMap = [];
       for (var link in links) {
         linkMap.add({
           'title': link.text,
         });
+        log(link.text);
       }
       var dec = jsonDecode(json.encode(linkMap));
       latestversion = dec[6]['title'];
@@ -91,7 +93,9 @@ class UpdateFetch {
       // print(updatelink);
 
       if (version.compareTo(latestversion) != 0) {
-        print('update available');
+        log(latestversion);
+        log('update available');
+        log(version);
         isUpdateAvailable = true;
         showSimpleNotification(
           Text(
