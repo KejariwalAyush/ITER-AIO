@@ -9,7 +9,7 @@ All in one app for ITER students.
 - Avoid opening the link with *Chrome* may face some downloading issue.
 - Before Installing Apk Turn off Play Protect from Google Play Store 
 
-## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.3.0/ITER-AIO-v1.4.0.apk)
+## [Download Apk](https://github.com/KejariwalAyush/ITER-AIO/releases/download/1.4.0/ITER-AIO-v1.4.0.apk)
 ## [Download Page](https://github.com/KejariwalAyush/ITER-AIO/releases/latest)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/KejariwalAyush/ITER-AIO?style=plastic)
